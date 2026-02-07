@@ -13,23 +13,23 @@ Hands-on laboratory exercises (Italian) covering:
 
 | Lab | Topic |
 |---|---|
-| 01 | Containers fundamentals — Docker warmup |
-| 02 | Docker basics — build, run, logs |
-| 03 | AWS setup — console tour and CLI |
-| 04 | ECS first task on Fargate |
-| 05 | ECR — push, pull, scan |
-| 06 | ECS cluster, task definition, service |
-| 07 | ECS service — deploy, scaling, rollback |
-| 08 | Networking — VPC, subnets, Security Groups |
-| 09 | ECS + ALB — target groups, health checks |
-| 10 | IAM roles and secrets for ECS |
-| 11 | CloudWatch — logs, metrics, alarms |
-| 12 | Fargate patterns — worker, scheduled tasks |
-| 12b | EKS deploy quick check (kubectl + cleanup) |
-| 13 | CI/CD — CodeBuild + CodePipeline |
-| 14 | Versioning, update, rollback |
-| 15 | Resilience and failure injection |
-| 16 | Cost governance — quick wins |
+| [01](labs/01_containers_fundamentals_warmup.md) | Containers fundamentals — Docker warmup |
+| [02](labs/02_docker_basics_build_run.md) | Docker basics — build, run, logs |
+| [03](labs/03_aws_setup_console_tour.md) | AWS setup — console tour and CLI |
+| [04](labs/04_ecs_first_task_fargate.md) | ECS first task on Fargate |
+| [05](labs/05_ecr_push_pull_scan.md) | ECR — push, pull, scan |
+| [06](labs/06_ecs_cluster_task_definition_service.md) | ECS cluster, task definition, service |
+| [07](labs/07_ecs_service_deploy_scaling_rollback.md) | ECS service — deploy, scaling, rollback |
+| [08](labs/08_networking_vpc_subnets_security_groups.md) | Networking — VPC, subnets, Security Groups |
+| [09](labs/09_ecs_alb_target_groups_healthchecks.md) | ECS + ALB — target groups, health checks |
+| [10](labs/10_iam_roles_and_secrets_ecs.md) | IAM roles and secrets for ECS |
+| [11](labs/11_cloudwatch_logs_metrics_alarms.md) | CloudWatch — logs, metrics, alarms |
+| [12](labs/12_fargate_patterns_worker_scheduled.md) | Fargate patterns — worker, scheduled tasks |
+| [12b](labs/12b_eks_deploy_quick_check.md) | EKS deploy quick check (kubectl + cleanup) |
+| [13](labs/13_cicd_codebuild_codepipeline.md) | CI/CD — CodeBuild + CodePipeline |
+| [14](labs/14_versioning_update_rollback.md) | Versioning, update, rollback |
+| [15](labs/15_resilience_failure_injection.md) | Resilience and failure injection |
+| [16](labs/16_cost_governance_quick_wins.md) | Cost governance — quick wins |
 
 ## 👨‍💻 Author
 
