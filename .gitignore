@@ -1,0 +1,8 @@
+# Exclude slides and assessment materials
+slides_deck/
+verifiche/
+
+# Exclude other workspace files
+../*.pdf
+../*.xls
+../prompts.md
