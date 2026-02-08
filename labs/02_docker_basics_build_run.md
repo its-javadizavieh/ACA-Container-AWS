@@ -49,13 +49,14 @@ Deliverable:
    - Opzione B (Node): un server HTTP minimale.
    - Nota: se sei in ritardo, usa il template del docente.
 
-4) **Scrivi un Dockerfile**
-   - Base image “slim”
+4) **Scrivi un Dockerfile** 🎯 *Sfida*
+   - Base image "slim"
    - Copia dei file
    - Porta esposta
    - Comando di avvio
+   - *Sfida*: usa multi-stage build se possibile (o almeno minimizza i layer).
 
-5) **Build dell’immagine**
+5) **Build dell'immagine**
    - Comando: `docker build -t hello-api:1.0 .`
 
 6) **Run del container**
@@ -64,9 +65,10 @@ Deliverable:
 7) **Verifica da browser**
    - URL: `http://localhost:8080`
 
-8) **Controlla log e stato**
+8) **Controlla log e stato** 🎯 *Sfida*
    - `docker ps`
    - `docker logs <container_id>`
+   - *Sfida*: trova una riga nei log che conferma che il server è pronto.
 
 ---
 
@@ -108,3 +110,60 @@ Deliverable:
 - docker logs docker exec troubleshooting
 - .dockerignore example
 - docker expose vs publish port explanation
+
+---
+
+## Tutorial consigliati
+
+- [Docker Workshop — Our application](https://docs.docker.com/get-started/workshop/02_our_app/)
+- [Build and push your first image](https://docs.docker.com/get-started/introduction/build-and-push-first-image/)
+- [Writing a Dockerfile](https://docs.docker.com/get-started/docker-concepts/building-images/writing-a-dockerfile/)
+- [Build, tag, and publish an image](https://docs.docker.com/get-started/docker-concepts/building-images/build-tag-and-publish-an-image/)
+
+---
+
+## Soluzioni
+
+<details>
+<summary>🎯 Sfida 4: Esempio Dockerfile (Python)</summary>
+
+```dockerfile
+FROM python:3.11-slim
+
+WORKDIR /app
+
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+COPY . .
+
+EXPOSE 8080
+
+CMD ["python", "app.py"]
+```
+
+Punti chiave:
+
+- `FROM`: base image leggera (`-slim`)
+- `WORKDIR`: directory di lavoro
+- `COPY` + `RUN pip install`: prima le dipendenze (cache layer)
+- `EXPOSE`: documenta la porta (non la pubblica)
+- `CMD`: comando di avvio
+
+</details>
+
+<details>
+<summary>🎯 Sfida 8: Differenza tra -d e --rm</summary>
+
+- `--rm`: rimuove il container automaticamente quando termina (usa in sviluppo)
+- `-d` (detached): esegue in background, il container rimane attivo
+
+Per vedere i log di un container in background:
+
+```bash
+docker ps                    # trova CONTAINER ID
+docker logs <container_id>   # leggi i log
+docker logs -f <container_id>  # segui i log in tempo reale
+```
+
+</details>

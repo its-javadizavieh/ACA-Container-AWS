@@ -49,20 +49,22 @@ Deliverable:
      - Port mapping: 80
    - Logging: abilita `awslogs` se disponibile nel wizard
 
-3) **Run task**
+3) **Run task** 🎯 *Sfida*
    - Cluster → Tasks → Run new task
    - Launch type: Fargate
    - Networking:
      - Subnet: scegli 2 subnet (se possibile)
      - Public IP: abilita (solo per test rapido)
      - SG: apri 80 solo dal tuo IP (se fattibile) oppure temporaneo
+   - *Sfida*: prima di cliccare "Run", annota quante subnet hai scelto e perché.
 
 4) **Verifica stato task**
    - Output atteso: task in `RUNNING`.
 
-5) **Controlla events e stopped reason (se succede)**
-   - ECS → Task → “Stopped reason”
-   - ECS → Cluster/Service → “Events” (se applicabile)
+5) **Controlla events e stopped reason (se succede)** 🎯 *Sfida*
+   - ECS → Task → "Stopped reason"
+   - ECS → Cluster/Service → "Events" (se applicabile)
+   - *Sfida*: se il task si ferma, trova il motivo esatto prima di chiedere aiuto.
 
 6) **(Opzionale) Controlla log**
    - CloudWatch → Logs → Log groups
@@ -109,3 +111,46 @@ Deliverable:
 - ECS create task definition Fargate nginx alpine
 - ECS awslogs logConfiguration screenshot
 - public IP ECS Fargate reachability troubleshooting
+
+---
+
+## Tutorial consigliati
+
+- [Getting Started with Amazon ECS using Fargate](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/getting-started-fargate.html)
+- [ECS Task Definition Parameters](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/task_definition_parameters.html)
+- [ECS Troubleshooting](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/troubleshooting.html)
+
+---
+
+## Soluzioni
+
+<details>
+<summary>Sfida Step 3: perché più subnet?</summary>
+
+**Risposta**: scegliere 2+ subnet in Availability Zone diverse garantisce **alta disponibilità**.
+
+Se una AZ ha problemi (es. data center down), Fargate può avviare task nell'altra AZ.
+
+Per un task singolo non è critico, ma per un **Service** con più task è best practice.
+
+</details>
+
+<details>
+<summary>Sfida Step 5: interpretare stopped reason</summary>
+
+Motivi comuni e soluzioni:
+
+| Stopped Reason | Causa | Soluzione |
+|----------------|-------|-----------|
+| `CannotPullContainerError` | Image non trovata o permessi ECR | Verifica nome image, controlla execution role |
+| `Essential container exited` | Container crashato | Controlla i log in CloudWatch |
+| `ResourceInitializationError` | Problema rete/ENI | Verifica subnet ha IP disponibili, route table corretta |
+| `OutOfMemoryError` | Container usa più RAM del limite | Aumenta `memory` nella task definition |
+
+**Passo debug**:
+
+1. Leggi "Stopped reason" nel task
+2. Vai in CloudWatch Logs per dettagli
+3. Se è errore di rete: controlla SG e subnet
+
+</details>

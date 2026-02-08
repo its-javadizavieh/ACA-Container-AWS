@@ -38,11 +38,12 @@ Eseguiamo un job containerizzato (es. `alpine`) che fa un’azione e termina.
 
 ## Step (numerati)
 
-1) **Crea una task definition minimale**
+1) **Crea una task definition minimale** 🎯 *Sfida*
    - Compatibilità Fargate
    - Immagine: `public.ecr.aws/docker/library/alpine:3.19`
    - Command: `sh -c "echo START; date; echo DONE"`
    - Logging: awslogs (se possibile)
+   - *Sfida*: modifica il command per scrivere un file su /tmp e verificare che esiste.
 
 2) **Run task (one-off)**
    - ECS → Run task
@@ -54,8 +55,9 @@ Eseguiamo un job containerizzato (es. `alpine`) che fa un’azione e termina.
 4) **Leggi i log (se configurati)**
    - CloudWatch Logs → log group/stream
 
-5) **Discussione rapida**
+5) **Discussione rapida** 🎯 *Sfida*
    - differenza: ECS Service (sempre acceso) vs RunTask (job)
+   - *Sfida*: calcola il costo di eseguire questo job ogni giorno per un mese (Fargate pricing).
 
 ---
 
@@ -91,3 +93,78 @@ Eseguiamo un job containerizzato (es. `alpine`) che fa un’azione e termina.
 - ECS scheduled task EventBridge RunTask
 - ECS service vs task run differences
 - ECS task stopped reason exit code 0
+
+---
+
+## Tutorial consigliati
+
+- [Running Tasks with Amazon ECS](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ecs_run_task.html)
+- [Scheduled Tasks with EventBridge](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/scheduled_tasks.html)
+- [AWS Fargate Pricing](https://aws.amazon.com/fargate/pricing/)
+
+---
+
+## Soluzioni
+
+<details>
+<summary>Sfida Step 1: command con file su /tmp</summary>
+
+**Command modificato**:
+
+```
+sh -c "echo START; date > /tmp/output.txt; cat /tmp/output.txt; echo DONE"
+```
+
+**Cosa fa**:
+
+1. Stampa "START"
+2. Scrive la data in `/tmp/output.txt`
+3. Legge e stampa il contenuto del file
+4. Stampa "DONE"
+
+**Output atteso nei log**:
+
+```
+START
+Thu Mar 20 14:30:00 UTC 2025
+DONE
+```
+
+**Nota**: il file esiste solo durante l'esecuzione del task. Quando il container termina, tutto viene perso (ephemeral storage).
+
+**Per persistere dati**: usa EFS o scrivi su S3.
+
+</details>
+
+<details>
+<summary>Sfida Step 5: calcolo costo job giornaliero</summary>
+
+**Dati per il calcolo** (Fargate eu-west-1, Marzo 2025 circa):
+
+- vCPU: $0.04048 per vCPU-ora
+- Memory: $0.004445 per GB-ora
+
+**Configurazione minimale Fargate**:
+
+- 0.25 vCPU + 0.5 GB RAM
+
+**Durata job**: ~10 secondi = 0.00278 ore
+
+**Costo per esecuzione**:
+
+- vCPU: 0.25 × $0.04048 × 0.00278 = $0.000028
+- Memory: 0.5 × $0.004445 × 0.00278 = $0.0000062
+- **Totale: ~$0.000034** per esecuzione
+
+**Costo mensile** (30 esecuzioni):
+
+- $0.000034 × 30 = **~$0.001** (praticamente gratis)
+
+**Confronto con Service 24/7**:
+
+- Service: 0.25 vCPU × 730h = **~$7.40/mese**
+- Job 1x/giorno: **~$0.001/mese**
+
+**Conclusione**: per workload batch, RunTask è 1000x più economico di un Service sempre attivo.
+
+</details>

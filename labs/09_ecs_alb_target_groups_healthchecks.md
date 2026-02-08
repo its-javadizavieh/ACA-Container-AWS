@@ -38,9 +38,10 @@ Deliverable:
    - SG-ALB: inbound `80` da `0.0.0.0/0` (solo HTTP per lab)
    - SG-TASK: inbound porta app (es. `8080`) **solo da SG-ALB**
 
-2) **Crea/usa ALB + Target Group**
+2) **Crea/usa ALB + Target Group** 🎯 *Sfida*
    - Target type: **IP** (per Fargate)
-   - Health check path: `/health` (per “hello-api”, oppure il path della tua app)
+   - Health check path: `/health` (per "hello-api", oppure il path della tua app)
+   - *Sfida*: configura health check con timeout 5s, interval 10s, unhealthy threshold 2.
 
 3) **Aggiorna o crea ECS Service con Load Balancer**
    - ECS → Cluster → Service → Create/Update
@@ -51,8 +52,9 @@ Deliverable:
    - Networking:
      - Security group task: SG-TASK
 
-4) **Verifica Target health**
-   - EC2 → Target Groups → Targets → devono diventare “healthy”
+4) **Verifica Target health** 🎯 *Sfida*
+   - EC2 → Target Groups → Targets → devono diventare "healthy"
+   - *Sfida*: se un target è "unhealthy", trova il motivo esatto (health check response code).
 
 5) **Test**
    - Apri DNS name dell’ALB
@@ -94,3 +96,58 @@ Deliverable:
 - Fargate target group type IP health check
 - Security group allow traffic from another security group
 - ALB targets unhealthy troubleshooting
+
+---
+
+## Tutorial consigliati
+
+- [Creating an Application Load Balancer](https://docs.aws.amazon.com/elasticloadbalancing/latest/application/create-application-load-balancer.html)
+- [Register Targets with Your Target Group](https://docs.aws.amazon.com/elasticloadbalancing/latest/application/target-group-register-targets.html)
+- [Health Checks for Your Target Groups](https://docs.aws.amazon.com/elasticloadbalancing/latest/application/target-group-health-checks.html)
+
+---
+
+## Soluzioni
+
+<details>
+<summary>Sfida Step 2: health check configuration</summary>
+
+**Impostazioni consigliate**:
+
+| Parametro | Valore | Perché |
+|-----------|--------|--------|
+| Path | `/health` | Endpoint dedicato (non `/` che potrebbe fare altro) |
+| Protocol | HTTP | Sufficiente per health check interni |
+| Timeout | 5 secondi | Tempo massimo per risposta |
+| Interval | 10 secondi | Frequenza di controllo |
+| Healthy threshold | 2 | 2 check OK → target healthy |
+| Unhealthy threshold | 2 | 2 check FAIL → target unhealthy |
+
+**Dove configurare**: EC2 → Target Groups → [tuo TG] → Health checks → Edit
+
+**Best practice**: l'endpoint `/health` dovrebbe essere leggero (no DB query pesanti).
+
+</details>
+
+<details>
+<summary>Sfida Step 4: diagnosticare target unhealthy</summary>
+
+**Dove trovare il motivo**:
+
+1. EC2 → Target Groups → [tuo TG] → Targets
+2. Clicca sul target unhealthy
+3. Leggi **"Health status details"**
+
+**Codici comuni e cause**:
+
+| Status | Causa | Soluzione |
+|--------|-------|-----------|
+| `Unhealthy: Request timed out` | App non risponde in tempo | Aumenta timeout o ottimizza endpoint |
+| `Unhealthy: Target is in DRAINING` | Task in chiusura | Aspetta o verifica deployment |
+| `Unhealthy: 404` | Path health check errato | Correggi path nel TG |
+| `Unhealthy: 503` | App non pronta | Controlla log container |
+| `Connection refused` | Porta sbagliata o app non in ascolto | Verifica port mapping |
+
+**Tip**: controlla anche SG-TASK — deve permettere traffico dalla porta health check.
+
+</details>
