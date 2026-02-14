@@ -34,14 +34,14 @@ Deliverable:
 ## Step (numerati)
 
 1) **Verifica tag disponibili in ECR**
-   - ECR → repository → Images
+   - ECR ──► repository ──► Images
 
 2) **Crea nuova task definition revision** 🎯 *Sfida*
    - Cambia immagine da `:1.0` a `:1.1` (o digest)
    - *Sfida*: invece del tag, usa il digest SHA256 completo. Dove lo trovi?
 
 3) **Update del service**
-   - Service → Update → seleziona la nuova revision
+   - Service ──► Update ──► seleziona la nuova revision
 
 4) **Osserva Events**
    - Output atteso: rollout e poi stable
@@ -101,7 +101,7 @@ Deliverable:
 **Dove trovare il digest**:
 
 1. **In Console ECR**:
-   - ECR → repository → Images
+   - ECR ──► repository ──► Images
    - Colonna "Image digest" (es. `sha256:abc123...`)
 
 2. **Con AWS CLI**:
@@ -138,16 +138,16 @@ Deliverable:
 
 **Cosa osservare negli Events**:
 
-1. Evento "service has begun draining task..." → **T0**
-2. Evento "service has started 1 tasks..." → task nuovi (vecchia revision)
-3. Evento "service has stopped 1 running tasks..." → task nuovi fermati
-4. Evento "service has reached a stable state" → **T1**
+1. Evento "service has begun draining task..." ──► **T0**
+2. Evento "service has started 1 tasks..." ──► task nuovi (vecchia revision)
+3. Evento "service has stopped 1 running tasks..." ──► task nuovi fermati
+4. Evento "service has reached a stable state" ──► **T1**
 
 **Tempo tipico**: 2-5 minuti con configurazione default
 
 **Fattori che influenzano il tempo**:
 
-- `deregistration_delay` del target group (default 300s → **riduci a 30s per dev**)
+- `deregistration_delay` del target group (default 300s ──► **riduci a 30s per dev**)
 - `healthCheckGracePeriodSeconds` del service
 - Tempo di startup dell'app
 - Configurazione `minimumHealthyPercent`

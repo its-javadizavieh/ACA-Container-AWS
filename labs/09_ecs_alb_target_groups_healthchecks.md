@@ -44,7 +44,7 @@ Deliverable:
    - *Sfida*: configura health check con timeout 5s, interval 10s, unhealthy threshold 2.
 
 3) **Aggiorna o crea ECS Service con Load Balancer**
-   - ECS → Cluster → Service → Create/Update
+   - ECS ──► Cluster ──► Service ──► Create/Update
    - Load balancing:
      - ALB selezionato
      - Target group selezionato
@@ -53,7 +53,7 @@ Deliverable:
      - Security group task: SG-TASK
 
 4) **Verifica Target health** 🎯 *Sfida*
-   - EC2 → Target Groups → Targets → devono diventare "healthy"
+   - EC2 ──► Target Groups ──► Targets ──► devono diventare "healthy"
    - *Sfida*: se un target è "unhealthy", trova il motivo esatto (health check response code).
 
 5) **Test**
@@ -120,10 +120,10 @@ Deliverable:
 | Protocol | HTTP | Sufficiente per health check interni |
 | Timeout | 5 secondi | Tempo massimo per risposta |
 | Interval | 10 secondi | Frequenza di controllo |
-| Healthy threshold | 2 | 2 check OK → target healthy |
-| Unhealthy threshold | 2 | 2 check FAIL → target unhealthy |
+| Healthy threshold | 2 | 2 check OK ──► target healthy |
+| Unhealthy threshold | 2 | 2 check FAIL ──► target unhealthy |
 
-**Dove configurare**: EC2 → Target Groups → [tuo TG] → Health checks → Edit
+**Dove configurare**: EC2 ──► Target Groups ──► [tuo TG] ──► Health checks ──► Edit
 
 **Best practice**: l'endpoint `/health` dovrebbe essere leggero (no DB query pesanti).
 
@@ -134,7 +134,7 @@ Deliverable:
 
 **Dove trovare il motivo**:
 
-1. EC2 → Target Groups → [tuo TG] → Targets
+1. EC2 ──► Target Groups ──► [tuo TG] ──► Targets
 2. Clicca sul target unhealthy
 3. Leggi **"Health status details"**
 

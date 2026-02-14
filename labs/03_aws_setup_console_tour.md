@@ -38,11 +38,11 @@ Deliverable:
 ## Step (numerati)
 
 1) **Seleziona la Region del corso**
-   - Console AWS → selettore Region (in alto a destra)
+   - Console AWS ──► selettore Region (in alto a destra)
    - Nota: useremo una sola Region per tutto il corso.
 
 2) **Verifica l’identità attiva**
-   - In alto a destra → “Security credentials” / “Account”
+   - In alto a destra ──► “Security credentials” / “Account”
    - Output atteso: sai dire *chi* sei (utente/ruolo) e in che account sei.
 
 3) **Definisci convenzioni minime**
@@ -52,25 +52,25 @@ Deliverable:
    - Naming: prefisso `containers-<gruppo>-...`
 
 4) **Console tour: ECS** 🎯 *Sfida*
-   - Apri ECS → guarda "Clusters", "Task definitions", "Services".
+   - Apri ECS ──► guarda "Clusters", "Task definitions", "Services".
    - Obiettivo: trovare Events e "stopped reason".
    - *Sfida*: trova dove puoi vedere il motivo per cui un task è stato fermato.
 
 5) **Console tour: ECR**
-   - Apri ECR → "Repositories".
+   - Apri ECR ──► "Repositories".
    - Obiettivo: capire dove vedi tag/digest e scan.
 
 6) **Console tour: CloudWatch**
-   - Apri CloudWatch → "Logs", "Log groups", "Alarms".
+   - Apri CloudWatch ──► "Logs", "Log groups", "Alarms".
    - Obiettivo: capire dove leggerai i log ECS.
 
 7) **Console tour: IAM (solo lettura)** 🎯 *Sfida*
-   - Apri IAM → "Roles".
+   - Apri IAM ──► "Roles".
    - Obiettivo: differenza concettuale tra execution role e task role.
    - *Sfida*: cerca un ruolo che contiene "ecsTaskExecution" nel nome e leggi le policy attached.
 
 8) **(Opzionale, se consentito) Controlli costi**
-   - Billing → Cost Explorer / Budgets.
+   - Billing ──► Cost Explorer / Budgets.
    - Se non hai permessi: annota la limitazione.
 
 ---
@@ -126,7 +126,7 @@ Deliverable:
 <details>
 <summary>Sfida Step 4: dove vedere "stopped reason"</summary>
 
-1. Vai in **ECS → Clusters → [tuo cluster] → Tasks**
+1. Vai in **ECS ──► Clusters ──► [tuo cluster] ──► Tasks**
 2. Clicca su un task con stato **STOPPED**
 3. In alto vedrai **"Stopped reason"** con la spiegazione (es. "Essential container exited", "CannotPullContainerError", ecc.)
 4. Nella tab **Events** del service (se presente) trovi la cronologia degli eventi
@@ -136,7 +136,7 @@ Deliverable:
 <details>
 <summary>Sfida Step 7: trovare ecsTaskExecutionRole</summary>
 
-1. Vai in **IAM → Roles**
+1. Vai in **IAM ──► Roles**
 2. Cerca `ecsTaskExecution` nella barra di ricerca
 3. Clicca su **AmazonECSTaskExecutionRolePolicy**
 4. Vedrai le policy attached:

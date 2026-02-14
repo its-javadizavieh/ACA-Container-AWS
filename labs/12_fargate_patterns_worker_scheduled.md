@@ -46,14 +46,14 @@ Eseguiamo un job containerizzato (es. `alpine`) che fa un’azione e termina.
    - *Sfida*: modifica il command per scrivere un file su /tmp e verificare che esiste.
 
 2) **Run task (one-off)**
-   - ECS → Run task
+   - ECS ──► Run task
    - Desired tasks: 1
 
 3) **Verifica esecuzione**
-   - Output atteso: task passa RUNNING → STOPPED (exit code 0)
+   - Output atteso: task passa RUNNING ──► STOPPED (exit code 0)
 
 4) **Leggi i log (se configurati)**
-   - CloudWatch Logs → log group/stream
+   - CloudWatch Logs ──► log group/stream
 
 5) **Discussione rapida** 🎯 *Sfida*
    - differenza: ECS Service (sempre acceso) vs RunTask (job)

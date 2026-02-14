@@ -38,10 +38,10 @@ Deliverable:
 1) **Scegli la Region del corso**
 
 2) **Crea (o usa) un cluster ECS**
-   - ECS → Clusters → Create cluster
+   - ECS ──► Clusters ──► Create cluster
 
 3) **Crea una task definition (Fargate)** 🎯 *Sfida*
-   - ECS → Task definitions → Create
+   - ECS ──► Task definitions ──► Create
    - Launch type: Fargate
    - CPU/Mem: valori minimi compatibili
    - Container:
@@ -52,15 +52,15 @@ Deliverable:
    - *Sfida*: prima di salvare, annota quale combinazione CPU/Mem hai scelto e perché.
 
 4) **Esegui un task (più veloce) oppure crea un service minimale**
-   - Opzione A (rapida): Run task → 1 task
-   - Opzione B: Service → desired count 1
+   - Opzione A (rapida): Run task ──► 1 task
+   - Opzione B: Service ──► desired count 1
 
 5) **Verifica RUNNING**
-   - ECS → Service/Tasks
+   - ECS ──► Service/Tasks
 
 6) **Leggi eventi e log** 🎯 *Sfida*
-   - ECS → Service → Events
-   - CloudWatch Logs → log group del task
+   - ECS ──► Service ──► Events
+   - CloudWatch Logs ──► log group del task
    - *Sfida*: trova nel log una riga che conferma che la tua app è in ascolto (es. "listening on port 8080").
 
 ---
@@ -136,7 +136,7 @@ Fargate ha combinazioni **fisse** di CPU e memoria:
 
 **Passo per passo**:
 
-1. Vai in **CloudWatch → Logs → Log groups**
+1. Vai in **CloudWatch ──► Logs ──► Log groups**
 2. Cerca il log group (es. `/ecs/hello-api` o simile)
 3. Clicca sul **log stream** più recente (nome = task ID)
 4. Cerca la riga con "listening", "started", "ready" o simili

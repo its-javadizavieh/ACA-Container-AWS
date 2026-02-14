@@ -34,7 +34,7 @@ Deliverable:
 ## Step (numerati)
 
 1) **Apri log group del service** 🎯 *Sfida*
-   - CloudWatch → Logs → Log groups
+   - CloudWatch ──► Logs ──► Log groups
    - Apri stream e identifica:
      - startup logs
      - richieste
@@ -42,11 +42,11 @@ Deliverable:
    - *Sfida*: usa il filtro per trovare solo le righe che contengono "error" o "ERROR".
 
 2) **Correla con ECS events**
-   - ECS → Service → Events
+   - ECS ──► Service ──► Events
    - Obiettivo: evento ↔ log.
 
 3) **Crea un allarme su CPU o Memory** 🎯 *Sfida*
-   - CloudWatch → Alarms → Create
+   - CloudWatch ──► Alarms ──► Create
    - Seleziona metrica ECS (ClusterName + ServiceName)
    - Soglia esempio: CPU > 70% per 5 minuti
    - *Sfida*: configura un'azione SNS (anche solo un topic vuoto) per ricevere notifiche.
@@ -106,13 +106,13 @@ Deliverable:
 
 **Metodo 1 — Filter pattern nel log group**:
 
-1. CloudWatch → Logs → Log groups → [tuo log group]
+1. CloudWatch ──► Logs ──► Log groups ──► [tuo log group]
 2. Nella barra "Filter events", scrivi: `?error ?ERROR ?Error`
 3. Premi Enter
 
 **Metodo 2 — Logs Insights (più potente)**:
 
-1. CloudWatch → Logs → Logs Insights
+1. CloudWatch ──► Logs ──► Logs Insights
 2. Seleziona il log group
 3. Query:
 
@@ -138,20 +138,20 @@ fields @timestamp, @message
 **Passo per passo**:
 
 1. **Crea topic SNS** (se non esiste):
-   - Amazon SNS → Topics → Create topic
+   - Amazon SNS ──► Topics ──► Create topic
    - Type: Standard
    - Name: `ecs-alerts`
 
 2. **Crea subscription** (opzionale, per ricevere email):
-   - SNS → Topics → ecs-alerts → Create subscription
+   - SNS ──► Topics ──► ecs-alerts ──► Create subscription
    - Protocol: Email
    - Endpoint: tua email
    - Conferma l'email ricevuta
 
 3. **Collega all'allarme**:
-   - CloudWatch → Alarms → Create alarm
+   - CloudWatch ──► Alarms ──► Create alarm
    - Dopo aver scelto metrica e soglia:
-   - "Notification" → In alarm → Select SNS topic → `ecs-alerts`
+   - "Notification" ──► In alarm ──► Select SNS topic ──► `ecs-alerts`
 
 **Risultato**: quando CPU > 70% per 5 min, ricevi email.
 

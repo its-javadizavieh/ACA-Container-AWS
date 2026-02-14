@@ -5,7 +5,7 @@ Riferimento lezione: `slides_deck/lecture_08_ecs_networking_basics_en.md`
 ## Obiettivo
 
 - Progettare una rete minima per ECS Fargate.
-- Definire regole SG corrette: **ALB → Task**.
+- Definire regole SG corrette: **ALB ──► Task**.
 - Capire quando servono **NAT** o **VPC endpoints**.
 
 ## Durata (timebox)
@@ -26,7 +26,7 @@ Progetta il networking del progetto “hello-api” (ALB + ECS tasks) in modo si
 Deliverable:
 
 - scegli (e motiva) subnet pubbliche per ALB e subnet private per i task
-- definisci SG-ALB e SG-TASK con regole minime (ALB → task sulla porta app)
+- definisci SG-ALB e SG-TASK con regole minime (ALB ──► task sulla porta app)
 - spiega come i task in subnet private raggiungono ECR/CloudWatch (NAT oppure VPC endpoints)
 
 ## Scenario
@@ -38,11 +38,11 @@ Esercizio guidato: scegliamo una VPC esistente e progettiamo come metterci ALB +
 ## Step (numerati)
 
 1) **Identifica la VPC**
-   - VPC → Your VPCs
+   - VPC ──► Your VPCs
    - Nota: CIDR, numero AZ.
 
 2) **Identifica subnet pubbliche e private**
-   - VPC → Subnets
+   - VPC ──► Subnets
    - Per ogni subnet annota: AZ, route table, presenza route verso IGW.
 
 3) **Disegna lo schema (anche su foglio)**
@@ -69,15 +69,15 @@ Esercizio guidato: scegliamo una VPC esistente e progettiamo come metterci ALB +
 
 ## Checkpoint
 
-- Sai dire quando una subnet è pubblica (route `0.0.0.0/0` → IGW).
+- Sai dire quando una subnet è pubblica (route `0.0.0.0/0` ──► IGW).
 - Sai spiegare perché non aprire la porta del task a `0.0.0.0/0`.
 
 ---
 
 ## Troubleshooting rapido
 
-- **Non capisco se subnet è pubblica**: controlla route table → route `0.0.0.0/0` verso IGW.
-- **Traffico ALB→task non passa**: spesso è SG-TASK inbound o target group port.
+- **Non capisco se subnet è pubblica**: controlla route table ──► route `0.0.0.0/0` verso IGW.
+- **Traffico ALB──►task non passa**: spesso è SG-TASK inbound o target group port.
 
 ---
 
@@ -136,7 +136,7 @@ Esercizio guidato: scegliamo una VPC esistente e progettiamo come metterci ALB +
 
 **Pricing NAT Gateway** (eu-west-1, Marzo 2025 circa):
 
-- **Per ora**: ~$0.045/h → ~$32/mese (24/7)
+- **Per ora**: ~$0.045/h ──► ~$32/mese (24/7)
 - **Per GB processato**: ~$0.045/GB
 
 **Esempio calcolo** (ambiente dev con 50 GB/mese):
@@ -147,7 +147,7 @@ Esercizio guidato: scegliamo una VPC esistente e progettiamo come metterci ALB +
 
 **Alternativa VPC Endpoints**:
 
-- $0.01/h per endpoint → ~$7/mese
+- $0.01/h per endpoint ──► ~$7/mese
 - Nessun costo per GB (per traffico AWS)
 - Servono 3-4 endpoints (ECR.api, ECR.dkr, Logs, S3)
 - **Totale: ~$28/mese** ma più complesso da configurare

@@ -67,7 +67,7 @@ Hands-on laboratory exercises (Italian) covering:
 
 A continuous project threaded through all lectures:
 - **Endpoints**: `/`, `/health`, `/version`
-- **Target architecture**: ECR → ECS on Fargate → ALB
+- **Target architecture**: ECR ──► ECS on Fargate ──► ALB
 - **Skills demonstrated**: Docker build, ECR push, ECS deploy, IAM roles, CloudWatch observability, CI/CD pipeline, cleanup discipline
 
 ## 📄 License

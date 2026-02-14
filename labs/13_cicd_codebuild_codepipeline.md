@@ -1,4 +1,4 @@
-# Lab 13 — CI/CD: CodeBuild → ECR → deploy ECS
+# Lab 13 — CI/CD: CodeBuild ──► ECR ──► deploy ECS
 
 Riferimento lezione: `slides_deck/lecture_13_cicd_containers_en.md`
 
@@ -58,7 +58,7 @@ Deliverable:
 
 6) **Deploy su ECS (manuale nel lab)**
    - Aggiorna task definition con nuovo tag
-   - ECS → Service → Update → force new deployment
+   - ECS ──► Service ──► Update ──► force new deployment
 
 ---
 
@@ -151,7 +151,7 @@ phases:
 
 **Dove trovare l'errore**:
 
-1. CodeBuild → Build history → [build fallita]
+1. CodeBuild ──► Build history ──► [build fallita]
 2. Apri "Build logs" (o "Tail logs")
 3. Cerca la **fase** che ha fallito (PRE_BUILD, BUILD, POST_BUILD)
 4. Leggi l'output del comando fallito

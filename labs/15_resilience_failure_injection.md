@@ -5,7 +5,7 @@ Riferimento lezione: `slides_deck/lecture_15_resilience_fault_tolerance_en.md`
 ## Obiettivo
 
 - Simulare un piccolo errore (config/health) e osservare cosa succede.
-- Esercitare il “debug flow”: events → stopped reason → logs → ALB target health.
+- Esercitare il “debug flow”: events ──► stopped reason ──► logs ──► ALB target health.
 - Ripristinare lo stato stabile.
 
 ## Durata (timebox)
@@ -27,18 +27,18 @@ Deliverable:
 
 - rompi deliberatamente `/health` (o una config) e osserva target unhealthy / task restart
 - ripristina e verifica ritorno a healthy + service stable
-- descrivi il debug flow che hai seguito (events → stopped reason → logs → target health)
+- descrivi il debug flow che hai seguito (events ──► stopped reason ──► logs ──► target health)
 
 ---
 
 ## Step (numerati)
 
 1) **Apri target group health (stato iniziale)**
-   - Target group → Targets
+   - Target group ──► Targets
    - Output atteso: targets healthy.
 
 2) **Rompi deliberatamente l'health check** 🎯 *Sfida*
-   - Target group → Health checks
+   - Target group ──► Health checks
    - Cambia path in uno inesistente (es. `/health-broken`)
    - *Sfida*: prevedi cosa succederà prima di applicare. Quanto tempo prima che i target diventino unhealthy?
 
@@ -46,8 +46,8 @@ Deliverable:
    - Output atteso: targets diventano unhealthy
 
 4) **Osserva ECS service events e log** 🎯 *Sfida*
-   - Service → Events
-   - CloudWatch Logs → log group
+   - Service ──► Events
+   - CloudWatch Logs ──► log group
    - *Sfida*: descrivi la catena di eventi: cosa succede al service quando i target sono unhealthy?
 
 5) **Ripristina health check corretto**
@@ -130,7 +130,7 @@ Deliverable:
 
 **Sequenza eventi (con deployment circuit breaker abilitato)**:
 
-1. **ALB health check fallisce** (path non esiste → 404)
+1. **ALB health check fallisce** (path non esiste ──► 404)
 2. **Target diventa Unhealthy** dopo N check falliti
 3. **ALB smette di inviare traffico** a quel target
 4. Se tutti i target sono unhealthy:

@@ -36,7 +36,7 @@ Deliverable:
 ## Step (numerati)
 
 1) **Crea un parametro SecureString (SSM Parameter Store)**
-   - Systems Manager → Parameter Store → Create parameter
+   - Systems Manager ──► Parameter Store ──► Create parameter
    - Name: `/containersaws/lab/app_secret`
    - Type: SecureString
    - Value: (test) `super-secret-value`
@@ -46,20 +46,20 @@ Deliverable:
    - Deve poter leggere da ECR e scrivere log CloudWatch.
 
 3) **Crea una task role per l'app** 🎯 *Sfida*
-   - IAM → Roles → Create role → ECS Task
+   - IAM ──► Roles ──► Create role ──► ECS Task
    - Policy minima: consenti `ssm:GetParameter(s)` solo sul parametro creato.
    - *Sfida*: scrivi la policy JSON con Resource che punta SOLO al tuo parametro (no wildcard).
 
 4) **Aggiorna la task definition** 🎯 *Sfida*
    - Aggiungi il secret nel container definition:
-     - Secrets: env var `APP_SECRET` → parametro SSM
+     - Secrets: env var `APP_SECRET` ──► parametro SSM
    - Imposta:
      - Execution role: `ecsTaskExecutionRole`
      - Task role: ruolo creato
    - *Sfida*: spiega perché usi `secrets` e non `environment` per valori sensibili.
 
 5) **Redeploy del service**
-   - ECS → Service → Update → force new deployment
+   - ECS ──► Service ──► Update ──► force new deployment
 
 6) **Verifica nei log**
    - L’app non deve stampare il secret in chiaro.
@@ -71,7 +71,7 @@ Deliverable:
 
 - Parametro SecureString creato.
 - Task role con permessi minimi.
-- Task ECS che legge il secret tramite integrazione ECS → SSM.
+- Task ECS che legge il secret tramite integrazione ECS ──► SSM.
 
 ## Checkpoint
 

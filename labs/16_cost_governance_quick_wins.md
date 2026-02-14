@@ -35,12 +35,12 @@ Deliverable:
 ## Step (numerati)
 
 1) **CloudWatch Logs: imposta retention**
-   - CloudWatch → Log groups
-   - Actions → Edit retention
+   - CloudWatch ──► Log groups
+   - Actions ──► Edit retention
    - Valore didattico: 7 o 14 giorni
 
 2) **ECR: lifecycle policy (semplice)** 🎯 *Sfida*
-   - ECR → repository → Lifecycle policy
+   - ECR ──► repository ──► Lifecycle policy
    - Regola tipica: tieni solo le ultime N immagini non "release"
    - *Sfida*: scrivi una policy che mantiene solo le ultime 5 immagini e cancella quelle untagged dopo 1 giorno.
 
@@ -122,7 +122,7 @@ Deliverable:
 - 1 anno senza retention: 180 GB × $0.03 = **$5.40/mese** (e cresce)
 - Con retention 7 giorni: ~3.5 GB × $0.03 = **$0.10/mese**
 
-**Risparmio**: $5.30/mese per **un solo service** → **98% di risparmio**
+**Risparmio**: $5.30/mese per **un solo service** ──► **98% di risparmio**
 
 **Best practice**:
 
@@ -252,8 +252,8 @@ Deliverable:
 
 **Cosa fa**:
 
-1. Regola 1: immagini senza tag → cancella dopo 1 giorno
-2. Regola 2: se hai più di 5 immagini → cancella le più vecchie
+1. Regola 1: immagini senza tag ──► cancella dopo 1 giorno
+2. Regola 2: se hai più di 5 immagini ──► cancella le più vecchie
 
 **Tip**: per proteggere release, aggiungi regola che **esclude** tag che matchano `release-*` o `v*`.
 

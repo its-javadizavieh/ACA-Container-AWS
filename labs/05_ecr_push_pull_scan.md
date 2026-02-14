@@ -39,7 +39,7 @@ Deliverable:
 1) **Scegli la Region del corso**
 
 2) **Crea repository ECR**
-   - Console → ECR → Repositories → Create repository
+   - Console ──► ECR ──► Repositories ──► Create repository
    - Nome consigliato: `hello-api`
 
 3) **Login Docker su ECR**
@@ -53,14 +53,14 @@ Deliverable:
    - `docker push <...>/hello-api:1.0`
 
 6) **Verifica in Console**
-   - ECR → repository → Images: deve comparire il tag `1.0`.
+   - ECR ──► repository ──► Images: deve comparire il tag `1.0`.
 
 7) **Pull (test)**
    - `docker rmi hello-api:1.0` (solo locale)
    - `docker pull <...>/hello-api:1.0`
 
 8) **(Opzionale) Scan findings** 🎯 *Sfida*
-   - ECR → Image → Scan results
+   - ECR ──► Image ──► Scan results
    - *Sfida*: se trovi vulnerabilità CRITICAL o HIGH, cerca la CVE e spiega cosa rischi.
 
 ---
@@ -88,7 +88,7 @@ Deliverable:
 
 ## Cleanup obbligatorio
 
-1) ECR → Repository → Delete (spunta “delete images”).
+1) ECR ──► Repository ──► Delete (spunta “delete images”).
 2) Verifica che non restino repository inutili.
 
 ---

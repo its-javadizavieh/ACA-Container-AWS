@@ -35,15 +35,15 @@ Deliverable:
 ## Step (numerati)
 
 1) **Apri il service e osserva lo stato iniziale**
-   - ECS → Cluster → Services → seleziona il service
+   - ECS ──► Cluster ──► Services ──► seleziona il service
    - Nota: `Desired count`, `Running count`, `Events`.
 
 2) **Crea una nuova task definition revision**
-   - Task definition → Create new revision
+   - Task definition ──► Create new revision
    - Cambia un parametro semplice (es. tag immagine o env var)
 
 3) **Aggiorna il service** 🎯 *Sfida*
-   - Service → Update
+   - Service ──► Update
    - Seleziona la nuova revision
    - Avvia deployment.
    - *Sfida*: prima di confermare, annota quale deployment strategy è configurata (rolling update %).
@@ -52,12 +52,12 @@ Deliverable:
    - Output atteso: eventi di draining/starting.
 
 5) **Rollback** 🎯 *Sfida*
-   - Service → Update → seleziona la revision precedente
+   - Service ──► Update ──► seleziona la revision precedente
    - Output atteso: ritorno allo stato "stable".
    - *Sfida*: durante il rollback, osserva quanti task "old" e "new" coesistono.
 
 6) **(Opzionale) Autoscaling**
-   - Service → Auto Scaling → policy semplice (CPU target)
+   - Service ──► Auto Scaling ──► policy semplice (CPU target)
 
 ---
 
@@ -108,7 +108,7 @@ Deliverable:
 <details>
 <summary>Sfida Step 3: deployment strategy (rolling update)</summary>
 
-**Dove trovarla**: Service → Configuration → Deployment configuration
+**Dove trovarla**: Service ──► Configuration ──► Deployment configuration
 
 **Parametri tipici**:
 
@@ -117,8 +117,8 @@ Deliverable:
 
 **Significato pratico** (desired = 2 task):
 
-- Con min 100%, max 200%: prima avvia 2 nuovi, poi draina 2 vecchi → **zero downtime**
-- Con min 50%, max 100%: ferma 1 vecchio, avvia 1 nuovo → **risparmio risorse ma rischio**
+- Con min 100%, max 200%: prima avvia 2 nuovi, poi draina 2 vecchi ──► **zero downtime**
+- Con min 50%, max 100%: ferma 1 vecchio, avvia 1 nuovo ──► **risparmio risorse ma rischio**
 
 **Best practice**: mantieni min 100% per servizi di produzione.
 
@@ -129,7 +129,7 @@ Deliverable:
 
 **Cosa vedere**:
 
-1. Vai in **ECS → Cluster → Service → Tasks**
+1. Vai in **ECS ──► Cluster ──► Service ──► Tasks**
 2. Durante il deployment vedrai:
    - Task con "Task definition revision: X" (vecchia)
    - Task con "Task definition revision: X+1" (nuova)

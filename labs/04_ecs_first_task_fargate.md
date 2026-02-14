@@ -30,7 +30,7 @@ Questo lab serve per imparare il workflow ECS “run + debug” che riuserai nel
 
 Deliverable:
 
-- sai mostrare il debug flow su ECS: events → stopped reason → logs
+- sai mostrare il debug flow su ECS: events ──► stopped reason ──► logs
 - sai dire cosa cambierà quando eseguirai la tua image “hello-api”
 
 ---
@@ -38,11 +38,11 @@ Deliverable:
 ## Step (numerati)
 
 1) **Crea (o usa) un cluster ECS**
-   - ECS → Clusters → Create cluster
+   - ECS ──► Clusters ──► Create cluster
    - Nome: `containers-<gruppo>-cluster`
 
 2) **Crea una task definition (Fargate)**
-   - ECS → Task definitions → Create
+   - ECS ──► Task definitions ──► Create
    - Compatibilità: Fargate
    - Container:
      - Image: `public.ecr.aws/docker/library/nginx:alpine`
@@ -50,7 +50,7 @@ Deliverable:
    - Logging: abilita `awslogs` se disponibile nel wizard
 
 3) **Run task** 🎯 *Sfida*
-   - Cluster → Tasks → Run new task
+   - Cluster ──► Tasks ──► Run new task
    - Launch type: Fargate
    - Networking:
      - Subnet: scegli 2 subnet (se possibile)
@@ -62,12 +62,12 @@ Deliverable:
    - Output atteso: task in `RUNNING`.
 
 5) **Controlla events e stopped reason (se succede)** 🎯 *Sfida*
-   - ECS → Task → "Stopped reason"
-   - ECS → Cluster/Service → "Events" (se applicabile)
+   - ECS ──► Task ──► "Stopped reason"
+   - ECS ──► Cluster/Service ──► "Events" (se applicabile)
    - *Sfida*: se il task si ferma, trova il motivo esatto prima di chiedere aiuto.
 
 6) **(Opzionale) Controlla log**
-   - CloudWatch → Logs → Log groups
+   - CloudWatch ──► Logs ──► Log groups
    - Cerca log group del task.
 
 7) **(Opzionale) Test via browser**
@@ -97,8 +97,8 @@ Deliverable:
 
 ## Cleanup obbligatorio
 
-1) ECS → Cluster → Tasks → Stop task
-2) ECS → Task definitions → deregister (opzionale) le revisioni create
+1) ECS ──► Cluster ──► Tasks ──► Stop task
+2) ECS ──► Task definitions ──► deregister (opzionale) le revisioni create
 3) Se hai creato SG: elimina SG (se non serve)
 4) Verifica che non restino risorse “in running”
 
