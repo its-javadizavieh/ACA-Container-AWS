@@ -1,7 +1,5 @@
 # Lab 14 — Versioning: update immagine e rollback rapido
 
-Riferimento lezione: `slides_deck/lecture_14_versioning_updates_en.md`
-
 ## Obiettivo
 
 - Aggiornare una applicazione cambiando **tag** (o digest) immagine.

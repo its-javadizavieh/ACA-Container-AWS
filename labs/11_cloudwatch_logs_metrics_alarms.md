@@ -1,7 +1,5 @@
 # Lab 11 — CloudWatch per container: log, metriche e allarmi
 
-Riferimento lezione: `slides_deck/lecture_11_cloudwatch_for_containers_en.md`
-
 ## Obiettivo
 
 - Leggere e filtrare log di container su **CloudWatch Logs**.

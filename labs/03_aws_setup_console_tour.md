@@ -1,7 +1,5 @@
 # Lab 03 — AWS setup: Region, identity, console tour (per container services)
 
-Riferimento lezione: `slides_deck/lecture_03_aws_containers_overview_en.md`
-
 ## Obiettivo
 
 - Impostare correttamente **Region** e contesto di lavoro del corso.

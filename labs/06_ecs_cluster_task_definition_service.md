@@ -1,7 +1,5 @@
 # Lab 06 — ECS/Fargate: cluster + task definition + service (minimale)
 
-Riferimento lezione: `slides_deck/lecture_06_ecs_task_definition_en.md`
-
 ## Obiettivo
 
 - Creare (o riusare) un **cluster ECS**.

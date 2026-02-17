@@ -1,7 +1,5 @@
 # Lab 07 — ECS Service: update, scaling e rollback (timebox)
 
-Riferimento lezione: `slides_deck/lecture_07_ecs_service_scaling_en.md`
-
 ## Obiettivo
 
 - Aggiornare un **ECS Service** (nuova task definition revision).

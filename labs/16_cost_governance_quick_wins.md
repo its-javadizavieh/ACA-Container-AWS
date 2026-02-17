@@ -1,7 +1,5 @@
 # Lab 16 — Cost & governance: quick wins (log retention, lifecycle, tagging)
 
-Riferimento lezione: `slides_deck/lecture_16_cost_optimization_governance_en.md`
-
 ## Obiettivo
 
 - Applicare 3 “quick wins” di governance/costo:

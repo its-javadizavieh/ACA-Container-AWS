@@ -1,7 +1,5 @@
 # Lab 10 — IAM per ECS: execution role, task role e secrets
 
-Riferimento lezione: `slides_deck/lecture_10_iam_for_ecs_secrets_en.md`
-
 ## Obiettivo
 
 - Distinguere **execution role** vs **task role**.

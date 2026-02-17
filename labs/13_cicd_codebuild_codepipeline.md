@@ -1,7 +1,5 @@
 # Lab 13 — CI/CD: CodeBuild ──► ECR ──► deploy ECS
 
-Riferimento lezione: `slides_deck/lecture_13_cicd_containers_en.md`
-
 ## Obiettivo
 
 - Automatizzare build e push di una Docker image su ECR con **CodeBuild**.

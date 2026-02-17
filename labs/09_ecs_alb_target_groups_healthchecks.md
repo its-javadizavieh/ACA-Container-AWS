@@ -1,7 +1,5 @@
 # Lab 09 — ECS + ALB: Target Group, health checks e Security Groups
 
-Riferimento lezione: `slides_deck/lecture_09_alb_healthchecks_en.md`
-
 ## Obiettivo
 
 - Pubblicare un service ECS dietro un **Application Load Balancer (ALB)**.

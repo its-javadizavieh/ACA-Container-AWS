@@ -1,7 +1,5 @@
 # Lab 02 — Docker: build & run (locale)
 
-Riferimento lezione: `slides_deck/lecture_02_docker_basics_en.md`
-
 ## Obiettivo
 
 - Comprendere differenza tra **immagine** e **container**.

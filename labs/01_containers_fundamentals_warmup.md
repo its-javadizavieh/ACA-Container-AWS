@@ -1,7 +1,5 @@
 # Lab 01 — Warm-up: concetti container + checklist ambiente
 
-Riferimento lezione: `slides_deck/lecture_01_containers_fundamentals_en.md`
-
 ## Obiettivo
 
 - Verificare che l’ambiente di lavoro sia pronto (Docker + terminale).

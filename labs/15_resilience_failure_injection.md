@@ -1,7 +1,5 @@
 # Lab 15 — Resilience: simulare un failure e osservare recovery
 
-Riferimento lezione: `slides_deck/lecture_15_resilience_fault_tolerance_en.md`
-
 ## Obiettivo
 
 - Simulare un piccolo errore (config/health) e osservare cosa succede.

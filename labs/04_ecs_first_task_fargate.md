@@ -1,7 +1,5 @@
 # Lab 04 — ECS: eseguire il primo task su Fargate (console)
 
-Riferimento lezione: `slides_deck/lecture_04_ecs_fundamentals_en.md`
-
 ## Obiettivo
 
 - Avviare un **task ECS su Fargate** partendo da una definizione semplice.

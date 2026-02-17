@@ -1,7 +1,5 @@
 # Lab 08 — Networking design: VPC, subnet, Security Groups (ECS/Fargate)
 
-Riferimento lezione: `slides_deck/lecture_08_ecs_networking_basics_en.md`
-
 ## Obiettivo
 
 - Progettare una rete minima per ECS Fargate.

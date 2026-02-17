@@ -1,7 +1,5 @@
 # Lab 05 — Amazon ECR: repository + push/pull + scan
 
-Riferimento lezione: `slides_deck/lecture_05_ecr_en.md`
-
 ## Obiettivo
 
 - Creare un repository **Amazon ECR**.

@@ -1,7 +1,5 @@
 # Lab 12 — Fargate pattern: worker (o task schedulato) in 30 minuti
 
-Riferimento lezione: `slides_deck/lecture_12_fargate_patterns_hybrid_en.md`
-
 ## Obiettivo
 
 - Capire un pattern Fargate diverso dal classico “web behind ALB”.
