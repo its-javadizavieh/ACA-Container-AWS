@@ -106,7 +106,7 @@ Esercizio guidato: scegliamo una VPC esistente e progettiamo come metterci ALB +
 ## Soluzioni
 
 <details>
-<summary>Sfida Step 4: regole SG-TASK esatte</summary>
+<summary>🎯 Sfida Step 4: regole SG-TASK esatte</summary>
 
 **SG-ALB** (per Application Load Balancer):
 
@@ -130,7 +130,7 @@ Esercizio guidato: scegliamo una VPC esistente e progettiamo come metterci ALB +
 </details>
 
 <details>
-<summary>Sfida Step 5: costo NAT Gateway</summary>
+<summary>🎯 Sfida Step 5: costo NAT Gateway</summary>
 
 **Pricing NAT Gateway** (eu-west-1, Marzo 2025 circa):
 

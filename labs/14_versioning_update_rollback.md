@@ -94,7 +94,7 @@ Deliverable:
 ## Soluzioni
 
 <details>
-<summary>Sfida Step 2: trovare e usare il digest SHA256</summary>
+<summary>🎯 Sfida Step 2: trovare e usare il digest SHA256</summary>
 
 **Dove trovare il digest**:
 
@@ -132,7 +132,7 @@ Deliverable:
 </details>
 
 <details>
-<summary>Sfida Step 5: tempo di rollback</summary>
+<summary>🎯 Sfida Step 5: tempo di rollback</summary>
 
 **Cosa osservare negli Events**:
 

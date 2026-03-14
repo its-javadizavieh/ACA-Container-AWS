@@ -107,7 +107,7 @@ Deliverable:
 ## Soluzioni
 
 <details>
-<summary>Sfida Step 2: buildspec.yml completo</summary>
+<summary>🎯 Sfida Step 2: buildspec.yml completo</summary>
 
 **buildspec.yml funzionante**:
 
@@ -145,7 +145,7 @@ phases:
 </details>
 
 <details>
-<summary>Sfida Step 4: diagnosticare build failure</summary>
+<summary>🎯 Sfida Step 4: diagnosticare build failure</summary>
 
 **Dove trovare l'errore**:
 

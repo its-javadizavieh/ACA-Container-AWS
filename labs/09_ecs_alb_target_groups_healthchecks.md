@@ -108,7 +108,7 @@ Deliverable:
 ## Soluzioni
 
 <details>
-<summary>Sfida Step 2: health check configuration</summary>
+<summary>🎯 Sfida Step 2: health check configuration</summary>
 
 **Impostazioni consigliate**:
 
@@ -128,7 +128,7 @@ Deliverable:
 </details>
 
 <details>
-<summary>Sfida Step 4: diagnosticare target unhealthy</summary>
+<summary>🎯 Sfida Step 4: diagnosticare target unhealthy</summary>
 
 **Dove trovare il motivo**:
 

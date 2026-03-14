@@ -105,7 +105,7 @@ Eseguiamo un job containerizzato (es. `alpine`) che fa un’azione e termina.
 ## Soluzioni
 
 <details>
-<summary>Sfida Step 1: command con file su /tmp</summary>
+<summary>🎯 Sfida Step 1: command con file su /tmp</summary>
 
 **Command modificato**:
 
@@ -135,7 +135,7 @@ DONE
 </details>
 
 <details>
-<summary>Sfida Step 5: calcolo costo job giornaliero</summary>
+<summary>🎯 Sfida Step 5: calcolo costo job giornaliero</summary>
 
 **Dati per il calcolo** (Fargate eu-west-1, Marzo 2025 circa):
 

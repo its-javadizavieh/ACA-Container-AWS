@@ -113,7 +113,7 @@ Deliverable:
 ## Soluzioni
 
 <details>
-<summary>Sfida Step 3: policy JSON least-privilege</summary>
+<summary>🎯 Sfida Step 3: policy JSON least-privilege</summary>
 
 **Policy corretta** (sostituisci account-id e region):
 
@@ -148,7 +148,7 @@ Deliverable:
 </details>
 
 <details>
-<summary>Sfida Step 4: secrets vs environment</summary>
+<summary>🎯 Sfida Step 4: secrets vs environment</summary>
 
 **Differenza critica**:
 

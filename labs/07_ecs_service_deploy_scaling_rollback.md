@@ -104,7 +104,7 @@ Deliverable:
 ## Soluzioni
 
 <details>
-<summary>Sfida Step 3: deployment strategy (rolling update)</summary>
+<summary>🎯 Sfida Step 3: deployment strategy (rolling update)</summary>
 
 **Dove trovarla**: Service ──► Configuration ──► Deployment configuration
 
@@ -123,7 +123,7 @@ Deliverable:
 </details>
 
 <details>
-<summary>Sfida Step 5: osservare coesistenza task old/new</summary>
+<summary>🎯 Sfida Step 5: osservare coesistenza task old/new</summary>
 
 **Cosa vedere**:
 

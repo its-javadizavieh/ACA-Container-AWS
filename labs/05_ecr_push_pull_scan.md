@@ -112,7 +112,7 @@ Deliverable:
 ## Soluzioni
 
 <details>
-<summary>Sfida Step 4: stesso tag per due immagini diverse</summary>
+<summary>🎯 Sfida Step 4: stesso tag per due immagini diverse</summary>
 
 **Risposta**: il nuovo push **sovrascrive** l'immagine precedente associata a quel tag.
 
@@ -128,7 +128,7 @@ Il vecchio image digest rimane in ECR ma **senza tag** (diventa "untagged").
 </details>
 
 <details>
-<summary>Sfida Step 8: interpretare scan findings</summary>
+<summary>🎯 Sfida Step 8: interpretare scan findings</summary>
 
 Esempio di vulnerabilità tipiche:
 

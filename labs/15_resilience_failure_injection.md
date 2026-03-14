@@ -101,7 +101,7 @@ Deliverable:
 ## Soluzioni
 
 <details>
-<summary>Sfida Step 2: prevedere tempo unhealthy</summary>
+<summary>🎯 Sfida Step 2: prevedere tempo unhealthy</summary>
 
 **Calcolo tempo transizione a unhealthy**:
 
@@ -124,7 +124,7 @@ Deliverable:
 </details>
 
 <details>
-<summary>Sfida Step 4: catena di eventi dopo unhealthy</summary>
+<summary>🎯 Sfida Step 4: catena di eventi dopo unhealthy</summary>
 
 **Sequenza eventi (con deployment circuit breaker abilitato)**:
 

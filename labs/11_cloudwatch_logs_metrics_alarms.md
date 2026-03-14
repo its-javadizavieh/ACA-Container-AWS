@@ -100,7 +100,7 @@ Deliverable:
 ## Soluzioni
 
 <details>
-<summary>Sfida Step 1: filtrare log per "error"</summary>
+<summary>🎯 Sfida Step 1: filtrare log per "error"</summary>
 
 **Metodo 1 — Filter pattern nel log group**:
 
@@ -131,7 +131,7 @@ fields @timestamp, @message
 </details>
 
 <details>
-<summary>Sfida Step 3: configurare azione SNS per allarme</summary>
+<summary>🎯 Sfida Step 3: configurare azione SNS per allarme</summary>
 
 **Passo per passo**:
 

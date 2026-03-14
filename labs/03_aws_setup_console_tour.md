@@ -122,7 +122,7 @@ Deliverable:
 ## Soluzioni
 
 <details>
-<summary>Sfida Step 4: dove vedere "stopped reason"</summary>
+<summary>🎯 Sfida Step 4: dove vedere "stopped reason"</summary>
 
 1. Vai in **ECS ──► Clusters ──► [tuo cluster] ──► Tasks**
 2. Clicca su un task con stato **STOPPED**
@@ -132,7 +132,7 @@ Deliverable:
 </details>
 
 <details>
-<summary>Sfida Step 7: trovare ecsTaskExecutionRole</summary>
+<summary>🎯 Sfida Step 7: trovare ecsTaskExecutionRole</summary>
 
 1. Vai in **IAM ──► Roles**
 2. Cerca `ecsTaskExecution` nella barra di ricerca

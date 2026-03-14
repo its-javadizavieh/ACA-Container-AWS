@@ -123,7 +123,7 @@ Deliverable:
 ## Soluzioni
 
 <details>
-<summary>Sfida Step 3: perché più subnet?</summary>
+<summary>🎯 Sfida Step 3: perché più subnet?</summary>
 
 **Risposta**: scegliere 2+ subnet in Availability Zone diverse garantisce **alta disponibilità**.
 
@@ -134,7 +134,7 @@ Per un task singolo non è critico, ma per un **Service** con più task è best 
 </details>
 
 <details>
-<summary>Sfida Step 5: interpretare stopped reason</summary>
+<summary>🎯 Sfida Step 5: interpretare stopped reason</summary>
 
 Motivi comuni e soluzioni:
 

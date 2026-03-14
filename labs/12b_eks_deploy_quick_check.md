@@ -114,7 +114,7 @@ Deliverable:
 ## Soluzioni
 
 <details>
-<summary>Sfida Step 4: deployment con 2 repliche</summary>
+<summary>🎯 Sfida Step 4: deployment con 2 repliche</summary>
 
 **Metodo 1 — Dopo la creazione**:
 ```bash
@@ -140,7 +140,7 @@ kubectl get pods
 </details>
 
 <details>
-<summary>Sfida Step 6: trovare IP del pod</summary>
+<summary>🎯 Sfida Step 6: trovare IP del pod</summary>
 
 **Comando**:
 ```bash

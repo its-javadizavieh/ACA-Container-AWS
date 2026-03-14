@@ -111,7 +111,7 @@ Deliverable:
 ## Soluzioni
 
 <details>
-<summary>Sfida Step 3: combinazioni CPU/Mem Fargate</summary>
+<summary>🎯 Sfida Step 3: combinazioni CPU/Mem Fargate</summary>
 
 Fargate ha combinazioni **fisse** di CPU e memoria:
 
@@ -130,7 +130,7 @@ Fargate ha combinazioni **fisse** di CPU e memoria:
 </details>
 
 <details>
-<summary>Sfida Step 6: trovare "listening on port" nei log</summary>
+<summary>🎯 Sfida Step 6: trovare "listening on port" nei log</summary>
 
 **Passo per passo**:
 

@@ -101,7 +101,7 @@ Deliverable:
 ## Soluzioni
 
 <details>
-<summary>Sfida Step 1: calcolo risparmio CloudWatch Logs retention</summary>
+<summary>🎯 Sfida Step 1: calcolo risparmio CloudWatch Logs retention</summary>
 
 **Pricing CloudWatch Logs** (eu-west-1, Febbraio 2026 circa):
 
@@ -131,7 +131,7 @@ Deliverable:
 </details>
 
 <details>
-<summary>Sfida Step 2: ECR lifecycle policy (ultime 5 immagini)</summary>
+<summary>🎯 Sfida Step 2: ECR lifecycle policy (ultime 5 immagini)</summary>
 
 **Policy JSON**:
 
@@ -212,7 +212,7 @@ Deliverable:
 ## Soluzioni
 
 <details>
-<summary>Sfida Step 2: ECR lifecycle policy JSON</summary>
+<summary>🎯 Sfida Step 2: ECR lifecycle policy JSON</summary>
 
 **Policy completa** (2 regole):
 
@@ -258,7 +258,7 @@ Deliverable:
 </details>
 
 <details>
-<summary>Sfida Step 4: classifica risorse per costo orario</summary>
+<summary>🎯 Sfida Step 4: classifica risorse per costo orario</summary>
 
 **Classifica costi orari** (eu-west-1, Marzo 2025 circa):
 
