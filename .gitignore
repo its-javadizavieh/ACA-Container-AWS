@@ -3,6 +3,7 @@ slides_deck/
 verifiche/
 materials/
 demos/
+notebooklm/
 
 # Exclude other workspace files
 ../*.pdf
