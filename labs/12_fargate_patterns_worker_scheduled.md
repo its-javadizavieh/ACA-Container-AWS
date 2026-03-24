@@ -36,26 +36,26 @@ Eseguiamo un job containerizzato (es. `alpine`) che fa un’azione e termina.
 
 ## Step (numerati)
 
-1) **Crea una task definition minimale** 🎯 *Sfida*
+1. **Crea una task definition minimale** 🎯 _Sfida_
    - Compatibilità Fargate
    - Immagine: `public.ecr.aws/docker/library/alpine:3.19`
    - Command: `sh -c "echo START; date; echo DONE"`
    - Logging: awslogs (se possibile)
-   - *Sfida*: modifica il command per scrivere un file su /tmp e verificare che esiste.
+   - _Sfida_: modifica il command per scrivere un file su /tmp e verificare che esiste.
 
-2) **Run task (one-off)**
+2. **Run task (one-off)**
    - ECS ──► Run task
    - Desired tasks: 1
 
-3) **Verifica esecuzione**
+3. **Verifica esecuzione**
    - Output atteso: task passa RUNNING ──► STOPPED (exit code 0)
 
-4) **Leggi i log (se configurati)**
+4. **Leggi i log (se configurati)**
    - CloudWatch Logs ──► log group/stream
 
-5) **Discussione rapida** 🎯 *Sfida*
+5. **Discussione rapida** 🎯 _Sfida_
    - differenza: ECS Service (sempre acceso) vs RunTask (job)
-   - *Sfida*: calcola il costo di eseguire questo job ogni giorno per un mese (Fargate pricing).
+   - _Sfida_: calcola il costo di eseguire questo job ogni giorno per un mese (Fargate pricing).
 
 ---
 

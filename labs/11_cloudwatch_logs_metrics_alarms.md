@@ -31,25 +31,27 @@ Deliverable:
 
 ## Step (numerati)
 
-1) **Apri log group del service** 🎯 *Sfida*
+1. **Apri log group del service** 🎯 _Sfida_
    - CloudWatch ──► Logs ──► Log groups
    - Apri stream e identifica:
      - startup logs
      - richieste
      - errori
-   - *Sfida*: usa il filtro per trovare solo le righe che contengono "error" o "ERROR".
+   - _Sfida_: usa il filtro per trovare solo le righe che contengono "error" o "ERROR".
 
-2) **Correla con ECS events**
+2. **Correla con ECS events**
    - ECS ──► Service ──► Events
    - Obiettivo: evento ↔ log.
 
-3) **Crea un allarme su CPU o Memory** 🎯 *Sfida*
+3. **Crea un allarme su CPU o Memory** 🎯 _Sfida_
    - CloudWatch ──► Alarms ──► Create
    - Seleziona metrica ECS (ClusterName + ServiceName)
    - Soglia esempio: CPU > 70% per 5 minuti
-   - *Sfida*: configura un'azione SNS (anche solo un topic vuoto) per ricevere notifiche.
+   - ⚠️ **Lab AWS Academy**: se ricevi `AccessDenied` su `cloudwatch:PutMetricAlarm`, questo step è trattato come **walkthrough concettuale** (slides + screenshots). Annota i parametri di configurazione.
+   - _Sfida (se permesso)_: configura un'azione SNS (anche solo un topic vuoto) per ricevere notifiche.
+   - ⚠️ **Lab AWS Academy**: `sns:CreateTopic` potrebbe non essere consentito. Se bloccato, salta lo step e rivedi la configurazione sulle slides.
 
-4) **(Opzionale) Crea una dashboard minimale**
+4. **(Opzionale) Crea una dashboard minimale**
    - Aggiungi widget CPU/memory e stato allarme.
 
 ---

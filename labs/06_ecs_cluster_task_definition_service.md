@@ -16,6 +16,12 @@
 - Account AWS con permessi su ECS, IAM, CloudWatch Logs.
 - Un’immagine in ECR (consigliato: Lab 05).
 - (Consigliato) Default VPC disponibile.
+  > **⚠️ AWS Academy Lab Environment**
+  >
+  > Nel lab _Microservices and CI/CD Pipeline Builder_, **non puoi** creare `ecsTaskExecutionRole` via IAM.
+  >
+  > Usa il ruolo pre-creato **`PipelineRole`** come Task execution role.
+  > Include già: ECR read-only, CloudWatch Logs full access, trust per `ecs-tasks.amazonaws.com`.
 
 ---
 
@@ -33,33 +39,34 @@ Deliverable:
 
 ## Step (numerati)
 
-1) **Scegli la Region del corso**
+1. **Scegli la Region del corso**
 
-2) **Crea (o usa) un cluster ECS**
+2. **Crea (o usa) un cluster ECS**
    - ECS ──► Clusters ──► Create cluster
 
-3) **Crea una task definition (Fargate)** 🎯 *Sfida*
+3. **Crea una task definition (Fargate)** 🎯 _Sfida_
    - ECS ──► Task definitions ──► Create
    - Launch type: Fargate
+   - **Task execution role: seleziona `PipelineRole`** (NON creare `ecsTaskExecutionRole`)
    - CPU/Mem: valori minimi compatibili
    - Container:
-      - Image: `<account>.dkr.ecr.<region>.amazonaws.com/hello-api:1.0`
-      - Port mapping: `8080` (se la tua app usa 8080)
+     - Image: `<account>.dkr.ecr.<region>.amazonaws.com/hello-api:1.0`
+     - Port mapping: `8080` (se la tua app usa 8080)
    - Logging:
-      - Abilita CloudWatch Logs (awslogs)
-   - *Sfida*: prima di salvare, annota quale combinazione CPU/Mem hai scelto e perché.
+     - Abilita CloudWatch Logs (awslogs)
+   - _Sfida_: prima di salvare, annota quale combinazione CPU/Mem hai scelto e perché.
 
-4) **Esegui un task (più veloce) oppure crea un service minimale**
+4. **Esegui un task (più veloce) oppure crea un service minimale**
    - Opzione A (rapida): Run task ──► 1 task
    - Opzione B: Service ──► desired count 1
 
-5) **Verifica RUNNING**
+5. **Verifica RUNNING**
    - ECS ──► Service/Tasks
 
-6) **Leggi eventi e log** 🎯 *Sfida*
+6. **Leggi eventi e log** 🎯 _Sfida_
    - ECS ──► Service ──► Events
    - CloudWatch Logs ──► log group del task
-   - *Sfida*: trova nel log una riga che conferma che la tua app è in ascolto (es. "listening on port 8080").
+   - _Sfida_: trova nel log una riga che conferma che la tua app è in ascolto (es. "listening on port 8080").
 
 ---
 
@@ -86,8 +93,8 @@ Deliverable:
 
 ## Cleanup obbligatorio
 
-1) Stop task / Delete service creato per il lab.
-2) CloudWatch Logs: elimina log group del lab (solo se creato apposta).
+1. Stop task / Delete service creato per il lab.
+2. CloudWatch Logs: elimina log group del lab (solo se creato apposta).
 
 ---
 
@@ -115,13 +122,13 @@ Deliverable:
 
 Fargate ha combinazioni **fisse** di CPU e memoria:
 
-| CPU (vCPU) | Memoria ammessa |
-|------------|------------------|
-| 0.25 | 0.5, 1, 2 GB |
-| 0.5 | 1, 2, 3, 4 GB |
-| 1 | 2, 3, 4, 5, 6, 7, 8 GB |
-| 2 | 4–16 GB (incrementi di 1 GB) |
-| 4 | 8–30 GB |
+| CPU (vCPU) | Memoria ammessa              |
+| ---------- | ---------------------------- |
+| 0.25       | 0.5, 1, 2 GB                 |
+| 0.5        | 1, 2, 3, 4 GB                |
+| 1          | 2, 3, 4, 5, 6, 7, 8 GB       |
+| 2          | 4–16 GB (incrementi di 1 GB) |
+| 4          | 8–30 GB                      |
 
 **Scelta consigliata per "hello-api"**: `0.25 vCPU + 0.5 GB` (minimo, basta per test).
 

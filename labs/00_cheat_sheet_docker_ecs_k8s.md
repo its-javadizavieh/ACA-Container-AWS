@@ -16,16 +16,16 @@ EXPOSE 9090                  # document the port (metadata only)
 CMD ["python", "app.py"]     # default start command
 ```
 
-| Instruction | What it does | Example |
-|---|---|---|
-| `FROM` | Base image | `FROM node:20-alpine` |
-| `WORKDIR` | Set working dir | `WORKDIR /app` |
-| `COPY` | Copy files → image | `COPY . .` |
-| `RUN` | Run during **build** | `RUN npm install` |
-| `EXPOSE` | Document port | `EXPOSE 9090` |
-| `ENV` | Set env variable | `ENV NODE_ENV=production` |
-| `CMD` | Default run cmd | `CMD ["node","server.js"]` |
-| `ENTRYPOINT` | Fixed run cmd | `ENTRYPOINT ["python"]` |
+| Instruction  | What it does         | Example                    |
+| ------------ | -------------------- | -------------------------- |
+| `FROM`       | Base image           | `FROM node:20-alpine`      |
+| `WORKDIR`    | Set working dir      | `WORKDIR /app`             |
+| `COPY`       | Copy files → image   | `COPY . .`                 |
+| `RUN`        | Run during **build** | `RUN npm install`          |
+| `EXPOSE`     | Document port        | `EXPOSE 9090`              |
+| `ENV`        | Set env variable     | `ENV NODE_ENV=production`  |
+| `CMD`        | Default run cmd      | `CMD ["node","server.js"]` |
+| `ENTRYPOINT` | Fixed run cmd        | `ENTRYPOINT ["python"]`    |
 
 **Build:** `docker build -t my-app:1.0 .`  
 **Run:** `docker run -d -p 9090:9090 my-app:1.0`
@@ -60,22 +60,24 @@ CMD ["python", "app.py"]     # default start command
   "family": "hello-api",
   "networkMode": "awsvpc",
   "requiresCompatibilities": ["FARGATE"],
-  "cpu": "256",          // 0.25 vCPU
-  "memory": "512",       // 0.5 GB
+  "cpu": "256", // 0.25 vCPU
+  "memory": "512", // 0.5 GB
   "executionRoleArn": "arn:aws:iam::<acct>:role/ecsTaskExecutionRole",
-  "containerDefinitions": [{
-    "name": "hello-api",
-    "image": "<acct>.dkr.ecr.<region>.amazonaws.com/hello-api:1.0",
-    "portMappings": [{ "containerPort": 9090 }],
-    "logConfiguration": {
-      "logDriver": "awslogs",
-      "options": {
-        "awslogs-group": "/ecs/hello-api",
-        "awslogs-region": "eu-west-1",
-        "awslogs-stream-prefix": "ecs"
+  "containerDefinitions": [
+    {
+      "name": "hello-api",
+      "image": "<acct>.dkr.ecr.<region>.amazonaws.com/hello-api:1.0",
+      "portMappings": [{ "containerPort": 9090 }],
+      "logConfiguration": {
+        "logDriver": "awslogs",
+        "options": {
+          "awslogs-group": "/ecs/hello-api",
+          "awslogs-region": "eu-west-1",
+          "awslogs-stream-prefix": "ecs"
+        }
       }
     }
-  }]
+  ]
 }
 ```
 
@@ -127,15 +129,15 @@ spec:
 
 ## ECS vs Kubernetes — side by side
 
-| Concept | ECS (Fargate) | Kubernetes (EKS) |
-|---|---|---|
-| Image recipe | Dockerfile | Dockerfile (**same**) |
-| Image format | OCI layers | OCI layers (**same**) |
-| Run unit | **Task** | **Pod** |
-| Keep N running | **Service** (Console/JSON) | **Deployment** (YAML) |
-| Expose traffic | **ALB + Target Group** | **Service + Ingress** |
-| Config format | **JSON** | **YAML** |
-| Registry | ECR / Docker Hub | ECR / Docker Hub (**same**) |
+| Concept        | ECS (Fargate)              | Kubernetes (EKS)            |
+| -------------- | -------------------------- | --------------------------- |
+| Image recipe   | Dockerfile                 | Dockerfile (**same**)       |
+| Image format   | OCI layers                 | OCI layers (**same**)       |
+| Run unit       | **Task**                   | **Pod**                     |
+| Keep N running | **Service** (Console/JSON) | **Deployment** (YAML)       |
+| Expose traffic | **ALB + Target Group**     | **Service + Ingress**       |
+| Config format  | **JSON**                   | **YAML**                    |
+| Registry       | ECR / Docker Hub           | ECR / Docker Hub (**same**) |
 
 > **Key insight:** the Docker image is the same everywhere. Only the orchestrator config changes.
 
@@ -170,12 +172,12 @@ kubectl delete -f deployment.yaml        # cleanup
 ## Fargate CPU/Memory combos (valid pairs)
 
 | CPU (vCPU) | Memory options |
-|---|---|
-| 0.25 | 0.5, 1, 2 GB |
-| 0.5 | 1, 2, 3, 4 GB |
-| 1 | 2–8 GB |
-| 2 | 4–16 GB |
-| 4 | 8–30 GB |
+| ---------- | -------------- |
+| 0.25       | 0.5, 1, 2 GB   |
+| 0.5        | 1, 2, 3, 4 GB  |
+| 1          | 2–8 GB         |
+| 2          | 4–16 GB        |
+| 4          | 8–30 GB        |
 
 ---
 

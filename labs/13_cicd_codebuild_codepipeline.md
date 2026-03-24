@@ -17,6 +17,15 @@
 - ECS service esistente (Lab 06/09).
 - Permessi su CodeBuild/CodePipeline/IAM/ECR/ECS.
 
+> **⚠️ AWS Academy Lab Environment**
+>
+> Nel lab _Microservices and CI/CD Pipeline Builder_:
+>
+> - **`codebuild:CreateProject`** non è incluso nella lab policy.
+> - `codebuild:CreateProject` è **bloccato** — non è possibile creare né usare progetti CodeBuild in questo lab.
+> - Lo step CodeBuild è un **walkthrough concettuale**: mostra la schermata di creazione, spiega i campi, ma non cliccare Create.
+> - In alternativa: build e push manuale da Cloud9/terminale (stessi comandi del buildspec.yml).
+
 ---
 
 ## Mini-project (ongoing)
@@ -33,28 +42,30 @@ Deliverable:
 
 ## Step (numerati)
 
-1) **Prepara repository sorgente**
+1. **Prepara repository sorgente**
    - Deve contenere `Dockerfile` e codice app
 
-2) **Crea `buildspec.yml` (minimo)** 🎯 *Sfida*
+2. **Crea `buildspec.yml` (minimo)** 🎯 _Sfida_
    - Login su ECR
    - Build immagine
    - Tag con `latest` + `commit-sha` (o timestamp)
    - Push su ECR
-   - *Sfida*: scrivi un buildspec.yml funzionante che tagga con `$CODEBUILD_RESOLVED_SOURCE_VERSION`.
+   - _Sfida_: scrivi un buildspec.yml funzionante che tagga con `$CODEBUILD_RESOLVED_SOURCE_VERSION`.
 
-3) **Crea o usa un progetto CodeBuild**
-   - Abilita *privileged mode* per Docker build
+3. **Usa il progetto CodeBuild pre-creato**
+   - ⚠️ **Lab AWS Academy**: `codebuild:CreateProject` è bloccato. Questo step è un **walkthrough concettuale**: apri CodeBuild ──► Create build project, mostra i campi, ma non cliccare Create. In alternativa: esegui build e push manualmente da terminale.
+   - Verifica che _privileged mode_ sia abilitato (necessario per Docker build)
+   - Esamina la configurazione: source, environment, service role
 
-4) **Esegui build** 🎯 *Sfida*
+4. **Esegui build** 🎯 _Sfida_
    - Start build
    - Verifica log e fase di push
-   - *Sfida*: se la build fallisce, trova l'errore esatto nei log (quale fase? quale comando?).
+   - _Sfida_: se la build fallisce, trova l'errore esatto nei log (quale fase? quale comando?).
 
-5) **Verifica immagine su ECR**
+5. **Verifica immagine su ECR**
    - Deve comparire un nuovo tag/digest
 
-6) **Deploy su ECS (manuale nel lab)**
+6. **Deploy su ECS (manuale nel lab)**
    - Aggiorna task definition con nuovo tag
    - ECS ──► Service ──► Update ──► force new deployment
 
@@ -82,8 +93,9 @@ Deliverable:
 
 ## Cleanup obbligatorio
 
-- Elimina pipeline/progetto CodeBuild se creati solo per il lab.
+- ⚠️ **Lab AWS Academy**: non eliminare il progetto CodeBuild pre-creato — potrebbe servire ad altri studenti.
 - In ECR elimina immagini di test non necessarie.
+- Se hai creato pipeline CodePipeline: disabilita o elimina.
 
 ---
 
@@ -118,7 +130,7 @@ env:
   variables:
     AWS_DEFAULT_REGION: "eu-west-1"
     IMAGE_REPO_NAME: "hello-api"
-    AWS_ACCOUNT_ID: "123456789012"  # Sostituisci
+    AWS_ACCOUNT_ID: "123456789012" # Sostituisci
 
 phases:
   pre_build:
@@ -156,12 +168,12 @@ phases:
 
 **Errori comuni**:
 
-| Fase | Errore | Causa | Soluzione |
-|------|--------|-------|-----------|
-| PRE_BUILD | `denied: Your authorization token has expired` | Token ECR scaduto | Riesegui login |
-| BUILD | `Cannot connect to Docker daemon` | Privileged mode non abilitato | Abilita in project settings |
-| BUILD | `COPY failed: file not found` | Path errato nel Dockerfile | Verifica struttura cartelle |
-| POST_BUILD | `AccessDeniedException` | IAM policy mancante | Aggiungi ecr:PutImage alla role |
+| Fase       | Errore                                         | Causa                         | Soluzione                       |
+| ---------- | ---------------------------------------------- | ----------------------------- | ------------------------------- |
+| PRE_BUILD  | `denied: Your authorization token has expired` | Token ECR scaduto             | Riesegui login                  |
+| BUILD      | `Cannot connect to Docker daemon`              | Privileged mode non abilitato | Abilita in project settings     |
+| BUILD      | `COPY failed: file not found`                  | Path errato nel Dockerfile    | Verifica struttura cartelle     |
+| POST_BUILD | `AccessDeniedException`                        | IAM policy mancante           | Aggiungi ecr:PutImage alla role |
 
 **Tip**: la fase fallita è indicata con `[Container] Phase FAILED`.
 

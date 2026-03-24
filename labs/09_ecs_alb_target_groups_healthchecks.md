@@ -13,7 +13,7 @@
 ## Prerequisiti
 
 - Service ECS esistente (da Lab 06) oppure task definition + immagine ECR disponibili.
-- (Consigliato) ALB + Target Group già predisposti dal docente per rispettare il timebox.
+- ALB + Target Group: gli studenti possono crearli direttamente (`elasticloadbalancing:Create*` è permesso dalla lab policy).
 - Permessi su: EC2 (ALB/SG), ECS, IAM.
 
 ---
@@ -32,16 +32,16 @@ Deliverable:
 
 ## Step (numerati)
 
-1) **Crea/usa Security Groups**
+1. **Crea/usa Security Groups**
    - SG-ALB: inbound `80` da `0.0.0.0/0` (solo HTTP per lab)
    - SG-TASK: inbound porta app (es. `8080`) **solo da SG-ALB**
 
-2) **Crea/usa ALB + Target Group** 🎯 *Sfida*
+2. **Crea/usa ALB + Target Group** 🎯 _Sfida_
    - Target type: **IP** (per Fargate)
    - Health check path: `/health` (per "hello-api", oppure il path della tua app)
-   - *Sfida*: configura health check con timeout 5s, interval 10s, unhealthy threshold 2.
+   - _Sfida_: configura health check con timeout 5s, interval 10s, unhealthy threshold 2.
 
-3) **Aggiorna o crea ECS Service con Load Balancer**
+3. **Aggiorna o crea ECS Service con Load Balancer**
    - ECS ──► Cluster ──► Service ──► Create/Update
    - Load balancing:
      - ALB selezionato
@@ -50,11 +50,11 @@ Deliverable:
    - Networking:
      - Security group task: SG-TASK
 
-4) **Verifica Target health** 🎯 *Sfida*
+4. **Verifica Target health** 🎯 _Sfida_
    - EC2 ──► Target Groups ──► Targets ──► devono diventare "healthy"
-   - *Sfida*: se un target è "unhealthy", trova il motivo esatto (health check response code).
+   - _Sfida_: se un target è "unhealthy", trova il motivo esatto (health check response code).
 
-5) **Test**
+5. **Test**
    - Apri DNS name dell’ALB
 
 ---
@@ -81,9 +81,9 @@ Deliverable:
 
 ## Cleanup obbligatorio
 
-1) ECS: elimina il service creato per il lab (o rimuovi integrazione ALB se richiesto).
-2) Se ALB/TG sono condivisi di classe: **non eliminare**.
-3) Se hai creato ALB/TG/SG dedicati: eliminali.
+1. ECS: elimina il service creato per il lab (o rimuovi integrazione ALB se richiesto).
+2. Se ALB/TG sono condivisi di classe: **non eliminare**.
+3. Se hai creato ALB/TG/SG dedicati: eliminali.
 
 ---
 
@@ -112,14 +112,14 @@ Deliverable:
 
 **Impostazioni consigliate**:
 
-| Parametro | Valore | Perché |
-|-----------|--------|--------|
-| Path | `/health` | Endpoint dedicato (non `/` che potrebbe fare altro) |
-| Protocol | HTTP | Sufficiente per health check interni |
-| Timeout | 5 secondi | Tempo massimo per risposta |
-| Interval | 10 secondi | Frequenza di controllo |
-| Healthy threshold | 2 | 2 check OK ──► target healthy |
-| Unhealthy threshold | 2 | 2 check FAIL ──► target unhealthy |
+| Parametro           | Valore     | Perché                                              |
+| ------------------- | ---------- | --------------------------------------------------- |
+| Path                | `/health`  | Endpoint dedicato (non `/` che potrebbe fare altro) |
+| Protocol            | HTTP       | Sufficiente per health check interni                |
+| Timeout             | 5 secondi  | Tempo massimo per risposta                          |
+| Interval            | 10 secondi | Frequenza di controllo                              |
+| Healthy threshold   | 2          | 2 check OK ──► target healthy                       |
+| Unhealthy threshold | 2          | 2 check FAIL ──► target unhealthy                   |
 
 **Dove configurare**: EC2 ──► Target Groups ──► [tuo TG] ──► Health checks ──► Edit
 
@@ -138,13 +138,13 @@ Deliverable:
 
 **Codici comuni e cause**:
 
-| Status | Causa | Soluzione |
-|--------|-------|-----------|
-| `Unhealthy: Request timed out` | App non risponde in tempo | Aumenta timeout o ottimizza endpoint |
-| `Unhealthy: Target is in DRAINING` | Task in chiusura | Aspetta o verifica deployment |
-| `Unhealthy: 404` | Path health check errato | Correggi path nel TG |
-| `Unhealthy: 503` | App non pronta | Controlla log container |
-| `Connection refused` | Porta sbagliata o app non in ascolto | Verifica port mapping |
+| Status                             | Causa                                | Soluzione                            |
+| ---------------------------------- | ------------------------------------ | ------------------------------------ |
+| `Unhealthy: Request timed out`     | App non risponde in tempo            | Aumenta timeout o ottimizza endpoint |
+| `Unhealthy: Target is in DRAINING` | Task in chiusura                     | Aspetta o verifica deployment        |
+| `Unhealthy: 404`                   | Path health check errato             | Correggi path nel TG                 |
+| `Unhealthy: 503`                   | App non pronta                       | Controlla log container              |
+| `Connection refused`               | Porta sbagliata o app non in ascolto | Verifica port mapping                |
 
 **Tip**: controlla anche SG-TASK — deve permettere traffico dalla porta health check.
 

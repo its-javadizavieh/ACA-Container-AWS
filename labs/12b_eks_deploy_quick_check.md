@@ -12,7 +12,7 @@
 
 ## Prerequisiti
 
-- Account AWS con permessi su EKS e accesso Kubernetes (cluster condiviso del docente consigliato).
+- Account AWS con permessi su EKS e accesso Kubernetes (⚠️ **nel lab AWS Academy `eks:*` è bloccato** — questo lab è solo walkthrough concettuale).
 - Postazione con:
   - AWS CLI
   - `kubectl`
@@ -33,30 +33,30 @@ Deliverable:
 
 ## Step (numerati)
 
-1) **Verifica tool locali**
+1. **Verifica tool locali**
    - `aws --version`
    - `kubectl version --client`
 
-2) **Configura kubeconfig**
+2. **Configura kubeconfig**
    - `aws eks update-kubeconfig --name <cluster-name> --region <region>`
 
-3) **Verifica connessione**
+3. **Verifica connessione**
    - `kubectl get nodes`
 
-4) **Deploy applicazione demo** 🎯 *Sfida*
+4. **Deploy applicazione demo** 🎯 _Sfida_
    - `kubectl create deployment web --image=nginx`
-   - *Sfida*: modifica il deployment per usare 2 repliche invece di 1.
+   - _Sfida_: modifica il deployment per usare 2 repliche invece di 1.
 
-5) **Esponi applicazione**
+5. **Esponi applicazione**
    - `kubectl expose deployment web --type=LoadBalancer --port=80`
 
-6) **Verifica** 🎯 *Sfida*
+6. **Verifica** 🎯 _Sfida_
    - `kubectl get pods`
    - `kubectl get svc`
    - Test via URL del LoadBalancer (se disponibile)
-   - *Sfida*: usa `kubectl describe pod <nome>` per trovare l'indirizzo IP del pod.
+   - _Sfida_: usa `kubectl describe pod <nome>` per trovare l'indirizzo IP del pod.
 
-7) **Verifica competenze EKS (2–3 minuti)**
+7. **Verifica competenze EKS (2–3 minuti)**
    - Sai spiegare:
      - differenza tra Pod, Deployment, Service
      - quando scegliere EKS vs ECS
@@ -85,11 +85,11 @@ Deliverable:
 
 ## Cleanup obbligatorio
 
-1) Elimina risorse Kubernetes create:
+1. Elimina risorse Kubernetes create:
    - `kubectl delete svc web`
    - `kubectl delete deployment web`
-2) Se il cluster è condiviso: **non eliminarlo**.
-3) Verifica che il LoadBalancer sia eliminato dopo `kubectl delete svc`.
+2. Se il cluster è condiviso: **non eliminarlo**.
+3. Verifica che il LoadBalancer sia eliminato dopo `kubectl delete svc`.
 
 ---
 
@@ -117,23 +117,27 @@ Deliverable:
 <summary>🎯 Sfida Step 4: deployment con 2 repliche</summary>
 
 **Metodo 1 — Dopo la creazione**:
+
 ```bash
 kubectl scale deployment web --replicas=2
 ```
 
 **Metodo 2 — Con YAML (più corretto)**:
+
 ```bash
 kubectl create deployment web --image=nginx --replicas=2 --dry-run=client -o yaml > deployment.yaml
 kubectl apply -f deployment.yaml
 ```
 
 **Verifica**:
+
 ```bash
 kubectl get pods
 # Dovresti vedere 2 pod con nome web-xxxxx-xxxxx
 ```
 
 **Perché 2 repliche**:
+
 - **Alta disponibilità**: se un pod crasha, l'altro continua a servire traffico
 - **Zero-downtime updates**: puoi aggiornare un pod alla volta
 
@@ -143,12 +147,14 @@ kubectl get pods
 <summary>🎯 Sfida Step 6: trovare IP del pod</summary>
 
 **Comando**:
+
 ```bash
 kubectl describe pod <nome-pod>
 ```
 
 **Dove trovare l'IP**:
 Cerca la riga `IP:` nell'output:
+
 ```
 IP:           10.0.1.42
 IPs:
@@ -156,6 +162,7 @@ IPs:
 ```
 
 **Metodo alternativo (più veloce)**:
+
 ```bash
 kubectl get pod <nome-pod> -o jsonpath='{.status.podIP}'
 ```
@@ -163,10 +170,9 @@ kubectl get pod <nome-pod> -o jsonpath='{.status.podIP}'
 **Nota importante**: l'IP del pod è **interno** al cluster VPC. Non è raggiungibile da Internet direttamente.
 
 Per accesso esterno servono:
+
 - **Service type LoadBalancer** (crea un ELB AWS)
 - **Ingress** (controller NGINX/ALB)
 - **NodePort** (per test rapidi)
 
 </details>
-
- 

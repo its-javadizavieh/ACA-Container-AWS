@@ -34,30 +34,30 @@ Deliverable (nota breve, 5 minuti):
 
 ## Step (numerati)
 
-1) **Check Docker installato**
+1. **Check Docker installato**
    - Comando: `docker version`
    - Output atteso: versione client (e server se disponibile).
 
-2) **Check che puoi eseguire container**
+2. **Check che puoi eseguire container**
    - Comando: `docker run --rm hello-world`
    - Output atteso: messaggio “Hello from Docker!” (o equivalente).
 
-3) **Capire cosa è stato eseguito** 🎯 *Sfida*
-   - Domanda: `hello-world` è una *image* o un *container*?
+3. **Capire cosa è stato eseguito** 🎯 _Sfida_
+   - Domanda: `hello-world` è una _image_ o un _container_?
    - Risposta attesa: `hello-world` è il nome dell'immagine; il run crea un container temporaneo.
-   - *Sfida*: spiega la differenza tra image e container.
+   - _Sfida_: spiega la differenza tra image e container.
 
-4) **Elenca immagini e container**
+4. **Elenca immagini e container**
    - `docker images | head`
    - `docker ps`
    - `docker ps -a | head`
 
-5) **Tag vs digest (concetto)** 🎯 *Sfida*
+5. **Tag vs digest (concetto)** 🎯 _Sfida_
    - Esegui:
      - `docker pull alpine:3.19`
      - `docker image inspect alpine:3.19 | grep -i digest -n || true`
    - Nota: il digest è un riferimento immutabile (se presente nell'output).
-   - *Sfida*: spiega perché il digest è più sicuro del tag.
+   - _Sfida_: spiega perché il digest è più sicuro del tag.
 
 ---
 
@@ -121,6 +121,7 @@ Deliverable (nota breve, 5 minuti):
 3. Esegue il container (che stampa il messaggio e termina)
 
 Il container è temporaneo (`--rm` lo rimuove automaticamente).
+
 </details>
 
 <details>
@@ -130,4 +131,5 @@ Il container è temporaneo (`--rm` lo rimuove automaticamente).
 - **Digest** (es. `sha256:abc123...`): hash crittografico del contenuto. È **immutabile** — se il contenuto cambia, il digest cambia.
 
 In production, usa il digest per garantire che stai eseguendo esattamente l'immagine testata.
+
 </details>

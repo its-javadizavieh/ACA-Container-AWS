@@ -35,39 +35,39 @@ Deliverable:
 
 ## Step (numerati)
 
-1) **Seleziona la Region del corso**
+1. **Seleziona la Region del corso**
    - Console AWS ──► selettore Region (in alto a destra)
    - Nota: useremo una sola Region per tutto il corso.
 
-2) **Verifica l’identità attiva**
+2. **Verifica l’identità attiva**
    - In alto a destra ──► “Security credentials” / “Account”
-   - Output atteso: sai dire *chi* sei (utente/ruolo) e in che account sei.
+   - Output atteso: sai dire _chi_ sei (utente/ruolo) e in che account sei.
 
-3) **Definisci convenzioni minime**
+3. **Definisci convenzioni minime**
    - Tag consigliati:
      - `Project=ContainersAWS`
      - `Owner=<nome_gruppo>`
    - Naming: prefisso `containers-<gruppo>-...`
 
-4) **Console tour: ECS** 🎯 *Sfida*
+4. **Console tour: ECS** 🎯 _Sfida_
    - Apri ECS ──► guarda "Clusters", "Task definitions", "Services".
    - Obiettivo: trovare Events e "stopped reason".
-   - *Sfida*: trova dove puoi vedere il motivo per cui un task è stato fermato.
+   - _Sfida_: trova dove puoi vedere il motivo per cui un task è stato fermato.
 
-5) **Console tour: ECR**
+5. **Console tour: ECR**
    - Apri ECR ──► "Repositories".
    - Obiettivo: capire dove vedi tag/digest e scan.
 
-6) **Console tour: CloudWatch**
+6. **Console tour: CloudWatch**
    - Apri CloudWatch ──► "Logs", "Log groups", "Alarms".
    - Obiettivo: capire dove leggerai i log ECS.
 
-7) **Console tour: IAM (solo lettura)** 🎯 *Sfida*
+7. **Console tour: IAM (solo lettura)** 🎯 _Sfida_
    - Apri IAM ──► "Roles".
    - Obiettivo: differenza concettuale tra execution role e task role.
-   - *Sfida*: cerca un ruolo che contiene "ecsTaskExecution" nel nome e leggi le policy attached.
+   - _Sfida_: cerca un ruolo che contiene "ecsTaskExecution" nel nome e leggi le policy attached.
 
-8) **(Opzionale, se consentito) Controlli costi**
+8. **(Opzionale, se consentito) Controlli costi**
    - Billing ──► Cost Explorer / Budgets.
    - Se non hai permessi: annota la limitazione.
 

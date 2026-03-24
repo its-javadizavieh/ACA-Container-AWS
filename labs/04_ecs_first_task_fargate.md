@@ -16,6 +16,18 @@
 - VPC esistente con almeno 2 subnet (anche default va bene).
 - (Consigliato) Un security group pronto o permessi per crearne uno.
 
+> **⚠️ AWS Academy Lab Environment**
+>
+> Nel lab _Microservices and CI/CD Pipeline Builder_, **non puoi** creare `ecsTaskExecutionRole` (la policy blocca `iam:CreateRole` per quel nome).
+>
+> Quando crei una Task Definition, imposta **Task execution role → `PipelineRole`**.
+>
+> `PipelineRole` è pre-creato dal template CloudFormation e include:
+>
+> - `AmazonEC2ContainerRegistryReadOnly` (pull immagini)
+> - `CloudWatchLogsFullAccess` (driver awslogs)
+> - Trust policy per `ecs-tasks.amazonaws.com`
+
 ## Scenario
 
 Lanciamo un task “hello” (immagine pubblica) su Fargate per imparare il flusso base.
@@ -35,40 +47,41 @@ Deliverable:
 
 ## Step (numerati)
 
-1) **Crea (o usa) un cluster ECS**
+1. **Crea (o usa) un cluster ECS**
    - ECS ──► Clusters ──► Create cluster
    - Nome: `containers-<gruppo>-cluster`
 
-2) **Crea una task definition (Fargate)**
+2. **Crea una task definition (Fargate)**
    - ECS ──► Task definitions ──► Create
    - Compatibilità: Fargate
+   - **Task execution role: seleziona `PipelineRole`** (NON usare "Create new role" o `ecsTaskExecutionRole`)
    - Container:
      - Image: `public.ecr.aws/docker/library/nginx:alpine`
      - Port mapping: 80
    - Logging: abilita `awslogs` se disponibile nel wizard
 
-3) **Run task** 🎯 *Sfida*
+3. **Run task** 🎯 _Sfida_
    - Cluster ──► Tasks ──► Run new task
    - Launch type: Fargate
    - Networking:
      - Subnet: scegli 2 subnet (se possibile)
      - Public IP: abilita (solo per test rapido)
      - SG: apri 80 solo dal tuo IP (se fattibile) oppure temporaneo
-   - *Sfida*: prima di cliccare "Run", annota quante subnet hai scelto e perché.
+   - _Sfida_: prima di cliccare "Run", annota quante subnet hai scelto e perché.
 
-4) **Verifica stato task**
+4. **Verifica stato task**
    - Output atteso: task in `RUNNING`.
 
-5) **Controlla events e stopped reason (se succede)** 🎯 *Sfida*
+5. **Controlla events e stopped reason (se succede)** 🎯 _Sfida_
    - ECS ──► Task ──► "Stopped reason"
    - ECS ──► Cluster/Service ──► "Events" (se applicabile)
-   - *Sfida*: se il task si ferma, trova il motivo esatto prima di chiedere aiuto.
+   - _Sfida_: se il task si ferma, trova il motivo esatto prima di chiedere aiuto.
 
-6) **(Opzionale) Controlla log**
+6. **(Opzionale) Controlla log**
    - CloudWatch ──► Logs ──► Log groups
    - Cerca log group del task.
 
-7) **(Opzionale) Test via browser**
+7. **(Opzionale) Test via browser**
    - Se hai public IP: `http://<public-ip>`.
 
 ---
@@ -95,10 +108,10 @@ Deliverable:
 
 ## Cleanup obbligatorio
 
-1) ECS ──► Cluster ──► Tasks ──► Stop task
-2) ECS ──► Task definitions ──► deregister (opzionale) le revisioni create
-3) Se hai creato SG: elimina SG (se non serve)
-4) Verifica che non restino risorse “in running”
+1. ECS ──► Cluster ──► Tasks ──► Stop task
+2. ECS ──► Task definitions ──► deregister (opzionale) le revisioni create
+3. Se hai creato SG: elimina SG (se non serve)
+4. Verifica che non restino risorse “in running”
 
 ---
 
@@ -138,12 +151,12 @@ Per un task singolo non è critico, ma per un **Service** con più task è best 
 
 Motivi comuni e soluzioni:
 
-| Stopped Reason | Causa | Soluzione |
-|----------------|-------|-----------|
-| `CannotPullContainerError` | Image non trovata o permessi ECR | Verifica nome image, controlla execution role |
-| `Essential container exited` | Container crashato | Controlla i log in CloudWatch |
-| `ResourceInitializationError` | Problema rete/ENI | Verifica subnet ha IP disponibili, route table corretta |
-| `OutOfMemoryError` | Container usa più RAM del limite | Aumenta `memory` nella task definition |
+| Stopped Reason                | Causa                            | Soluzione                                               |
+| ----------------------------- | -------------------------------- | ------------------------------------------------------- |
+| `CannotPullContainerError`    | Image non trovata o permessi ECR | Verifica nome image, controlla execution role           |
+| `Essential container exited`  | Container crashato               | Controlla i log in CloudWatch                           |
+| `ResourceInitializationError` | Problema rete/ENI                | Verifica subnet ha IP disponibili, route table corretta |
+| `OutOfMemoryError`            | Container usa più RAM del limite | Aumenta `memory` nella task definition                  |
 
 **Passo debug**:
 

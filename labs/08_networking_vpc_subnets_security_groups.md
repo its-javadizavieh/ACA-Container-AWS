@@ -35,28 +35,28 @@ Esercizio guidato: scegliamo una VPC esistente e progettiamo come metterci ALB +
 
 ## Step (numerati)
 
-1) **Identifica la VPC**
+1. **Identifica la VPC**
    - VPC ──► Your VPCs
    - Nota: CIDR, numero AZ.
 
-2) **Identifica subnet pubbliche e private**
+2. **Identifica subnet pubbliche e private**
    - VPC ──► Subnets
    - Per ogni subnet annota: AZ, route table, presenza route verso IGW.
 
-3) **Disegna lo schema (anche su foglio)**
+3. **Disegna lo schema (anche su foglio)**
    - ALB in subnet pubbliche (2 AZ)
    - Tasks ECS in subnet private (2 AZ)
 
-4) **Security Groups: regole minime** 🎯 *Sfida*
+4. **Security Groups: regole minime** 🎯 _Sfida_
    - SG-ALB inbound: 80/443 da Internet (o dal tuo IP)
    - SG-TASK inbound: porta app **solo da SG-ALB**
-   - *Sfida*: scrivi le regole esatte per SG-TASK (source = sg-xxx, non un CIDR).
+   - _Sfida_: scrivi le regole esatte per SG-TASK (source = sg-xxx, non un CIDR).
 
-5) **Discussione rapida: accesso a ECR/CloudWatch da subnet private** 🎯 *Sfida*
+5. **Discussione rapida: accesso a ECR/CloudWatch da subnet private** 🎯 _Sfida_
    - Opzione A: NAT Gateway
    - Opzione B: VPC endpoints (ECR/Logs)
    - Nota: pro/contro costi.
-   - *Sfida*: calcola il costo mensile approssimativo di un NAT Gateway (hint: cerca il prezzo per ora + GB).
+   - _Sfida_: calcola il costo mensile approssimativo di un NAT Gateway (hint: cerca il prezzo per ora + GB).
 
 ---
 
@@ -110,16 +110,16 @@ Esercizio guidato: scegliamo una VPC esistente e progettiamo come metterci ALB +
 
 **SG-ALB** (per Application Load Balancer):
 
-| Type | Protocol | Port | Source |
-|------|----------|------|--------|
-| HTTP | TCP | 80 | 0.0.0.0/0 (o tuo IP) |
-| HTTPS | TCP | 443 | 0.0.0.0/0 (o tuo IP) |
+| Type  | Protocol | Port | Source               |
+| ----- | -------- | ---- | -------------------- |
+| HTTP  | TCP      | 80   | 0.0.0.0/0 (o tuo IP) |
+| HTTPS | TCP      | 443  | 0.0.0.0/0 (o tuo IP) |
 
 **SG-TASK** (per container ECS):
 
-| Type | Protocol | Port | Source |
-|------|----------|------|--------|
-| Custom TCP | TCP | 8080 | **sg-alb** |
+| Type       | Protocol | Port | Source     |
+| ---------- | -------- | ---- | ---------- |
+| Custom TCP | TCP      | 8080 | **sg-alb** |
 
 **Perché usare SG come source**:
 

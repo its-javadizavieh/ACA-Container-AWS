@@ -34,32 +34,32 @@ Deliverable:
 
 ## Step (numerati)
 
-1) **Scegli la Region del corso**
+1. **Scegli la Region del corso**
 
-2) **Crea repository ECR**
+2. **Crea repository ECR**
    - Console ──► ECR ──► Repositories ──► Create repository
    - Nome consigliato: `hello-api`
 
-3) **Login Docker su ECR**
+3. **Login Docker su ECR**
    - Pattern: `aws ecr get-login-password ... | docker login ...`
 
-4) **Tag dell'immagine locale verso ECR** 🎯 *Sfida*
+4. **Tag dell'immagine locale verso ECR** 🎯 _Sfida_
    - `docker tag hello-api:1.0 <account>.dkr.ecr.<region>.amazonaws.com/hello-api:1.0`
-   - *Sfida*: spiega cosa succede se usi lo stesso tag `1.0` per due immagini diverse.
+   - _Sfida_: spiega cosa succede se usi lo stesso tag `1.0` per due immagini diverse.
 
-5) **Push su ECR**
+5. **Push su ECR**
    - `docker push <...>/hello-api:1.0`
 
-6) **Verifica in Console**
+6. **Verifica in Console**
    - ECR ──► repository ──► Images: deve comparire il tag `1.0`.
 
-7) **Pull (test)**
+7. **Pull (test)**
    - `docker rmi hello-api:1.0` (solo locale)
    - `docker pull <...>/hello-api:1.0`
 
-8) **(Opzionale) Scan findings** 🎯 *Sfida*
+8. **(Opzionale) Scan findings** 🎯 _Sfida_
    - ECR ──► Image ──► Scan results
-   - *Sfida*: se trovi vulnerabilità CRITICAL o HIGH, cerca la CVE e spiega cosa rischi.
+   - _Sfida_: se trovi vulnerabilità CRITICAL o HIGH, cerca la CVE e spiega cosa rischi.
 
 ---
 
@@ -86,8 +86,8 @@ Deliverable:
 
 ## Cleanup obbligatorio
 
-1) ECR ──► Repository ──► Delete (spunta “delete images”).
-2) Verifica che non restino repository inutili.
+1. ECR ──► Repository ──► Delete (spunta “delete images”).
+2. Verifica che non restino repository inutili.
 
 ---
 
@@ -132,11 +132,11 @@ Il vecchio image digest rimane in ECR ma **senza tag** (diventa "untagged").
 
 Esempio di vulnerabilità tipiche:
 
-| Severity | Esempio CVE | Cosa rischi |
-|----------|-------------|-------------|
-| CRITICAL | CVE-2021-44228 (Log4Shell) | Remote Code Execution |
-| HIGH | CVE-2022-0778 (OpenSSL) | Denial of Service |
-| MEDIUM | Librerie outdated | Potenziale exploitation futura |
+| Severity | Esempio CVE                | Cosa rischi                    |
+| -------- | -------------------------- | ------------------------------ |
+| CRITICAL | CVE-2021-44228 (Log4Shell) | Remote Code Execution          |
+| HIGH     | CVE-2022-0778 (OpenSSL)    | Denial of Service              |
+| MEDIUM   | Librerie outdated          | Potenziale exploitation futura |
 
 **Azioni da fare**:
 

@@ -3,9 +3,9 @@
 ## Obiettivo
 
 - Applicare 3 “quick wins” di governance/costo:
-  1) **Retention** CloudWatch Logs
-  2) **Lifecycle policy** su ECR
-  3) Tagging consistente
+  1. **Retention** CloudWatch Logs
+  2. **Lifecycle policy** su ECR
+  3. Tagging consistente
 
 ## Durata (timebox)
 
@@ -32,26 +32,26 @@ Deliverable:
 
 ## Step (numerati)
 
-1) **CloudWatch Logs: imposta retention**
+1. **CloudWatch Logs: imposta retention**
    - CloudWatch ──► Log groups
    - Actions ──► Edit retention
    - Valore didattico: 7 o 14 giorni
 
-2) **ECR: lifecycle policy (semplice)** 🎯 *Sfida*
+2. **ECR: lifecycle policy (semplice)** 🎯 _Sfida_
    - ECR ──► repository ──► Lifecycle policy
    - Regola tipica: tieni solo le ultime N immagini non "release"
-   - *Sfida*: scrivi una policy che mantiene solo le ultime 5 immagini e cancella quelle untagged dopo 1 giorno.
+   - _Sfida_: scrivi una policy che mantiene solo le ultime 5 immagini e cancella quelle untagged dopo 1 giorno.
 
-3) **Tagging (almeno su 1 risorsa)**
+3. **Tagging (almeno su 1 risorsa)**
    - Aggiungi tag:
      - `Project=ContainersAWS`
      - `Owner=<gruppo>`
 
-4) **Checklist: cosa elimina i costi più velocemente?** 🎯 *Sfida*
+4. **Checklist: cosa elimina i costi più velocemente?** 🎯 _Sfida_
    - ALB e target groups
    - NAT gateway
    - servizi ECS sempre accesi
-   - *Sfida*: ordina queste risorse per costo orario (dalla più cara alla meno cara).
+   - _Sfida_: ordina queste risorse per costo orario (dalla più cara alla meno cara).
 
 ---
 
@@ -262,12 +262,12 @@ Deliverable:
 
 **Classifica costi orari** (eu-west-1, Marzo 2025 circa):
 
-| Risorsa | Costo/ora | Costo/mese 24/7 |
-|---------|-----------|------------------|
-| **NAT Gateway** | ~$0.045/h + $0.045/GB | ~$32 + traffico |
-| **ALB** | ~$0.0225/h + LCU | ~$16 + traffico |
-| **ECS Fargate (0.25 vCPU + 0.5 GB)** | ~$0.012/h | ~$9 |
-| **Target Group** | $0 | $0 (incluso in ALB) |
+| Risorsa                              | Costo/ora             | Costo/mese 24/7     |
+| ------------------------------------ | --------------------- | ------------------- |
+| **NAT Gateway**                      | ~$0.045/h + $0.045/GB | ~$32 + traffico     |
+| **ALB**                              | ~$0.0225/h + LCU      | ~$16 + traffico     |
+| **ECS Fargate (0.25 vCPU + 0.5 GB)** | ~$0.012/h             | ~$9                 |
+| **Target Group**                     | $0                    | $0 (incluso in ALB) |
 
 **Ordine dal più caro**:
 

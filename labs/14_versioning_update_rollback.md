@@ -31,22 +31,22 @@ Deliverable:
 
 ## Step (numerati)
 
-1) **Verifica tag disponibili in ECR**
+1. **Verifica tag disponibili in ECR**
    - ECR ──► repository ──► Images
 
-2) **Crea nuova task definition revision** 🎯 *Sfida*
+2. **Crea nuova task definition revision** 🎯 _Sfida_
    - Cambia immagine da `:1.0` a `:1.1` (o digest)
-   - *Sfida*: invece del tag, usa il digest SHA256 completo. Dove lo trovi?
+   - _Sfida_: invece del tag, usa il digest SHA256 completo. Dove lo trovi?
 
-3) **Update del service**
+3. **Update del service**
    - Service ──► Update ──► seleziona la nuova revision
 
-4) **Osserva Events**
+4. **Osserva Events**
    - Output atteso: rollout e poi stable
 
-5) **Rollback** 🎯 *Sfida*
+5. **Rollback** 🎯 _Sfida_
    - Aggiorna il service alla revision precedente
-   - *Sfida*: quanto tempo ci mette il rollback? Osserva il tempo tra "draining" e "stable".
+   - _Sfida_: quanto tempo ci mette il rollback? Osserva il tempo tra "draining" e "stable".
 
 ---
 

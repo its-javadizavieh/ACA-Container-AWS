@@ -32,30 +32,31 @@ Deliverable:
 
 ## Step (numerati)
 
-1) **Apri il service e osserva lo stato iniziale**
+1. **Apri il service e osserva lo stato iniziale**
    - ECS ──► Cluster ──► Services ──► seleziona il service
    - Nota: `Desired count`, `Running count`, `Events`.
 
-2) **Crea una nuova task definition revision**
+2. **Crea una nuova task definition revision**
    - Task definition ──► Create new revision
    - Cambia un parametro semplice (es. tag immagine o env var)
 
-3) **Aggiorna il service** 🎯 *Sfida*
+3. **Aggiorna il service** 🎯 _Sfida_
    - Service ──► Update
    - Seleziona la nuova revision
    - Avvia deployment.
-   - *Sfida*: prima di confermare, annota quale deployment strategy è configurata (rolling update %).
+   - _Sfida_: prima di confermare, annota quale deployment strategy è configurata (rolling update %).
 
-4) **Osserva gli Events**
+4. **Osserva gli Events**
    - Output atteso: eventi di draining/starting.
 
-5) **Rollback** 🎯 *Sfida*
+5. **Rollback** 🎯 _Sfida_
    - Service ──► Update ──► seleziona la revision precedente
    - Output atteso: ritorno allo stato "stable".
-   - *Sfida*: durante il rollback, osserva quanti task "old" e "new" coesistono.
+   - _Sfida_: durante il rollback, osserva quanti task "old" e "new" coesistono.
 
-6) **(Opzionale) Autoscaling**
+6. **(Solo walkthrough concettuale) Autoscaling**
    - Service ──► Auto Scaling ──► policy semplice (CPU target)
+   - ⚠️ **Nel lab AWS Academy** la policy non include `application-autoscaling:RegisterScalableTarget` né `PutScalingPolicy`. Questo step è trattato come **walkthrough concettuale** (slides + screenshots). Gli studenti annotano i parametri.
 
 ---
 

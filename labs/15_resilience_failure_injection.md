@@ -31,27 +31,27 @@ Deliverable:
 
 ## Step (numerati)
 
-1) **Apri target group health (stato iniziale)**
+1. **Apri target group health (stato iniziale)**
    - Target group ──► Targets
    - Output atteso: targets healthy.
 
-2) **Rompi deliberatamente l'health check** 🎯 *Sfida*
+2. **Rompi deliberatamente l'health check** 🎯 _Sfida_
    - Target group ──► Health checks
    - Cambia path in uno inesistente (es. `/health-broken`)
-   - *Sfida*: prevedi cosa succederà prima di applicare. Quanto tempo prima che i target diventino unhealthy?
+   - _Sfida_: prevedi cosa succederà prima di applicare. Quanto tempo prima che i target diventino unhealthy?
 
-3) **Osserva la transizione a unhealthy**
+3. **Osserva la transizione a unhealthy**
    - Output atteso: targets diventano unhealthy
 
-4) **Osserva ECS service events e log** 🎯 *Sfida*
+4. **Osserva ECS service events e log** 🎯 _Sfida_
    - Service ──► Events
    - CloudWatch Logs ──► log group
-   - *Sfida*: descrivi la catena di eventi: cosa succede al service quando i target sono unhealthy?
+   - _Sfida_: descrivi la catena di eventi: cosa succede al service quando i target sono unhealthy?
 
-5) **Ripristina health check corretto**
+5. **Ripristina health check corretto**
    - Rimetti path originale (es. `/health`)
 
-6) **Verifica ritorno a healthy**
+6. **Verifica ritorno a healthy**
 
 ---
 
@@ -105,11 +105,11 @@ Deliverable:
 
 **Calcolo tempo transizione a unhealthy**:
 
-| Parametro | Valore default | Significato |
-|-----------|----------------|-------------|
-| Interval | 30s | Controllo ogni 30 secondi |
-| Unhealthy threshold | 2 | 2 fallimenti consecutivi |
-| Timeout | 5s | Aspetta max 5s per risposta |
+| Parametro           | Valore default | Significato                 |
+| ------------------- | -------------- | --------------------------- |
+| Interval            | 30s            | Controllo ogni 30 secondi   |
+| Unhealthy threshold | 2              | 2 fallimenti consecutivi    |
+| Timeout             | 5s             | Aspetta max 5s per risposta |
 
 **Tempo minimo**: `Interval × Unhealthy threshold` = 30s × 2 = **~60 secondi**
 
