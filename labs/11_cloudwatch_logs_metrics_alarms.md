@@ -19,13 +19,13 @@
 
 ## Mini-project (ongoing)
 
-Rendi “hello-api” osservabile e sostenibile nei costi.
+Rendi "hello-api" osservabile.
 
 Deliverable:
 
-- trovi e filtri i log dell’app in CloudWatch Logs
-- crei almeno 1 allarme (CPU o memory; opzionale: unhealthy targets se disponibile)
-- imposti (o proponi) una retention dei log per evitare costi inattesi
+- trovi e filtri i log dell'app in CloudWatch Logs (funziona)
+- walkthrough concettuale: mostra la schermata Create alarm, spiega campi e soglie (⚠️ `cloudwatch:PutMetricAlarm` bloccato — non cliccare Create)
+- walkthrough concettuale: mostra la schermata Edit retention, spiega perché è importante (⚠️ `logs:PutRetentionPolicy` bloccato)
 
 ---
 

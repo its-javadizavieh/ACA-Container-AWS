@@ -34,9 +34,11 @@ Automatizza build e deploy del progetto “hello-api”.
 
 Deliverable:
 
-- una build produce un’immagine taggata con `sha-<commit>` (o equivalente) e la push-a in ECR
-- fai redeploy del service ECS usando quella nuova versione (task definition revision)
-- sai rispondere: “quale commit sta girando?” guardando tag/revision
+- scrivi un `buildspec.yml` funzionante (anche se non puoi eseguirlo in CodeBuild)
+- build manuale da terminale: `docker build` + `docker tag sha-<commit>` + `docker push` su ECR
+- fai redeploy del service ECS usando la nuova immagine (task definition revision)
+- sai rispondere: "quale commit sta girando?" guardando tag/revision
+- ⚠️ `codebuild:CreateProject` bloccato — walkthrough concettuale della schermata CodeBuild
 
 ---
 

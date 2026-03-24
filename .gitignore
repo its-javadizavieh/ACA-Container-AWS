@@ -4,6 +4,7 @@ verifiche/
 materials/
 demos/
 notebooklm/
+script/
 
 # Exclude other workspace files
 ../*.pdf

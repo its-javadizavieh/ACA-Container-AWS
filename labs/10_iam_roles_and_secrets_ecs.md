@@ -28,14 +28,14 @@
 
 ## Mini-project (ongoing)
 
-Aggiungi secret injection al progetto “hello-api” nel modo corretto.
+Comprendi come funziona la secret injection in ECS.
 
 Deliverable:
 
-- crea un parametro SecureString (o un secret) di test
-- crea una **task role** least-privilege che può leggere **solo** quel parametro/secret
-- inietta il secret nel container via integrazione ECS (non hard-coded)
-- verifica dai log che l’app non stampa il segreto in chiaro
+- walkthrough concettuale: mostra la schermata SSM Parameter Store → Create parameter (⚠️ `ssm:PutParameter` bloccato — non cliccare Create)
+- esamina `PipelineRole` in IAM → Roles: identifica trust policy + permessi allegati
+- spiega la differenza tra **execution role** (piattaforma) e **task role** (applicazione)
+- nella task definition, mostra dove si configura la sezione **Secrets** (key + value ARN)
 
 ---
 

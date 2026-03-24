@@ -24,9 +24,9 @@ Metti guardrail minimi (costo + governance) sul progetto “hello-api”.
 
 Deliverable:
 
-- log retention impostata sui log group del progetto (non “never expire”)
-- lifecycle policy ECR impostata per non accumulare immagini inutili
-- tagging minimo applicato ad almeno 1 risorsa (es. `Project`, `Owner`)
+- walkthrough concettuale: mostra la schermata Edit retention, spiega perché è importante (⚠️ `logs:PutRetentionPolicy` bloccato)
+- lifecycle policy ECR impostata per non accumulare immagini inutili (funziona: `ecr:Put*` permesso)
+- tagging minimo applicato ad almeno 1 risorsa (es. `Project`, `Owner`) (funziona: `ecs:*Tags`, `ecr:*TagResource` permessi)
 
 ---
 

@@ -27,7 +27,7 @@ Confronto ECS vs EKS per il tuo progetto.
 Deliverable:
 
 - sai motivare quando useresti ECS vs EKS per lo stesso scenario
-- (stretch) fai deploy di un’app demo su EKS e fai cleanup completo
+- ⚠️ `eks:*` bloccato — il deploy su EKS è solo walkthrough concettuale (leggi i comandi, spiega cosa fanno, non eseguirli)
 
 ---
 
