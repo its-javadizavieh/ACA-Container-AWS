@@ -41,6 +41,7 @@ Eseguiamo un job containerizzato (es. `alpine`) che fa un’azione e termina.
    - Immagine: `public.ecr.aws/docker/library/alpine:3.19`
    - Command: `sh -c "echo START; date; echo DONE"`
    - Logging: awslogs (se possibile)
+     - ⚠️ Abilita "Auto-configure CloudWatch Logs" (`awslogs-create-group: true`) — `logs:CreateLogGroup` non è nella policy studente.
    - _Sfida_: modifica il command per scrivere un file su /tmp e verificare che esiste.
 
 2. **Run task (one-off)**
@@ -137,7 +138,7 @@ DONE
 <details>
 <summary>🎯 Sfida Step 5: calcolo costo job giornaliero</summary>
 
-**Dati per il calcolo** (Fargate eu-west-1, Marzo 2025 circa):
+**Dati per il calcolo** (Fargate us-east-1, Marzo 2025 circa):
 
 - vCPU: $0.04048 per vCPU-ora
 - Memory: $0.004445 per GB-ora

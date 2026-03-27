@@ -59,6 +59,7 @@ Deliverable:
      - Image: `public.ecr.aws/docker/library/nginx:alpine`
      - Port mapping: 80
    - Logging: abilita `awslogs` se disponibile nel wizard
+     - ⚠️ **Devi abilitare "Auto-configure CloudWatch Logs"** (imposta `awslogs-create-group: true`). Senza di questo, il task fallisce con `ResourceNotFoundException` perché `logs:CreateLogGroup` non è nella policy studente.
 
 3. **Run task** 🎯 _Sfida_
    - Cluster ──► Tasks ──► Run new task

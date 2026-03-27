@@ -54,6 +54,7 @@ Deliverable:
      - Port mapping: `8080` (se la tua app usa 8080)
    - Logging:
      - Abilita CloudWatch Logs (awslogs)
+     - ⚠️ **Devi abilitare "Auto-configure CloudWatch Logs"** (imposta `awslogs-create-group: true`). Senza di questo, il task fallisce con `ResourceNotFoundException` perché `logs:CreateLogGroup` non è nella policy studente. L'execution role (`PipelineRole`) ha `CloudWatchLogsFullAccess` e creerà il log group automaticamente.
    - _Sfida_: prima di salvare, annota quale combinazione CPU/Mem hai scelto e perché.
 
 4. **Esegui un task (più veloce) oppure crea un service minimale**
@@ -94,7 +95,8 @@ Deliverable:
 ## Cleanup obbligatorio
 
 1. Stop task / Delete service creato per il lab.
-2. CloudWatch Logs: elimina log group del lab (solo se creato apposta).
+
+> Note: `logs:DeleteLogGroup` non è nella policy del lab. I log group creati verranno eliminati automaticamente alla fine della sessione lab.
 
 ---
 

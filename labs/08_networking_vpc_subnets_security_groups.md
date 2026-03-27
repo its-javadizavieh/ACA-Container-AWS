@@ -132,7 +132,7 @@ Esercizio guidato: scegliamo una VPC esistente e progettiamo come metterci ALB +
 <details>
 <summary>🎯 Sfida Step 5: costo NAT Gateway</summary>
 
-**Pricing NAT Gateway** (eu-west-1, Marzo 2025 circa):
+**Pricing NAT Gateway** (us-east-1, Marzo 2025 circa):
 
 - **Per ora**: ~$0.045/h ──► ~$32/mese (24/7)
 - **Per GB processato**: ~$0.045/GB

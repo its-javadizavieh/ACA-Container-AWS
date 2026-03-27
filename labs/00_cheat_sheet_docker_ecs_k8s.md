@@ -62,7 +62,7 @@ CMD ["python", "app.py"]     # default start command
   "requiresCompatibilities": ["FARGATE"],
   "cpu": "256", // 0.25 vCPU
   "memory": "512", // 0.5 GB
-  "executionRoleArn": "arn:aws:iam::<acct>:role/ecsTaskExecutionRole",
+  "executionRoleArn": "arn:aws:iam::<acct>:role/PipelineRole",
   "containerDefinitions": [
     {
       "name": "hello-api",
@@ -72,8 +72,9 @@ CMD ["python", "app.py"]     # default start command
         "logDriver": "awslogs",
         "options": {
           "awslogs-group": "/ecs/hello-api",
-          "awslogs-region": "eu-west-1",
-          "awslogs-stream-prefix": "ecs"
+          "awslogs-region": "us-east-1",
+          "awslogs-stream-prefix": "ecs",
+          "awslogs-create-group": "true"
         }
       }
     }

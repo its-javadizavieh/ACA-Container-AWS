@@ -135,7 +135,7 @@ Deliverable:
     {
       "Effect": "Allow",
       "Action": ["ssm:GetParameter", "ssm:GetParameters"],
-      "Resource": "arn:aws:ssm:eu-west-1:123456789012:parameter/containersaws/lab/app_secret"
+      "Resource": "arn:aws:ssm:us-east-1:123456789012:parameter/containersaws/lab/app_secret"
     }
   ]
 }
@@ -150,7 +150,7 @@ Deliverable:
 **Tip**: per più parametri sotto un prefix, usa:
 
 ```json
-"Resource": "arn:aws:ssm:eu-west-1:123456789012:parameter/containersaws/lab/*"
+"Resource": "arn:aws:ssm:us-east-1:123456789012:parameter/containersaws/lab/*"
 ```
 
 </details>

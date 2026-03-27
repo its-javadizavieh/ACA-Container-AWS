@@ -118,7 +118,7 @@ Deliverable:
 **Come usarlo nella task definition**:
 
 ```
-123456789012.dkr.ecr.eu-west-1.amazonaws.com/hello-api@sha256:abc123def456...
+123456789012.dkr.ecr.us-east-1.amazonaws.com/hello-api@sha256:abc123def456...
 ```
 
 **Nota**: usa `@sha256:` invece di `:tag`.

@@ -103,7 +103,7 @@ Deliverable:
 <details>
 <summary>🎯 Sfida Step 1: calcolo risparmio CloudWatch Logs retention</summary>
 
-**Pricing CloudWatch Logs** (eu-west-1, Febbraio 2026 circa):
+**Pricing CloudWatch Logs** (us-east-1, Febbraio 2026 circa):
 
 - **Storage**: ~$0.03/GB-mese
 - **Never expire**: accumuli log all'infinito
@@ -260,7 +260,7 @@ Deliverable:
 <details>
 <summary>🎯 Sfida Step 4: classifica risorse per costo orario</summary>
 
-**Classifica costi orari** (eu-west-1, Marzo 2025 circa):
+**Classifica costi orari** (us-east-1, Marzo 2025 circa):
 
 | Risorsa                              | Costo/ora             | Costo/mese 24/7     |
 | ------------------------------------ | --------------------- | ------------------- |

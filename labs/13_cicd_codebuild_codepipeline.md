@@ -130,7 +130,7 @@ version: 0.2
 
 env:
   variables:
-    AWS_DEFAULT_REGION: "eu-west-1"
+    AWS_DEFAULT_REGION: "us-east-1"
     IMAGE_REPO_NAME: "hello-api"
     AWS_ACCOUNT_ID: "123456789012" # Sostituisci
 
