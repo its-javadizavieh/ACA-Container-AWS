@@ -1,4 +1,4 @@
-# Lab 15 — Resilience: simulare un failure e osservare recovery
+# Lab 15 - Resilience: simulare un failure e osservare recovery
 
 ## Obiettivo
 

@@ -1,4 +1,4 @@
-# Lab 03 — AWS setup: Region, identity, console tour (per container services)
+# Lab 03 - AWS setup: Region, identity, console tour (per container services)
 
 ## Obiettivo
 
@@ -138,7 +138,7 @@ Deliverable:
 2. Cerca `ecsTaskExecution` nella barra di ricerca
 3. Clicca su **AmazonECSTaskExecutionRolePolicy**
 4. Vedrai le policy attached:
-   - `AmazonECSTaskExecutionRolePolicy` — permette pull da ECR e scrittura log CloudWatch
+   - `AmazonECSTaskExecutionRolePolicy` - permette pull da ECR e scrittura log CloudWatch
 5. Differenza chiave:
    - **Execution role**: permessi per ECS agent (pull image, push logs)
    - **Task role**: permessi per il tuo codice applicativo (es. accesso S3, DynamoDB)

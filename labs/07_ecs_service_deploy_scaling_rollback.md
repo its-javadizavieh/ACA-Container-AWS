@@ -1,4 +1,4 @@
-# Lab 07 — ECS Service: update, scaling e rollback (timebox)
+# Lab 07 - ECS Service: update, scaling e rollback (timebox)
 
 ## Obiettivo
 
@@ -96,7 +96,7 @@ Deliverable:
 
 ## Tutorial consigliati
 
-- [Amazon ECS — Updating a Service](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/update-service.html)
+- [Amazon ECS - Updating a Service](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/update-service.html)
 - [ECS Rolling Update](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/deployment-type-ecs.html)
 - [ECS Service Auto Scaling](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/service-auto-scaling.html)
 

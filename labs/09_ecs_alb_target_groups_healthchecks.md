@@ -1,4 +1,4 @@
-# Lab 09 — ECS + ALB: Target Group, health checks e Security Groups
+# Lab 09 - ECS + ALB: Target Group, health checks e Security Groups
 
 ## Obiettivo
 
@@ -146,6 +146,6 @@ Deliverable:
 | `Unhealthy: 503`                   | App non pronta                       | Controlla log container              |
 | `Connection refused`               | Porta sbagliata o app non in ascolto | Verifica port mapping                |
 
-**Tip**: controlla anche SG-TASK — deve permettere traffico dalla porta health check.
+**Tip**: controlla anche SG-TASK - deve permettere traffico dalla porta health check.
 
 </details>

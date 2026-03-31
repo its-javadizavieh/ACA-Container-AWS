@@ -1,6 +1,6 @@
 # ACA-Container-AWS
 
-**Container su AWS** — Complete course materials for deploying and managing containers on Amazon Web Services using ECS, EKS, and Fargate.
+**Container su AWS** - Complete course materials for deploying and managing containers on Amazon Web Services using ECS, EKS, and Fargate.
 
 ## About This Repository
 
@@ -8,12 +8,12 @@ This repository contains comprehensive educational materials for a 40-hour cours
 
 ## Repository Structure
 
-### **labs/** — Hands-on exercises (Italian)
+### **labs/** - Hands-on exercises (Italian)
 
 | # | Lab | Topic |
 |---|---|---|
-| 00 | [Cheat Sheet](labs/00_cheat_sheet_docker_ecs_k8s.md) | Docker, ECS & K8s formats — **print and keep** |
-| 01 | [Containers Fundamentals](labs/01_containers_fundamentals_warmup.md) | Docker warmup — images vs containers |
+| 00 | [Cheat Sheet](labs/00_cheat_sheet_docker_ecs_k8s.md) | Docker, ECS & K8s formats - **print and keep** |
+| 01 | [Containers Fundamentals](labs/01_containers_fundamentals_warmup.md) | Docker warmup - images vs containers |
 | 02 | [Docker Basics](labs/02_docker_basics_build_run.md) | Build, run, logs, debug |
 | 03 | [AWS Setup](labs/03_aws_setup_console_tour.md) | Console tour and CLI |
 | 04 | [ECS First Task](labs/04_ecs_first_task_fargate.md) | First task on Fargate |
@@ -43,19 +43,19 @@ seyedhossein.javadizavieh@its-ictpiemonte.it | [LinkedIn](https://www.linkedin.c
 - **Level**: Intermediate
 - **Language**: Slides & demos in English, Labs in Italian
 - **Institution**: ITS ICT Piemonte
-- **Course**: Tecnico superiore System Administrator — AWS Cloud Architect (B.F. 2025/2027)
+- **Course**: Tecnico superiore System Administrator - AWS Cloud Architect (B.F. 2025/2027)
 
 ## Topics Covered
 
 1. Container fundamentals and Docker
 2. AWS container landscape (ECS, EKS, Fargate)
-3. Amazon Elastic Container Service (ECS) — clusters, task definitions, services
+3. Amazon Elastic Container Service (ECS) - clusters, task definitions, services
 4. Amazon Elastic Container Registry (ECR)
 5. Networking for containers (VPC, ALB, Security Groups)
 6. Identity and Access Management (IAM) for ECS
 7. Monitoring with CloudWatch (logs, metrics, alarms)
 8. Fargate patterns (web API, worker, scheduled tasks)
-9. Amazon Elastic Kubernetes Service (EKS) — overview and comparison
+9. Amazon Elastic Kubernetes Service (EKS) - overview and comparison
 10. CI/CD pipelines with CodeBuild and CodePipeline
 11. Versioning, updates, and rollback strategies
 12. Resilience and fault tolerance
@@ -71,7 +71,7 @@ A continuous project threaded through all lectures:
 
 ## License
 
-Educational materials for ITS ICT Piemonte — Container su AWS course.
+Educational materials for ITS ICT Piemonte - Container su AWS course.
 
 ---
 

@@ -1,4 +1,4 @@
-# Lab 08 — Networking design: VPC, subnet, Security Groups (ECS/Fargate)
+# Lab 08 - Networking design: VPC, subnet, Security Groups (ECS/Fargate)
 
 ## Obiettivo
 
@@ -97,7 +97,7 @@ Esercizio guidato: scegliamo una VPC esistente e progettiamo come metterci ALB +
 
 ## Tutorial consigliati
 
-- [AWS VPC User Guide — How It Works](https://docs.aws.amazon.com/vpc/latest/userguide/how-it-works.html)
+- [AWS VPC User Guide - How It Works](https://docs.aws.amazon.com/vpc/latest/userguide/how-it-works.html)
 - [Security Groups for Your VPC](https://docs.aws.amazon.com/vpc/latest/userguide/vpc-security-groups.html)
 - [VPC Endpoints for AWS Services](https://docs.aws.amazon.com/vpc/latest/privatelink/vpc-endpoints.html)
 

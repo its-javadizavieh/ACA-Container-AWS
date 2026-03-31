@@ -1,4 +1,4 @@
-# Lab 01 — Warm-up: concetti container + checklist ambiente
+# Lab 01 - Warm-up: concetti container + checklist ambiente
 
 ## Obiettivo
 
@@ -103,9 +103,9 @@ Deliverable (nota breve, 5 minuti):
 
 ## Tutorial consigliati
 
-- [Docker Getting Started — What is a container?](https://docs.docker.com/get-started/docker-concepts/the-basics/what-is-a-container/)
-- [Docker Getting Started — What is an image?](https://docs.docker.com/get-started/docker-concepts/the-basics/what-is-an-image/)
-- [Docker Getting Started — What is a registry?](https://docs.docker.com/get-started/docker-concepts/the-basics/what-is-a-registry/)
+- [Docker Getting Started - What is a container?](https://docs.docker.com/get-started/docker-concepts/the-basics/what-is-a-container/)
+- [Docker Getting Started - What is an image?](https://docs.docker.com/get-started/docker-concepts/the-basics/what-is-an-image/)
+- [Docker Getting Started - What is a registry?](https://docs.docker.com/get-started/docker-concepts/the-basics/what-is-a-registry/)
 
 ---
 
@@ -128,7 +128,7 @@ Il container è temporaneo (`--rm` lo rimuove automaticamente).
 <summary>🎯 Sfida 5: Perché il digest è più sicuro del tag?</summary>
 
 - **Tag** (es. `alpine:3.19`): può essere spostato su un'immagine diversa. Qualcuno potrebbe fare push di una nuova versione con lo stesso tag.
-- **Digest** (es. `sha256:abc123...`): hash crittografico del contenuto. È **immutabile** — se il contenuto cambia, il digest cambia.
+- **Digest** (es. `sha256:abc123...`): hash crittografico del contenuto. È **immutabile** - se il contenuto cambia, il digest cambia.
 
 In production, usa il digest per garantire che stai eseguendo esattamente l'immagine testata.
 

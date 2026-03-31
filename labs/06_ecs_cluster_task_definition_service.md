@@ -1,4 +1,4 @@
-# Lab 06 — ECS/Fargate: cluster + task definition + service (minimale)
+# Lab 06 - ECS/Fargate: cluster + task definition + service (minimale)
 
 ## Obiettivo
 
@@ -111,7 +111,7 @@ Deliverable:
 
 ## Tutorial consigliati
 
-- [Amazon ECS Developer Guide — Task Definitions](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/task_definitions.html)
+- [Amazon ECS Developer Guide - Task Definitions](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/task_definitions.html)
 - [ECS Task Definition Parameters](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/task_definition_parameters.html)
 - [Using awslogs Log Driver](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/using_awslogs.html)
 
@@ -154,6 +154,6 @@ Fargate ha combinazioni **fisse** di CPU e memoria:
 Server listening on port 8080
 ```
 
-**Se non trovi nulla**: l'app potrebbe non stampare messaggi all'avvio — aggiungi un `console.log("Started")` nel codice.
+**Se non trovi nulla**: l'app potrebbe non stampare messaggi all'avvio - aggiungi un `console.log("Started")` nel codice.
 
 </details>

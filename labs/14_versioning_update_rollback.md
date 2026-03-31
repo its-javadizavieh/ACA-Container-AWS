@@ -1,4 +1,4 @@
-# Lab 14 — Versioning: update immagine e rollback rapido
+# Lab 14 - Versioning: update immagine e rollback rapido
 
 ## Obiettivo
 
@@ -85,9 +85,9 @@ Deliverable:
 
 ## Tutorial consigliati
 
-- [Amazon ECS — Updating a Service](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/update-service.html)
-- [Amazon ECR — Image Tag Mutability](https://docs.aws.amazon.com/AmazonECR/latest/userguide/image-tag-mutability.html)
-- [Docker — Image Digests](https://docs.docker.com/reference/cli/docker/image/pull/#pull-an-image-by-digest-immutable-identifier)
+- [Amazon ECS - Updating a Service](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/update-service.html)
+- [Amazon ECR - Image Tag Mutability](https://docs.aws.amazon.com/AmazonECR/latest/userguide/image-tag-mutability.html)
+- [Docker - Image Digests](https://docs.docker.com/reference/cli/docker/image/pull/#pull-an-image-by-digest-immutable-identifier)
 
 ---
 

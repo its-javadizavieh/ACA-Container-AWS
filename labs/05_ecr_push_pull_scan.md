@@ -1,4 +1,4 @@
-# Lab 05 — Amazon ECR: repository + push/pull + scan
+# Lab 05 - Amazon ECR: repository + push/pull + scan
 
 ## Obiettivo
 
@@ -103,9 +103,9 @@ Deliverable:
 
 ## Tutorial consigliati
 
-- [Amazon ECR User Guide — Getting Started](https://docs.aws.amazon.com/AmazonECR/latest/userguide/getting-started-console.html)
+- [Amazon ECR User Guide - Getting Started](https://docs.aws.amazon.com/AmazonECR/latest/userguide/getting-started-console.html)
 - [ECR Image Scanning](https://docs.aws.amazon.com/AmazonECR/latest/userguide/image-scanning.html)
-- [Docker Docs — Build and Push Image](https://docs.docker.com/get-started/introduction/build-and-push-first-image/)
+- [Docker Docs - Build and Push Image](https://docs.docker.com/get-started/introduction/build-and-push-first-image/)
 
 ---
 

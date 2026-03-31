@@ -1,4 +1,4 @@
-# Lab 11 — CloudWatch per container: log, metriche e allarmi
+# Lab 11 - CloudWatch per container: log, metriche e allarmi
 
 ## Obiettivo
 
@@ -24,7 +24,7 @@ Rendi "hello-api" osservabile.
 Deliverable:
 
 - trovi e filtri i log dell'app in CloudWatch Logs (funziona)
-- walkthrough concettuale: mostra la schermata Create alarm, spiega campi e soglie (⚠️ `cloudwatch:PutMetricAlarm` bloccato — non cliccare Create)
+- walkthrough concettuale: mostra la schermata Create alarm, spiega campi e soglie (⚠️ `cloudwatch:PutMetricAlarm` bloccato - non cliccare Create)
 - walkthrough concettuale: mostra la schermata Edit retention, spiega perché è importante (⚠️ `logs:PutRetentionPolicy` bloccato)
 
 ---
@@ -93,7 +93,7 @@ Deliverable:
 
 ## Tutorial consigliati
 
-- [CloudWatch Logs — Getting Started](https://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/WhatIsCloudWatchLogs.html)
+- [CloudWatch Logs - Getting Started](https://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/WhatIsCloudWatchLogs.html)
 - [Using Container Insights](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/ContainerInsights.html)
 - [Creating CloudWatch Alarms](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/AlarmThatSendsEmail.html)
 
@@ -104,13 +104,13 @@ Deliverable:
 <details>
 <summary>🎯 Sfida Step 1: filtrare log per "error"</summary>
 
-**Metodo 1 — Filter pattern nel log group**:
+**Metodo 1 - Filter pattern nel log group**:
 
 1. CloudWatch ──► Logs ──► Log groups ──► [tuo log group]
 2. Nella barra "Filter events", scrivi: `?error ?ERROR ?Error`
 3. Premi Enter
 
-**Metodo 2 — Logs Insights (più potente)**:
+**Metodo 2 - Logs Insights (più potente)**:
 
 1. CloudWatch ──► Logs ──► Logs Insights
 2. Seleziona il log group
@@ -127,8 +127,8 @@ fields @timestamp, @message
 
 **Varianti utili**:
 
-- `?error ?exception ?failed` — cerca più pattern
-- `ERROR -"health check"` — escludi health check noise
+- `?error ?exception ?failed` - cerca più pattern
+- `ERROR -"health check"` - escludi health check noise
 
 </details>
 

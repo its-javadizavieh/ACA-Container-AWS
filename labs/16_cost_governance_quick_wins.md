@@ -1,4 +1,4 @@
-# Lab 16 — Cost & governance: quick wins (log retention, lifecycle, tagging)
+# Lab 16 - Cost & governance: quick wins (log retention, lifecycle, tagging)
 
 ## Obiettivo
 
@@ -271,10 +271,10 @@ Deliverable:
 
 **Ordine dal più caro**:
 
-1. 🥇 **NAT Gateway** — il killer silenzioso!
-2. 🥈 **ALB** — fisso + LCU (Load Balancer Capacity Units)
-3. 🥉 **ECS Service Fargate** — dipende da CPU/mem
-4. **Target Group** — gratuito
+1. 🥇 **NAT Gateway** - il killer silenzioso!
+2. 🥈 **ALB** - fisso + LCU (Load Balancer Capacity Units)
+3. 🥉 **ECS Service Fargate** - dipende da CPU/mem
+4. **Target Group** - gratuito
 
 **Quick wins per lab/dev**:
 

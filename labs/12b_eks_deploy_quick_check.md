@@ -1,4 +1,4 @@
-# Lab 12b — EKS intro: deploy applicazione + quick check
+# Lab 12b - EKS intro: deploy applicazione + quick check
 
 ## Obiettivo
 
@@ -12,7 +12,7 @@
 
 ## Prerequisiti
 
-- Account AWS con permessi su EKS e accesso Kubernetes (⚠️ **nel lab AWS Academy `eks:*` è bloccato** — questo lab è solo walkthrough concettuale).
+- Account AWS con permessi su EKS e accesso Kubernetes (⚠️ **nel lab AWS Academy `eks:*` è bloccato** - questo lab è solo walkthrough concettuale).
 - Postazione con:
   - AWS CLI
   - `kubectl`
@@ -27,7 +27,7 @@ Confronto ECS vs EKS per il tuo progetto.
 Deliverable:
 
 - sai motivare quando useresti ECS vs EKS per lo stesso scenario
-- ⚠️ `eks:*` bloccato — il deploy su EKS è solo walkthrough concettuale (leggi i comandi, spiega cosa fanno, non eseguirli)
+- ⚠️ `eks:*` bloccato - il deploy su EKS è solo walkthrough concettuale (leggi i comandi, spiega cosa fanno, non eseguirli)
 
 ---
 
@@ -116,13 +116,13 @@ Deliverable:
 <details>
 <summary>🎯 Sfida Step 4: deployment con 2 repliche</summary>
 
-**Metodo 1 — Dopo la creazione**:
+**Metodo 1 - Dopo la creazione**:
 
 ```bash
 kubectl scale deployment web --replicas=2
 ```
 
-**Metodo 2 — Con YAML (più corretto)**:
+**Metodo 2 - Con YAML (più corretto)**:
 
 ```bash
 kubectl create deployment web --image=nginx --replicas=2 --dry-run=client -o yaml > deployment.yaml

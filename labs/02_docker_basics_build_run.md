@@ -1,4 +1,4 @@
-# Lab 02 — Docker: build & run (locale)
+# Lab 02 - Docker: build & run (locale)
 
 ## Obiettivo
 
@@ -130,7 +130,7 @@ Deliverable:
 
 ## Tutorial consigliati
 
-- [Docker Workshop — Our application](https://docs.docker.com/get-started/workshop/02_our_app/)
+- [Docker Workshop - Our application](https://docs.docker.com/get-started/workshop/02_our_app/)
 - [Build and push your first image](https://docs.docker.com/get-started/introduction/build-and-push-first-image/)
 - [Writing a Dockerfile](https://docs.docker.com/get-started/docker-concepts/building-images/writing-a-dockerfile/)
 - [Build, tag, and publish an image](https://docs.docker.com/get-started/docker-concepts/building-images/build-tag-and-publish-an-image/)

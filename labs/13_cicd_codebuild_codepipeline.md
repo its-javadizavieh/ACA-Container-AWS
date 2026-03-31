@@ -1,4 +1,4 @@
-# Lab 13 — CI/CD: CodeBuild ──► ECR ──► deploy ECS
+# Lab 13 - CI/CD: CodeBuild ──► ECR ──► deploy ECS
 
 ## Obiettivo
 
@@ -22,7 +22,7 @@
 > Nel lab _Microservices and CI/CD Pipeline Builder_:
 >
 > - **`codebuild:CreateProject`** non è incluso nella lab policy.
-> - `codebuild:CreateProject` è **bloccato** — non è possibile creare né usare progetti CodeBuild in questo lab.
+> - `codebuild:CreateProject` è **bloccato** - non è possibile creare né usare progetti CodeBuild in questo lab.
 > - Lo step CodeBuild è un **walkthrough concettuale**: mostra la schermata di creazione, spiega i campi, ma non cliccare Create.
 > - In alternativa: build e push manuale da Cloud9/terminale (stessi comandi del buildspec.yml).
 
@@ -38,7 +38,7 @@ Deliverable:
 - build manuale da terminale: `docker build` + `docker tag sha-<commit>` + `docker push` su ECR
 - fai redeploy del service ECS usando la nuova immagine (task definition revision)
 - sai rispondere: "quale commit sta girando?" guardando tag/revision
-- ⚠️ `codebuild:CreateProject` bloccato — walkthrough concettuale della schermata CodeBuild
+- ⚠️ `codebuild:CreateProject` bloccato - walkthrough concettuale della schermata CodeBuild
 
 ---
 
@@ -95,7 +95,7 @@ Deliverable:
 
 ## Cleanup obbligatorio
 
-- ⚠️ **Lab AWS Academy**: non eliminare il progetto CodeBuild pre-creato — potrebbe servire ad altri studenti.
+- ⚠️ **Lab AWS Academy**: non eliminare il progetto CodeBuild pre-creato - potrebbe servire ad altri studenti.
 - In ECR elimina immagini di test non necessarie.
 - Se hai creato pipeline CodePipeline: disabilita o elimina.
 

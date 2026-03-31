@@ -1,4 +1,4 @@
-# Lab 04 — ECS: eseguire il primo task su Fargate (console)
+# Lab 04 - ECS: eseguire il primo task su Fargate (console)
 
 ## Obiettivo
 

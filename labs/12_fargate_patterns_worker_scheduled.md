@@ -1,4 +1,4 @@
-# Lab 12 — Fargate pattern: worker (o task schedulato) in 30 minuti
+# Lab 12 - Fargate pattern: worker (o task schedulato) in 30 minuti
 
 ## Obiettivo
 
@@ -41,7 +41,7 @@ Eseguiamo un job containerizzato (es. `alpine`) che fa un’azione e termina.
    - Immagine: `public.ecr.aws/docker/library/alpine:3.19`
    - Command: `sh -c "echo START; date; echo DONE"`
    - Logging: awslogs (se possibile)
-     - ⚠️ Abilita "Auto-configure CloudWatch Logs" (`awslogs-create-group: true`) — `logs:CreateLogGroup` non è nella policy studente.
+     - ⚠️ Abilita "Auto-configure CloudWatch Logs" (`awslogs-create-group: true`) - `logs:CreateLogGroup` non è nella policy studente.
    - _Sfida_: modifica il command per scrivere un file su /tmp e verificare che esiste.
 
 2. **Run task (one-off)**

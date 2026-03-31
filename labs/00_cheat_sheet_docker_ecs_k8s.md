@@ -1,6 +1,6 @@
-# Cheat Sheet — Docker, ECS & Kubernetes Formats
+# Cheat Sheet - Docker, ECS & Kubernetes Formats
 
-**ITS Academy — Containers on AWS** | Keep this sheet for reference
+**ITS Academy - Containers on AWS** | Keep this sheet for reference
 
 ---
 
@@ -88,7 +88,7 @@ CMD ["python", "app.py"]     # default start command
 
 ## Kubernetes manifests (YAML)
 
-### Deployment (keeps N pods running — like ECS Service)
+### Deployment (keeps N pods running - like ECS Service)
 
 ```yaml
 apiVersion: apps/v1
@@ -111,7 +111,7 @@ spec:
             requests: { cpu: "250m", memory: "512Mi" }
 ```
 
-### Service (expose pods — like ALB + Target Group)
+### Service (expose pods - like ALB + Target Group)
 
 ```yaml
 apiVersion: v1
@@ -128,7 +128,7 @@ spec:
 
 ---
 
-## ECS vs Kubernetes — side by side
+## ECS vs Kubernetes - side by side
 
 | Concept        | ECS (Fargate)              | Kubernetes (EKS)            |
 | -------------- | -------------------------- | --------------------------- |

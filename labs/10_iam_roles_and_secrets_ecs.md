@@ -1,4 +1,4 @@
-# Lab 10 — IAM per ECS: execution role, task role e secrets
+# Lab 10 - IAM per ECS: execution role, task role e secrets
 
 ## Obiettivo
 
@@ -20,7 +20,7 @@
   > Nel lab _Microservices and CI/CD Pipeline Builder_:
   >
   > - **`ssm:PutParameter`** e **`iam:CreateRole`** (per nomi custom) sono **bloccati** dalla lab policy.
-  > - Il parametro SSM **non può essere creato** — lo step è un walkthrough concettuale (Console screens + spiegazione).
+  > - Il parametro SSM **non può essere creato** - lo step è un walkthrough concettuale (Console screens + spiegazione).
   > - `iam:CreateRole` è permesso solo per il pattern `service-role/*`.
   > - L'execution role da usare è sempre **`PipelineRole`**.
 
@@ -32,7 +32,7 @@ Comprendi come funziona la secret injection in ECS.
 
 Deliverable:
 
-- walkthrough concettuale: mostra la schermata SSM Parameter Store → Create parameter (⚠️ `ssm:PutParameter` bloccato — non cliccare Create)
+- walkthrough concettuale: mostra la schermata SSM Parameter Store → Create parameter (⚠️ `ssm:PutParameter` bloccato - non cliccare Create)
 - esamina `PipelineRole` in IAM → Roles: identifica trust policy + permessi allegati
 - spiega la differenza tra **execution role** (piattaforma) e **task role** (applicazione)
 - nella task definition, mostra dove si configura la sezione **Secrets** (key + value ARN)
@@ -50,7 +50,7 @@ Deliverable:
 
 2. **Verifica execution role ECS**
    - **Nel lab AWS Academy**: usa **`PipelineRole`** (già pre-creato, include ECR read + CloudWatch Logs).
-   - Non creare `ecsTaskExecutionRole` — la lab policy lo blocca.
+   - Non creare `ecsTaskExecutionRole` - la lab policy lo blocca.
 
 3. **Usa (o osserva) la task role per l'app** 🎯 _Sfida_
    - ⚠️ **Lab AWS Academy**: `iam:CreateRole` per nomi custom è bloccato, ma è **permesso per `service-role/*`**. Puoi creare un role con quel pattern, oppure usa `PipelineRole` come esempio da esaminare.
@@ -100,7 +100,7 @@ Deliverable:
 
 1. Se hai creato il parametro: elimina `/containersaws/lab/app_secret`.
    (Se hai creato un role `service-role/*`: puoi eliminarlo. Non eliminare `PipelineRole`.)
-2. Non eliminare `PipelineRole` o la task role pre-creata — servono per i lab successivi.
+2. Non eliminare `PipelineRole` o la task role pre-creata - servono per i lab successivi.
 
 ---
 
