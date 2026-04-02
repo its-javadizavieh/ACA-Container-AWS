@@ -16,12 +16,10 @@
 - Account AWS con permessi su ECS, IAM, CloudWatch Logs.
 - Un’immagine in ECR (consigliato: Lab 05).
 - (Consigliato) Default VPC disponibile.
-  > **⚠️ AWS Academy Lab Environment**
+  > **⚠️ AWS Academy Learner Lab**
   >
-  > Nel lab _Microservices and CI/CD Pipeline Builder_, **non puoi** creare `ecsTaskExecutionRole` via IAM.
-  >
-  > Usa il ruolo pre-creato **`PipelineRole`** come Task execution role.
-  > Include già: ECR read-only, CloudWatch Logs full access, trust per `ecs-tasks.amazonaws.com`.
+  > `iam:CreateRole` è bloccato. Usa il ruolo pre-creato **`LabRole`** come Task execution role.
+  > Include già: ECR read-only, CloudWatch Logs, trust per `ecs-tasks.amazonaws.com`.
 
 ---
 
@@ -47,14 +45,14 @@ Deliverable:
 3. **Crea una task definition (Fargate)** 🎯 _Sfida_
    - ECS ──► Task definitions ──► Create
    - Launch type: Fargate
-   - **Task execution role: seleziona `PipelineRole`** (NON creare `ecsTaskExecutionRole`)
+   - **Task execution role: seleziona `LabRole`** (NON creare `ecsTaskExecutionRole`)
    - CPU/Mem: valori minimi compatibili
    - Container:
      - Image: `<account>.dkr.ecr.<region>.amazonaws.com/hello-api:1.0`
      - Port mapping: `8080` (se la tua app usa 8080)
    - Logging:
      - Abilita CloudWatch Logs (awslogs)
-     - ⚠️ **Devi abilitare "Auto-configure CloudWatch Logs"** (imposta `awslogs-create-group: true`). Senza di questo, il task fallisce con `ResourceNotFoundException` perché `logs:CreateLogGroup` non è nella policy studente. L'execution role (`PipelineRole`) ha `CloudWatchLogsFullAccess` e creerà il log group automaticamente.
+     - Consigliato: abilita "Auto-configure CloudWatch Logs" (imposta `awslogs-create-group: true`) così ECS crea il log group automaticamente.
    - _Sfida_: prima di salvare, annota quale combinazione CPU/Mem hai scelto e perché.
 
 4. **Esegui un task (più veloce) oppure crea un service minimale**
@@ -95,8 +93,7 @@ Deliverable:
 ## Cleanup obbligatorio
 
 1. Stop task / Delete service creato per il lab.
-
-> Note: `logs:DeleteLogGroup` non è nella policy del lab. I log group creati verranno eliminati automaticamente alla fine della sessione lab.
+2. (Opzionale) Elimina il log group creato in CloudWatch Logs.
 
 ---
 

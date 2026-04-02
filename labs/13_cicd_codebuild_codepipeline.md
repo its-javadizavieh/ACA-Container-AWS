@@ -17,12 +17,10 @@
 - ECS service esistente (Lab 06/09).
 - Permessi su CodeBuild/CodePipeline/IAM/ECR/ECS.
 
-> **⚠️ AWS Academy Lab Environment**
->
-> Nel lab _Microservices and CI/CD Pipeline Builder_:
+> **⚠️ AWS Academy Learner Lab**
 >
 > - **`codebuild:CreateProject`** non è incluso nella lab policy.
-> - `codebuild:CreateProject` è **bloccato** - non è possibile creare né usare progetti CodeBuild in questo lab.
+> - `codebuild:CreateProject` è **bloccato** — non è possibile creare né usare progetti CodeBuild in questo lab.
 > - Lo step CodeBuild è un **walkthrough concettuale**: mostra la schermata di creazione, spiega i campi, ma non cliccare Create.
 > - In alternativa: build e push manuale da Cloud9/terminale (stessi comandi del buildspec.yml).
 

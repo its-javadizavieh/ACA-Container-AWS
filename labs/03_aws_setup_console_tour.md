@@ -132,13 +132,12 @@ Deliverable:
 </details>
 
 <details>
-<summary>🎯 Sfida Step 7: trovare ecsTaskExecutionRole</summary>
+<summary>🎯 Sfida Step 7: trovare LabRole (execution role)</summary>
 
 1. Vai in **IAM ──► Roles**
-2. Cerca `ecsTaskExecution` nella barra di ricerca
-3. Clicca su **AmazonECSTaskExecutionRolePolicy**
-4. Vedrai le policy attached:
-   - `AmazonECSTaskExecutionRolePolicy` - permette pull da ECR e scrittura log CloudWatch
+2. Cerca `LabRole` nella barra di ricerca
+3. Clicca su **LabRole**
+4. Vedrai le policy attached (es. `AmazonEC2ContainerRegistryReadOnly` + managed policies del lab)
 5. Differenza chiave:
    - **Execution role**: permessi per ECS agent (pull image, push logs)
    - **Task role**: permessi per il tuo codice applicativo (es. accesso S3, DynamoDB)

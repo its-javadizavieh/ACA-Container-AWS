@@ -15,14 +15,11 @@
 - ECS/Fargate già visto (Lab 06).
 - Permessi su IAM, ECS, SSM Parameter Store (o Secrets Manager).
 - Immagine applicativa che legge una variabile d’ambiente (es. `APP_SECRET`).
-  > **⚠️ AWS Academy Lab Environment**
+  > **⚠️ AWS Academy Learner Lab**
   >
-  > Nel lab _Microservices and CI/CD Pipeline Builder_:
-  >
-  > - **`ssm:PutParameter`** e **`iam:CreateRole`** (per nomi custom) sono **bloccati** dalla lab policy.
-  > - Il parametro SSM **non può essere creato** - lo step è un walkthrough concettuale (Console screens + spiegazione).
+  > - **`iam:CreateRole`** (per nomi custom) è **bloccato**. Usa il ruolo pre-creato **`LabRole`** come execution role.
   > - `iam:CreateRole` è permesso solo per il pattern `service-role/*`.
-  > - L'execution role da usare è sempre **`PipelineRole`**.
+  > - **`ssm:PutParameter`** e **`secretsmanager:Create*`** sono **disponibili** — puoi creare parametri e secret reali.
 
 ---
 
@@ -32,10 +29,10 @@ Comprendi come funziona la secret injection in ECS.
 
 Deliverable:
 
-- walkthrough concettuale: mostra la schermata SSM Parameter Store → Create parameter (⚠️ `ssm:PutParameter` bloccato - non cliccare Create)
-- esamina `PipelineRole` in IAM → Roles: identifica trust policy + permessi allegati
+- crea un parametro SecureString in SSM Parameter Store
+- esamina `LabRole` in IAM → Roles: identifica trust policy + permessi allegati
 - spiega la differenza tra **execution role** (piattaforma) e **task role** (applicazione)
-- nella task definition, mostra dove si configura la sezione **Secrets** (key + value ARN)
+- nella task definition, configura la sezione **Secrets** (key + value ARN) e verifica l'injection
 
 ---
 
@@ -46,14 +43,14 @@ Deliverable:
    - Name: `/containersaws/lab/app_secret`
    - Type: SecureString
    - Value: (test) `super-secret-value`
-   - ⚠️ **Lab AWS Academy**: `ssm:PutParameter` è bloccato. Questo step è un **walkthrough concettuale**: apri la schermata Create parameter, spiega i campi (Name, Type = SecureString, Value), ma **non cliccare Create** (darà `AccessDenied`).
+   - Clicca **Create parameter**
 
 2. **Verifica execution role ECS**
-   - **Nel lab AWS Academy**: usa **`PipelineRole`** (già pre-creato, include ECR read + CloudWatch Logs).
-   - Non creare `ecsTaskExecutionRole` - la lab policy lo blocca.
+   - **Nel lab AWS Academy**: usa **`LabRole`** (già pre-creato, include ECR read + CloudWatch Logs).
+   - Non creare `ecsTaskExecutionRole` — la lab policy lo blocca.
 
 3. **Usa (o osserva) la task role per l'app** 🎯 _Sfida_
-   - ⚠️ **Lab AWS Academy**: `iam:CreateRole` per nomi custom è bloccato, ma è **permesso per `service-role/*`**. Puoi creare un role con quel pattern, oppure usa `PipelineRole` come esempio da esaminare.
+   - ⚠️ **Lab AWS Academy**: `iam:CreateRole` per nomi custom è bloccato, ma è **permesso per `service-role/*`**. Puoi creare un role con quel pattern, oppure usa `LabRole` come esempio da esaminare.
    - Esamina la policy allegata: deve consentire `ssm:GetParameter(s)` solo sul parametro specifico.
    - _Sfida_: leggi la policy JSON e verifica che il Resource punti SOLO al tuo parametro (no wildcard).
    - _Concetto_: in un ambiente reale, saresti tu a creare questo role con `iam:CreateRole`.
@@ -62,7 +59,7 @@ Deliverable:
    - Aggiungi il secret nel container definition:
      - Secrets: env var `APP_SECRET` ──► parametro SSM
    - Imposta:
-     - Execution role: **`PipelineRole`**
+     - Execution role: **`LabRole`**
      - Task role: ruolo pre-creato (es. `lab-ecs-task-role`)
    - _Sfida_: spiega perché usi `secrets` e non `environment` per valori sensibili.
 
@@ -98,9 +95,9 @@ Deliverable:
 
 ## Cleanup obbligatorio
 
-1. Se hai creato il parametro: elimina `/containersaws/lab/app_secret`.
-   (Se hai creato un role `service-role/*`: puoi eliminarlo. Non eliminare `PipelineRole`.)
-2. Non eliminare `PipelineRole` o la task role pre-creata - servono per i lab successivi.
+1. Elimina il parametro SSM: Systems Manager → Parameter Store → seleziona `/containersaws/lab/app_secret` → **Delete**.
+   (Se hai creato un role `service-role/*`: puoi eliminarlo. Non eliminare `LabRole`.)
+2. Non eliminare `LabRole` o la task role pre-creata — servono per i lab successivi.
 
 ---
 

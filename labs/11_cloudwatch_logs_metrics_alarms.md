@@ -47,9 +47,8 @@ Deliverable:
    - CloudWatch ──► Alarms ──► Create
    - Seleziona metrica ECS (ClusterName + ServiceName)
    - Soglia esempio: CPU > 70% per 5 minuti
-   - ⚠️ **Lab AWS Academy**: se ricevi `AccessDenied` su `cloudwatch:PutMetricAlarm`, questo step è trattato come **walkthrough concettuale** (slides + screenshots). Annota i parametri di configurazione.
-   - _Sfida (se permesso)_: configura un'azione SNS (anche solo un topic vuoto) per ricevere notifiche.
-   - ⚠️ **Lab AWS Academy**: `sns:CreateTopic` potrebbe non essere consentito. Se bloccato, salta lo step e rivedi la configurazione sulle slides.
+   - ⚠️ **Lab AWS Academy**: se ricevi `AccessDenied` su `cloudwatch:PutMetricAlarm`, verifica di essere nello Learner Lab (dove è consentito).
+   - _Sfida_: configura un'azione SNS (anche solo un topic vuoto) per ricevere notifiche.
 
 4. **(Opzionale) Crea una dashboard minimale**
    - Aggiungi widget CPU/memory e stato allarme.

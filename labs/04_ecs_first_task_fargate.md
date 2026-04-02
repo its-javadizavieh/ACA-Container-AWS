@@ -16,17 +16,11 @@
 - VPC esistente con almeno 2 subnet (anche default va bene).
 - (Consigliato) Un security group pronto o permessi per crearne uno.
 
-> **⚠️ AWS Academy Lab Environment**
+> **⚠️ AWS Academy Learner Lab**
 >
-> Nel lab _Microservices and CI/CD Pipeline Builder_, **non puoi** creare `ecsTaskExecutionRole` (la policy blocca `iam:CreateRole` per quel nome).
+> `iam:CreateRole` non è disponibile. Quando crei una Task Definition, imposta **Task execution role → `LabRole`**.
 >
-> Quando crei una Task Definition, imposta **Task execution role → `PipelineRole`**.
->
-> `PipelineRole` è pre-creato dal template CloudFormation e include:
->
-> - `AmazonEC2ContainerRegistryReadOnly` (pull immagini)
-> - `CloudWatchLogsFullAccess` (driver awslogs)
-> - Trust policy per `ecs-tasks.amazonaws.com`
+> `LabRole` è pre-creato dal template CloudFormation del lab.
 
 ## Scenario
 
@@ -54,12 +48,11 @@ Deliverable:
 2. **Crea una task definition (Fargate)**
    - ECS ──► Task definitions ──► Create
    - Compatibilità: Fargate
-   - **Task execution role: seleziona `PipelineRole`** (NON usare "Create new role" o `ecsTaskExecutionRole`)
+   - **Task execution role: seleziona `LabRole`** (NON usare "Create new role" o `ecsTaskExecutionRole`)
    - Container:
      - Image: `public.ecr.aws/docker/library/nginx:alpine`
      - Port mapping: 80
-   - Logging: abilita `awslogs` se disponibile nel wizard
-     - ⚠️ **Devi abilitare "Auto-configure CloudWatch Logs"** (imposta `awslogs-create-group: true`). Senza di questo, il task fallisce con `ResourceNotFoundException` perché `logs:CreateLogGroup` non è nella policy studente.
+   - Logging: abilita `awslogs` nel wizard
 
 3. **Run task** 🎯 _Sfida_
    - Cluster ──► Tasks ──► Run new task
