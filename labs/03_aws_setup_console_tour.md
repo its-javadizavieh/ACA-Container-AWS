@@ -13,7 +13,8 @@
 ## Prerequisiti
 
 - Account AWS (Free Tier o didattico) con accesso in Console.
-- (Opzionale) AWS CLI già configurata.
+- Docker installato sulla propria macchina.
+- AWS CLI v2 installata (vedi Step 0 sotto).
 
 ## Scenario
 
@@ -34,6 +35,78 @@ Deliverable:
 ---
 
 ## Step (numerati)
+
+### 0. Installa AWS CLI v2 (una sola volta)
+
+La CLI serve per interagire con AWS da terminale. Installala sulla tua macchina locale.
+
+#### Ubuntu / Debian
+
+```bash
+curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o /tmp/awscliv2.zip
+unzip -q /tmp/awscliv2.zip -d /tmp
+sudo /tmp/aws/install
+aws --version
+```
+
+#### macOS
+
+```bash
+curl "https://awscli.amazonaws.com/AWSCLIV2.pkg" -o /tmp/AWSCLIV2.pkg
+sudo installer -pkg /tmp/AWSCLIV2.pkg -target /
+aws --version
+```
+
+#### Windows
+
+1. Scarica l'installer: <https://awscli.amazonaws.com/AWSCLIV2.msi>
+2. Esegui il `.msi` e segui il wizard (Next → Next → Install)
+3. Apri un nuovo terminale (cmd o PowerShell) e verifica:
+
+```powershell
+aws --version
+```
+
+> **Verifica**: il comando `aws --version` deve restituire `aws-cli/2.x.x ...`.
+> Se il comando non viene trovato, chiudi e riapri il terminale.
+
+---
+
+### 0b. Configura le credenziali Learner Lab
+
+Ogni volta che avvii (o riavvii) il Learner Lab, devi copiare le credenziali temporanee.
+
+1. Apri il **Learner Lab** nel browser
+2. Clicca **AWS Details** (in alto a destra nella pagina del lab)
+3. Clicca **Show** accanto a **AWS CLI**
+4. Vedrai tre righe:
+
+```
+[default]
+aws_access_key_id = ASIA...
+aws_secret_access_key = ...
+aws_session_token = ...
+```
+
+5. Copia tutto il blocco e incollalo nel file `~/.aws/credentials` (Linux/Mac) oppure `%USERPROFILE%\.aws\credentials` (Windows), sovrascrivendo il contenuto precedente.
+
+6. Imposta la Region di default:
+
+```bash
+aws configure set region us-east-1
+```
+
+7. Verifica:
+
+```bash
+aws sts get-caller-identity
+```
+
+> **Output atteso**: Account ID, UserId, Arn del tuo ruolo Learner Lab.
+>
+> **⚠️ Le credenziali scadono ogni poche ore.** Se ricevi `ExpiredToken`, ripeti dal passo 2.
+
+---
 
 1. **Seleziona la Region del corso**
    - Console AWS ──► selettore Region (in alto a destra)
