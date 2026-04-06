@@ -88,15 +88,30 @@ aws_secret_access_key = ...
 aws_session_token = ...
 ```
 
-5. Copia tutto il blocco e incollalo nel file `~/.aws/credentials` (Linux/Mac) oppure `%USERPROFILE%\.aws\credentials` (Windows), sovrascrivendo il contenuto precedente.
+5. **Copia** le tre righe (tutto il blocco da `[default]` fino alla fine del token).
 
-6. Imposta la Region di default:
+6. **Incolla nel file credentials:**
+
+#### Linux / macOS
+
+```bash
+mkdir -p ~/.aws
+nano ~/.aws/credentials
+```
+
+Incolla le tre righe, poi **salva**: `Ctrl+O`, `Invio`, `Ctrl+X`.
+
+#### Windows
+
+Apri Notepad e incolla. Salva in: `C:\Users\<TuoNome>\.aws\credentials`
+
+7. Imposta la Region di default:
 
 ```bash
 aws configure set region us-east-1
 ```
 
-7. Verifica:
+8. Verifica che la connessione funzioni:
 
 ```bash
 aws sts get-caller-identity
