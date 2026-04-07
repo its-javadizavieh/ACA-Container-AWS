@@ -34,28 +34,65 @@ Deliverable:
 
 ## Step (numerati)
 
-1. **Scegli la Region del corso**
+1. **Scegli la Region e imposta le variabili**
+
+   **Bash (Linux / macOS)**
+   ```bash
+   REGION=us-east-1
+   ACCT=$(aws sts get-caller-identity --query Account --output text)
+   ECR_REPO=$ACCT.dkr.ecr.$REGION.amazonaws.com/demo-hello-api
+   ```
+
+   **PowerShell (Windows)**
+   ```powershell
+   $REGION = "us-east-1"
+   $ACCT = aws sts get-caller-identity --query Account --output text
+   $ECR_REPO = "$ACCT.dkr.ecr.$REGION.amazonaws.com/demo-hello-api"
+   ```
 
 2. **Crea repository ECR**
    - Console ──► ECR ──► Repositories ──► Create repository
    - Nome consigliato: `hello-api`
 
 3. **Login Docker su ECR**
-   - Pattern: `aws ecr get-login-password ... | docker login ...`
+
+   **Bash**
+   ```bash
+   aws ecr get-login-password --region $REGION | \
+     docker login --username AWS --password-stdin $ACCT.dkr.ecr.$REGION.amazonaws.com
+   ```
+
+   **PowerShell**
+   ```powershell
+   aws ecr get-login-password --region $REGION |
+     docker login --username AWS --password-stdin "$ACCT.dkr.ecr.$REGION.amazonaws.com"
+   ```
 
 4. **Tag dell'immagine locale verso ECR** 🎯 _Sfida_
-   - `docker tag hello-api:1.0 <account>.dkr.ecr.<region>.amazonaws.com/hello-api:1.0`
+
+   ```bash
+   docker tag hello-api:1.0 $ECR_REPO:1.0
+   ```
    - _Sfida_: spiega cosa succede se usi lo stesso tag `1.0` per due immagini diverse.
 
 5. **Push su ECR**
-   - `docker push <...>/hello-api:1.0`
+
+   ```bash
+   docker push $ECR_REPO:1.0
+   ```
+   > I comandi `docker tag` e `docker push` sono identici in Bash e PowerShell (le variabili impostate allo Step 1 funzionano in entrambi).
 
 6. **Verifica in Console**
    - ECR ──► repository ──► Images: deve comparire il tag `1.0`.
 
 7. **Pull (test)**
-   - `docker rmi hello-api:1.0` (solo locale)
-   - `docker pull <...>/hello-api:1.0`
+
+   ```bash
+   docker rmi hello-api:1.0          # rimuove solo il tag locale
+   docker pull $ECR_REPO:1.0
+   docker run --rm -p 9090:9090 $ECR_REPO:1.0
+   curl http://localhost:9090/       # verifica che risponde
+   ```
 
 8. **(Opzionale) Scan findings** 🎯 _Sfida_
    - ECR ──► Image ──► Scan results
@@ -107,43 +144,4 @@ Deliverable:
 - [ECR Image Scanning](https://docs.aws.amazon.com/AmazonECR/latest/userguide/image-scanning.html)
 - [Docker Docs - Build and Push Image](https://docs.docker.com/get-started/introduction/build-and-push-first-image/)
 
----
 
-## Soluzioni
-
-<details>
-<summary>🎯 Sfida Step 4: stesso tag per due immagini diverse</summary>
-
-**Risposta**: il nuovo push **sovrascrive** l'immagine precedente associata a quel tag.
-
-Il vecchio image digest rimane in ECR ma **senza tag** (diventa "untagged").
-
-**Problema**: se un service ECS usa `hello-api:1.0`, potrebbe non aggiornarsi automaticamente (Fargate cacherà l'immagine per qualche tempo).
-
-**Best practice**:
-
-- Usa tag immutabili basati su commit SHA: `hello-api:sha-abc1234`
-- Abilita "Tag immutability" nel repository ECR per evitare sovrascritture
-
-</details>
-
-<details>
-<summary>🎯 Sfida Step 8: interpretare scan findings</summary>
-
-Esempio di vulnerabilità tipiche:
-
-| Severity | Esempio CVE                | Cosa rischi                    |
-| -------- | -------------------------- | ------------------------------ |
-| CRITICAL | CVE-2021-44228 (Log4Shell) | Remote Code Execution          |
-| HIGH     | CVE-2022-0778 (OpenSSL)    | Denial of Service              |
-| MEDIUM   | Librerie outdated          | Potenziale exploitation futura |
-
-**Azioni da fare**:
-
-1. Per CRITICAL/HIGH: aggiorna la base image immediatamente
-2. Cerca la CVE su [NVD](https://nvd.nist.gov/) o [Snyk](https://security.snyk.io/)
-3. Se non puoi aggiornare: documenta il rischio accettato
-
-**Tip**: abilita "Scan on push" per controllo automatico.
-
-</details>
