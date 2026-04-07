@@ -2,7 +2,8 @@
 
 ## Obiettivo
 
-- Aggiornare un **ECS Service** (nuova task definition revision).
+- Creare un **ECS Service** dalla Console (campo per campo).
+- Aggiornare il service con una nuova task definition revision.
 - Vedere eventi di deployment e fare un rollback.
 - (Opzionale) impostare una regola di autoscaling semplice.
 
@@ -12,70 +13,128 @@
 
 ## Prerequisiti
 
-- Un cluster ECS già presente.
-- Un service ECS già creato (anche dal Lab 06) con 1 task.
-- Logging su CloudWatch (consigliato).
+- Cluster `demo-cluster` già presente.
+- Task definition `hello-api` già registrata (con image da ECR, logging CloudWatch, port mapping 9090).
+- Security Group `demo-task-sg` già creato (inbound Custom TCP 9090 da 0.0.0.0/0).
 
 ---
 
 ## Mini-project (ongoing)
 
-Porta avanti il deployment del tuo servizio “hello-api”.
+Porta avanti il deployment del tuo servizio "hello-api".
 
 Deliverable:
 
-- esegui un update del service usando una nuova task definition revision (cambia tag immagine o una env var)
-- fai scaling manuale (es. desired count 2) e verifica che il service torni “stable”
-- se qualcosa va male, esegui rollback alla revision precedente e identifica l’errore dagli Events/log
+- crea un service dal cluster
+- esegui un update del service usando una nuova task definition revision (aggiungi env var `APP_VERSION=2.0`)
+- fai scaling manuale (es. desired count 2) e verifica che il service torni "stable"
+- se qualcosa va male, esegui rollback alla revision precedente e identifica l'errore dagli Events/log
 
 ---
 
 ## Step (numerati)
 
-1. **Apri il service e osserva lo stato iniziale**
-   - ECS ──► Cluster ──► Services ──► seleziona il service
-   - Nota: `Desired count`, `Running count`, `Events`.
+1. **Crea il Service**
+   - ECS ──► Clusters ──► `demo-cluster` ──► tab **Services** ──► **Create**
+   - La pagina **Create** è divisa in sezioni. Compilale:
 
-2. **Crea una nuova task definition revision**
-   - Task definition ──► Create new revision
-   - Cambia un parametro semplice (es. tag immagine o env var)
+   **Deployment configuration**
+   - Application type: **Service**
+   - Task definition → Family: `hello-api`
+   - Revision: **LATEST**
+   - Service name: `hello-api-service`
+   - Service type: **Replica**
+   - Desired tasks: **1**
 
-3. **Aggiorna il service** 🎯 _Sfida_
-   - Service ──► Update
-   - Seleziona la nuova revision
-   - Avvia deployment.
-   - _Sfida_: prima di confermare, annota quale deployment strategy è configurata (rolling update %).
+   Espandi **Deployment failure detection**:
+   - ☑ Use the Amazon ECS deployment circuit breaker
+   - ☑ Rollback on failures
 
-4. **Osserva gli Events**
-   - Output atteso: eventi di draining/starting.
+   **Networking**
+   - VPC: default
+   - Subnets: lascia quelle preselezionate
+   - Security group → **Use an existing security group** → seleziona `demo-task-sg`
+     - (rimuovi il SG `default` se presente)
+   - Public IP: **Turned on**
 
-5. **Rollback** 🎯 _Sfida_
-   - Service ──► Update ──► seleziona la revision precedente
-   - Output atteso: ritorno allo stato "stable".
-   - _Sfida_: durante il rollback, osserva quanti task "old" e "new" coesistono.
+   Lascia le altre sezioni ai valori di default ──► **Create**.
 
-6. **(Solo walkthrough concettuale) Autoscaling**
-   - Service ──► Auto Scaling ──► policy semplice (CPU target)
-   - ⚠️ **Nel lab AWS Academy** la policy non include `application-autoscaling:RegisterScalableTarget` né `PutScalingPolicy`. Questo step è trattato come **walkthrough concettuale** (slides + screenshots). Gli studenti annotano i parametri.
+   - Output atteso: la colonna **Status** passa a _Active_, il running count sale a 1.
+
+2. **Osserva lo stato iniziale del service**
+   - Clicca il nome del service → tab **Deployments and events**
+   - Nota: `Desired count`, `Running count`, eventi.
+   - Tab **Tasks**: verifica che 1 task sia in stato `RUNNING`.
+   - Copia il **Public IP** del task e prova in un browser: `http://<Public-IP>:9090/`
+
+3. **Crea una nuova task definition revision**  🎯 _Sfida_
+   - ECS ──► Task definitions ──► `hello-api` ──► **Create new revision** ──► **Create new revision**
+   - Nella sezione **Container – 1** clicca il container name per espandere.
+   - Scorri a **Environment variables – optional** ──► **Add environment variable**:
+     - Key: `APP_VERSION`   Value: `2.0`
+   - ──► **Create**
+   - _Sfida_: quale numero di revision è stato creato?
+
+4. **Aggiorna il service (Update)** 🎯 _Sfida_
+   - ECS ──► Clusters ──► `demo-cluster` ──► Services ──► `hello-api-service` ──► **Update**
+   - Revision: seleziona la nuova revision (es. `hello-api:2`)
+   - ☑ Force new deployment
+   - ──► **Update**
+   - _Sfida_: prima di confermare, annota la configurazione del circuit breaker (è già abilitato dal passo 1).
+
+5. **Osserva gli Events**
+   - Tab **Deployments and events** → segui gli eventi in tempo reale.
+   - Output atteso: eventi di draining/starting tipo:
+     - "has started 1 tasks"
+     - "has begun draining connections on 1 tasks"
+     - "has stopped 1 running tasks"
+     - Deployment status: **Completed**
+
+6. **Scaling manuale (desired count)**
+   - Service ──► **Update**
+   - Cambia **Desired tasks** da 1 a **2** ──► **Update**
+   - Attendi che `Running count` = 2.
+   - Output atteso: 2 task in stato `RUNNING`.
+
+7. **Rollback alla revision precedente**  🎯 _Sfida_
+   - Service ──► **Update**
+   - Revision: seleziona la revision precedente (es. `hello-api:1`)
+   - ☑ Force new deployment
+   - ──► **Update**
+   - Output atteso: ritorno allo stato "stable" con la revision originale.
+   - _Sfida_: durante il rollback, osserva quanti task "old" e "new" coesistono nella tab **Tasks**.
+
+8. **(Solo walkthrough concettuale) Autoscaling**
+   - Service ──► **Update** ──► espandi **Service auto scaling – optional**
+   - Seleziona **Use service auto scaling**
+   - Minimum number of tasks: 1
+   - Maximum number of tasks: 4
+   - Scaling policy type: **Target tracking** → ECSServiceAverageCPUUtilization → Target value: 70
+   - ⚠️ **Nel lab AWS Academy** la policy potrebbe non avere i permessi `application-autoscaling:RegisterScalableTarget` né `PutScalingPolicy`. Questo step è trattato come **walkthrough concettuale** (slides + screenshots). Gli studenti annotano i parametri.
 
 ---
 
 ## Output atteso
 
-- Service aggiornato con nuova revision.
+- Service creato e raggiungibile su porta 9090.
+- Service aggiornato con nuova revision (APP_VERSION=2.0).
+- Scaling manuale a 2 task funzionante.
 - Rollback eseguito correttamente.
 
 ## Checkpoint
 
-- Sai dove si vedono errori di rollout (Events).
-- Sai distinguere “task definition revision” vs “service”.
+- Sai dove si vedono errori di rollout (Deployments and events).
+- Sai distinguere "task definition revision" vs "service".
+- Sai attivare il circuit breaker con rollback on failures.
 
 ---
 
 ## Troubleshooting rapido
 
-- **Deployment non stabilizza**: controlla events + stopped reason + log.
-- **CannotPullContainerError**: ECR permissions nell’execution role.
+- **Deployment non stabilizza**: controlla events + stopped reason + log CloudWatch.
+- **CannotPullContainerError**: ECR permissions nell'execution role.
+- **Task si ferma subito**: immagine non trovata in ECR o porta sbagliata.
+- **Connessione rifiutata**: controlla che il SG `demo-task-sg` abbia la regola TCP 9090 da 0.0.0.0/0, e che Public IP sia ON.
 
 ---
 
@@ -99,52 +158,3 @@ Deliverable:
 - [Amazon ECS - Updating a Service](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/update-service.html)
 - [ECS Rolling Update](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/deployment-type-ecs.html)
 - [ECS Service Auto Scaling](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/service-auto-scaling.html)
-
----
-
-## Soluzioni
-
-<details>
-<summary>🎯 Sfida Step 3: deployment strategy (rolling update)</summary>
-
-**Dove trovarla**: Service ──► Configuration ──► Deployment configuration
-
-**Parametri tipici**:
-
-- `minimumHealthyPercent`: 100 (non scendere mai sotto il desired count)
-- `maximumPercent`: 200 (puoi avere il doppio temporaneamente)
-
-**Significato pratico** (desired = 2 task):
-
-- Con min 100%, max 200%: prima avvia 2 nuovi, poi draina 2 vecchi ──► **zero downtime**
-- Con min 50%, max 100%: ferma 1 vecchio, avvia 1 nuovo ──► **risparmio risorse ma rischio**
-
-**Best practice**: mantieni min 100% per servizi di produzione.
-
-</details>
-
-<details>
-<summary>🎯 Sfida Step 5: osservare coesistenza task old/new</summary>
-
-**Cosa vedere**:
-
-1. Vai in **ECS ──► Cluster ──► Service ──► Tasks**
-2. Durante il deployment vedrai:
-   - Task con "Task definition revision: X" (vecchia)
-   - Task con "Task definition revision: X+1" (nuova)
-
-**Flusso tipico** (con min 100%, max 200%):
-
-1. ECS avvia nuovi task (revision X+1)
-2. Nuovi task passano health check
-3. ECS mette in DRAINING i vecchi task
-4. Vecchi task terminano dopo drain connections
-5. Solo nuovi task rimangono
-
-**Tip**: apri Events e osserva messaggi come:
-
-- "has started 1 tasks"
-- "has begun draining 1 tasks"
-- "has stopped 1 running tasks"
-
-</details>

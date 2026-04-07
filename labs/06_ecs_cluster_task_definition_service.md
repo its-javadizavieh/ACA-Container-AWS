@@ -29,7 +29,7 @@ Esegui la tua image di progetto su ECS.
 
 Deliverable:
 
-- la task definition punta alla tua image “hello-api” in ECR
+- la task definition punta alla tua image "demo-hello-api" in ECR
 - `awslogs` è abilitato e sai leggere i log in CloudWatch
 - esegui 1 task (o un service con 1 task) e lo mantieni stabile in RUNNING
 
@@ -48,24 +48,37 @@ Deliverable:
    - **Task execution role: seleziona `LabRole`** (NON creare `ecsTaskExecutionRole`)
    - CPU/Mem: valori minimi compatibili
    - Container:
-     - Image: `<account>.dkr.ecr.<region>.amazonaws.com/hello-api:1.0`
-     - Port mapping: `8080` (se la tua app usa 8080)
+     - Image: clicca **Browse ECR images** → seleziona il repository `demo-hello-api` → seleziona il tag `1.0`
+     - Port mapping: `9090` (la porta su cui l'app hello-api ascolta)
    - Logging:
      - Abilita CloudWatch Logs (awslogs)
      - Consigliato: abilita "Auto-configure CloudWatch Logs" (imposta `awslogs-create-group: true`) così ECS crea il log group automaticamente.
    - _Sfida_: prima di salvare, annota quale combinazione CPU/Mem hai scelto e perché.
 
-4. **Esegui un task (più veloce) oppure crea un service minimale**
+4. **Crea un Security Group per il task**
+   - EC2 ──► Security Groups ──► Create security group
+   - Security group name: `demo-task-sg`
+   - Description: `Allow inbound 9090 for ECS task`
+   - VPC: **default VPC**
+   - Inbound rules ──► Add rule:
+     - Type: **Custom TCP**
+     - Port range: `9090`
+     - Source: `0.0.0.0/0` (solo per test — in produzione limita al SG dell'ALB)
+   - Outbound rules: lascia default (All traffic → `0.0.0.0/0`)
+   - Clicca **Create security group**
+
+5. **Esegui un task (più veloce) oppure crea un service minimale**
    - Opzione A (rapida): Run task ──► 1 task
+     - Networking: default VPC, 2 subnet, seleziona **`demo-task-sg`**, Public IP = ON
    - Opzione B: Service ──► desired count 1
 
-5. **Verifica RUNNING**
+6. **Verifica RUNNING**
    - ECS ──► Service/Tasks
 
-6. **Leggi eventi e log** 🎯 _Sfida_
+7. **Leggi eventi e log** 🎯 _Sfida_
    - ECS ──► Service ──► Events
    - CloudWatch Logs ──► log group del task
-   - _Sfida_: trova nel log una riga che conferma che la tua app è in ascolto (es. "listening on port 8080").
+   - _Sfida_: trova nel log una riga che conferma che la tua app è in ascolto (es. "listening on port 9090").
 
 ---
 

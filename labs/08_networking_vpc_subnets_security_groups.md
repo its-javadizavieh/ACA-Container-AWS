@@ -47,12 +47,45 @@ Esercizio guidato: scegliamo una VPC esistente e progettiamo come metterci ALB +
    - ALB in subnet pubbliche (2 AZ)
    - Tasks ECS in subnet private (2 AZ)
 
-4. **Security Groups: regole minime** 🎯 _Sfida_
-   - SG-ALB inbound: 80/443 da Internet (o dal tuo IP)
-   - SG-TASK inbound: porta app **solo da SG-ALB**
-   - _Sfida_: scrivi le regole esatte per SG-TASK (source = sg-xxx, non un CIDR).
+4. **Security Group: crea SG-ALB** 🎯 _Sfida_
+   - Console → **EC2** → menu a sinistra **Security Groups** → **Create security group**
 
-5. **Discussione rapida: accesso a ECR/CloudWatch da subnet private** 🎯 _Sfida_
+   **Basic details:**
+   - Security group name: `SG-ALB`
+   - Description: `Allow HTTP from internet`
+   - VPC: seleziona la default VPC
+
+   **Inbound rules** → **Add rule**:
+
+   | Type | Protocol | Port range | Source | Description |
+   |------|----------|-----------|--------|-------------|
+   | HTTP | TCP | 80 | Custom → `0.0.0.0/0` | HTTP from internet |
+
+   **Outbound rules**: lascia il default (All traffic → 0.0.0.0/0).
+
+   → **Create security group**. Annota l'ID `sg-xxx`.
+
+5. **Security Group: crea SG-TASK** 🎯 _Sfida_
+   - Ancora in **Security Groups** → **Create security group**
+
+   **Basic details:**
+   - Security group name: `SG-TASK`
+   - Description: `Allow SG Task`
+   - VPC: stessa default VPC
+
+   **Inbound rules** → **Add rule**:
+
+   | Type | Protocol | Port range | Source | Description |
+   |------|----------|-----------|--------|-------------|
+   | Custom TCP | TCP | 9090 | Custom → scrivi `SG-ALB` e selezionalo dal dropdown | Only ALB can reach task |
+
+   **Outbound rules**: lascia il default (All traffic → 0.0.0.0/0).
+
+   → **Create security group**.
+
+   - _Sfida_: perché la Source è un security group e non un CIDR come `0.0.0.0/0`? Scrivi la risposta.
+
+6. **Discussione rapida: accesso a ECR/CloudWatch da subnet private** 🎯 _Sfida_
    - Opzione A: NAT Gateway
    - Opzione B: VPC endpoints (ECR/Logs)
    - Nota: pro/contro costi.
@@ -63,12 +96,14 @@ Esercizio guidato: scegliamo una VPC esistente e progettiamo come metterci ALB +
 ## Output atteso
 
 - Schema di rete minimo definito.
-- Regole SG scritte correttamente.
+- `SG-ALB` creato con inbound HTTP 80 da 0.0.0.0/0.
+- `SG-TASK` creato con inbound Custom TCP 9090 da **SG-ALB**.
 
 ## Checkpoint
 
 - Sai dire quando una subnet è pubblica (route `0.0.0.0/0` ──► IGW).
-- Sai spiegare perché non aprire la porta del task a `0.0.0.0/0`.
+- Sai spiegare perché la Source di SG-TASK è un security group e non un CIDR.
+- Sai l'ordine di cancellazione: prima SG-TASK (che referenzia SG-ALB), poi SG-ALB.
 
 ---
 
@@ -81,7 +116,7 @@ Esercizio guidato: scegliamo una VPC esistente e progettiamo come metterci ALB +
 
 ## Cleanup obbligatorio
 
-- Nessuna risorsa creata (se hai creato SG per prova, eliminalo).
+- EC2 → **Security Groups** → seleziona `SG-TASK` → **Actions** → **Delete security groups** (prima SG-TASK, poi SG-ALB).
 
 ---
 
@@ -101,55 +136,4 @@ Esercizio guidato: scegliamo una VPC esistente e progettiamo come metterci ALB +
 - [Security Groups for Your VPC](https://docs.aws.amazon.com/vpc/latest/userguide/vpc-security-groups.html)
 - [VPC Endpoints for AWS Services](https://docs.aws.amazon.com/vpc/latest/privatelink/vpc-endpoints.html)
 
----
 
-## Soluzioni
-
-<details>
-<summary>🎯 Sfida Step 4: regole SG-TASK esatte</summary>
-
-**SG-ALB** (per Application Load Balancer):
-
-| Type  | Protocol | Port | Source               |
-| ----- | -------- | ---- | -------------------- |
-| HTTP  | TCP      | 80   | 0.0.0.0/0 (o tuo IP) |
-| HTTPS | TCP      | 443  | 0.0.0.0/0 (o tuo IP) |
-
-**SG-TASK** (per container ECS):
-
-| Type       | Protocol | Port | Source     |
-| ---------- | -------- | ---- | ---------- |
-| Custom TCP | TCP      | 8080 | **sg-alb** |
-
-**Perché usare SG come source**:
-
-- Più sicuro: solo traffico che passa dall'ALB può raggiungere i task
-- Più dinamico: se aggiungi/rimuovi ALB instances, le regole restano valide
-- Best practice AWS per architetture multi-tier
-
-</details>
-
-<details>
-<summary>🎯 Sfida Step 5: costo NAT Gateway</summary>
-
-**Pricing NAT Gateway** (us-east-1, Marzo 2025 circa):
-
-- **Per ora**: ~$0.045/h ──► ~$32/mese (24/7)
-- **Per GB processato**: ~$0.045/GB
-
-**Esempio calcolo** (ambiente dev con 50 GB/mese):
-
-- Costo orario: $0.045 × 730h = **$32.85**
-- Costo dati: $0.045 × 50GB = **$2.25**
-- **Totale: ~$35/mese** per un solo NAT Gateway
-
-**Alternativa VPC Endpoints**:
-
-- $0.01/h per endpoint ──► ~$7/mese
-- Nessun costo per GB (per traffico AWS)
-- Servono 3-4 endpoints (ECR.api, ECR.dkr, Logs, S3)
-- **Totale: ~$28/mese** ma più complesso da configurare
-
-**Consiglio**: per dev/test, usa NAT. Per produzione con molto traffico, valuta endpoints.
-
-</details>
