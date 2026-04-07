@@ -12,7 +12,7 @@
 
 ## Prerequisiti
 
-- PC con Docker installato (Docker Desktop o Docker Engine).
+- PC con Docker installato (vedi **Lab 01, Step 0** per Ubuntu/Mac/Windows).
 - Terminale e editor (VS Code).
 - Connessione Internet.
 

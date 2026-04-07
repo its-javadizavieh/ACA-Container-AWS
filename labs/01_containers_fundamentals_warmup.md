@@ -12,8 +12,72 @@
 ## Prerequisiti
 
 - PC con accesso Internet.
-- Docker installato (Docker Desktop o Docker Engine).
 - Terminale e editor (VS Code).
+- Docker installato — segui le istruzioni per il tuo sistema operativo qui sotto.
+
+---
+
+## Step 0 - Installazione Docker
+
+### Ubuntu (22.04 / 24.04)
+
+```bash
+# Rimuovi eventuali versioni vecchie
+sudo apt-get remove -y docker docker-engine docker.io containerd runc 2>/dev/null
+
+# Installa prerequisiti
+sudo apt-get update
+sudo apt-get install -y ca-certificates curl gnupg
+
+# Aggiungi la chiave GPG e il repository ufficiale Docker
+sudo install -m 0755 -d /etc/apt/keyrings
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
+sudo chmod a+r /etc/apt/keyrings/docker.gpg
+echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu $(. /etc/os-release && echo $VERSION_CODENAME) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+
+# Installa Docker Engine
+sudo apt-get update
+sudo apt-get install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+
+# Aggiungi il tuo utente al gruppo docker (evita sudo)
+sudo usermod -aG docker $USER
+newgrp docker
+```
+
+### macOS
+
+```bash
+# Opzione A: scarica Docker Desktop da https://www.docker.com/products/docker-desktop/
+# Scegli "Mac with Apple chip" o "Mac with Intel chip", installa il .dmg, avvia Docker Desktop.
+
+# Opzione B: installa via Homebrew
+brew install --cask docker
+# Poi avvia Docker Desktop da Applicazioni.
+```
+
+### Windows
+
+```powershell
+# 1. Abilita WSL 2 (apri PowerShell come Amministratore)
+wsl --install
+# Riavvia il PC se richiesto.
+
+# 2. Scarica e installa Docker Desktop da:
+#    https://www.docker.com/products/docker-desktop/
+#    Durante l'installazione, spunta "Use WSL 2 instead of Hyper-V".
+
+# 3. Avvia Docker Desktop e aspetta che il motore si avvii.
+```
+
+### Verifica (tutti i sistemi)
+
+```bash
+docker version
+```
+
+Deve mostrare sia **Client** che **Server**. Se manca il Server, Docker Desktop non è avviato.
+
+---
 
 ## Scenario
 

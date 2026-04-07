@@ -101,9 +101,17 @@ nano ~/.aws/credentials
 
 Incolla le tre righe, poi **salva**: `Ctrl+O`, `Invio`, `Ctrl+X`.
 
-#### Windows
+#### Windows (PowerShell)
 
-Apri Notepad e incolla. Salva in: `C:\Users\<TuoNome>\.aws\credentials`
+```powershell
+# Crea la cartella .aws (ignora errore se esiste gia)
+New-Item -ItemType Directory -Force -Path "$env:USERPROFILE\.aws" | Out-Null
+
+# Apri il file credentials in Notepad (lo crea se non esiste)
+notepad "$env:USERPROFILE\.aws\credentials"
+```
+
+Incolla le tre righe in Notepad, poi **File → Salva** e chiudi Notepad.
 
 7. Imposta la Region di default:
 
