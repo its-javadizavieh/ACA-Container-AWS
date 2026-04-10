@@ -1,156 +1,62 @@
-# Lab 15 - Resilience: simulare un failure e osservare recovery
+# Lab 15 - Resilienza: rompi e ripristina
 
 ## Obiettivo
 
-- Simulare un piccolo errore (config/health) e osservare cosa succede.
-- Esercitare il “debug flow”: events ──► stopped reason ──► logs ──► ALB target health.
-- Ripristinare lo stato stabile.
+- Simulare un errore controllato.
+- Osservare il flusso di debug tra ALB, ECS e CloudWatch.
+- Ripristinare il service in stato stabile.
 
-## Durata (timebox)
+## Durata
 
-30 minuti.
+25 minuti.
 
 ## Prerequisiti
 
-- Un ECS service dietro ALB **oppure** un service con health check.
-- Accesso a CloudWatch Logs.
+- `hello-api-service` dietro ALB.
+- Target Group e log CloudWatch disponibili.
 
----
+## Guida del lab
 
-## Mini-project (ongoing)
+1. **Controlla lo stato iniziale**
+   - EC2 -> `Target Groups` -> `demo-tg` -> `Targets`
+   - Tutti i target devono essere `healthy`.
+   - ECS -> `hello-api-service` -> verifica stato `stable`.
 
-Esercita una “operational drill” sul progetto “hello-api”.
+2. **Rompi il health check**
+   - EC2 -> `Target Groups` -> `demo-tg` -> `Health checks` -> `Edit`
+   - Cambia path da `/health` a `/health-broken`
+   - Salva le modifiche
 
-Deliverable:
+3. **Osserva cosa succede**
+   - Attendi che il target diventi `unhealthy`.
+   - Apri `Health status details`.
+   - Controlla anche `Deployments and events` nel service.
 
-- rompi deliberatamente `/health` (o una config) e osserva target unhealthy / task restart
-- ripristina e verifica ritorno a healthy + service stable
-- descrivi il debug flow che hai seguito (events ──► stopped reason ──► logs ──► target health)
+4. **Leggi i log** 🎯 _Sfida_
+   - CloudWatch -> log group di `hello-api`
+   - Cerca richieste fallite o segnali utili al debug.
+   - Scrivi l'ordine del tuo debug: ALB, ECS, CloudWatch.
 
----
-
-## Step (numerati)
-
-1. **Apri target group health (stato iniziale)**
-   - Target group ──► Targets
-   - Output atteso: targets healthy.
-
-2. **Rompi deliberatamente l'health check** 🎯 _Sfida_
-   - Target group ──► Health checks
-   - Cambia path in uno inesistente (es. `/health-broken`)
-   - _Sfida_: prevedi cosa succederà prima di applicare. Quanto tempo prima che i target diventino unhealthy?
-
-3. **Osserva la transizione a unhealthy**
-   - Output atteso: targets diventano unhealthy
-
-4. **Osserva ECS service events e log** 🎯 _Sfida_
-   - Service ──► Events
-   - CloudWatch Logs ──► log group
-   - _Sfida_: descrivi la catena di eventi: cosa succede al service quando i target sono unhealthy?
-
-5. **Ripristina health check corretto**
-   - Rimetti path originale (es. `/health`)
-
-6. **Verifica ritorno a healthy**
-
----
+5. **Ripristina il path corretto**
+   - Riporta il health check a `/health`
+   - Attendi il ritorno a `healthy`
 
 ## Output atteso
 
-- Targets diventano unhealthy e poi tornano healthy.
-- Flusso di troubleshooting esercitato.
+- Target passato a `unhealthy` e poi tornato `healthy`.
+- Catena di debug esercitata.
 
 ## Checkpoint
 
-- Sai elencare l’ordine corretto di debug.
-- Sai dire perché health check è cruciale per deploy sicuri.
+- Sai dove guardare per primo se l'app non risponde dietro ALB.
+- Sai spiegare perche un health check corretto protegge i deploy.
 
----
+## Troubleshooting
 
-## Troubleshooting rapido
+- **Nessun cambiamento nello stato target**: ricontrolla `interval` e `threshold` del health check.
+- **Non hai un ALB**: fai la versione alternativa rompendo il comando del container e osserva `Stopped reason`.
 
-- **Non ho ALB**: alternativa: cambia command/env per far crashare il task e osserva STOPPED reason.
-- **Targets non cambiano**: controlla intervalli/threshold del health check.
+## Cleanup
 
----
-
-## Cleanup obbligatorio
-
-- Riporta health check ai valori originali.
-- Verifica che service sia “stable”.
-
----
-
-## Parole chiave Google (screenshot/guide)
-
-- ALB target group health check path screenshot
-- target group unhealthy troubleshooting
-- ECS service events unhealthy targets
-- deployment circuit breaker rollback ECS
-
----
-
-## Tutorial consigliati
-
-- [ECS Service Health Checks](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/healthcheck.html)
-- [ALB Target Group Health Checks](https://docs.aws.amazon.com/elasticloadbalancing/latest/application/target-group-health-checks.html)
-- [ECS Deployment Circuit Breaker](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/deployment-circuit-breaker.html)
-
----
-
-## Soluzioni
-
-<details>
-<summary>🎯 Sfida Step 2: prevedere tempo unhealthy</summary>
-
-**Calcolo tempo transizione a unhealthy**:
-
-| Parametro           | Valore default | Significato                 |
-| ------------------- | -------------- | --------------------------- |
-| Interval            | 30s            | Controllo ogni 30 secondi   |
-| Unhealthy threshold | 2              | 2 fallimenti consecutivi    |
-| Timeout             | 5s             | Aspetta max 5s per risposta |
-
-**Tempo minimo**: `Interval × Unhealthy threshold` = 30s × 2 = **~60 secondi**
-
-**Tempo massimo**: dipende da quando inizia il prossimo check
-
-**Con config Lab 09** (interval 10s, threshold 2):
-
-- Tempo: 10s × 2 = **~20 secondi** (più veloce)
-
-**Tip**: in produzione, threshold più alto (3-5) evita falsi positivi.
-
-</details>
-
-<details>
-<summary>🎯 Sfida Step 4: catena di eventi dopo unhealthy</summary>
-
-**Sequenza eventi (con deployment circuit breaker abilitato)**:
-
-1. **ALB health check fallisce** (path non esiste ──► 404)
-2. **Target diventa Unhealthy** dopo N check falliti
-3. **ALB smette di inviare traffico** a quel target
-4. Se tutti i target sono unhealthy:
-   - Utenti vedono **502 Bad Gateway** o timeout
-5. **Se era un deployment in corso**:
-   - Circuit breaker rileva failure
-   - Rollback automatico alla revision precedente
-6. **Se non era un deployment**:
-   - I task restano RUNNING (non vengono uccisi)
-   - Il service non fa nulla automaticamente
-   - Devi intervenire tu!
-
-**Evento ECS tipico**:
-
-```
-service hello-api has 1 unhealthy targets in target-group ...
-```
-
-**Importante**: ECS **non** riavvia i task solo perché sono unhealthy per ALB!
-Lo fa solo se:
-
-- Il container crasha (exit code != 0)
-- Il container health check fallisce (HEALTHCHECK nel Dockerfile)
-
-</details>
+- Rimetti il health check al valore originale.
+- Verifica che il service sia tornato `stable`.

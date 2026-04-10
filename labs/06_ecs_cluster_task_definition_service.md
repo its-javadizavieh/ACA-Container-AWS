@@ -1,169 +1,85 @@
-# Lab 06 - ECS/Fargate: cluster + task definition + service (minimale)
+# Lab 06 - ECS: cluster, task definition e service
 
 ## Obiettivo
 
-- Creare (o riusare) un **cluster ECS**.
-- Definire una **task definition** (Fargate) corretta: CPU/mem, porte, `awslogs`, execution role vs task role.
-- Avviare un **task** (o un **service** minimale) e verificare che rimanga in esecuzione.
-- Leggere eventi ECS e log CloudWatch (debug flow).
+- Eseguire `hello-api` su ECS/Fargate.
+- Configurare task definition con immagine ECR e CloudWatch Logs.
+- Creare un service minimale con `1` task.
 
-## Durata (timebox)
+## Durata
 
-30 minuti.
+35 minuti.
 
 ## Prerequisiti
 
-- Account AWS con permessi su ECS, IAM, CloudWatch Logs.
-- Un’immagine in ECR (consigliato: Lab 05).
-- (Consigliato) Default VPC disponibile.
-  > **⚠️ AWS Academy Learner Lab**
-  >
-  > `iam:CreateRole` è bloccato. Usa il ruolo pre-creato **`LabRole`** come Task execution role.
-  > Include già: ECR read-only, CloudWatch Logs, trust per `ecs-tasks.amazonaws.com`.
+- Repository ECR `demo-hello-api` disponibile.
+- `LabRole` disponibile come `Task execution role`.
+- Default VPC disponibile.
 
----
+## Guida del lab
 
-## Mini-project (ongoing)
+1. **Crea o riusa il cluster**
+   - ECS -> `Clusters` -> `Create cluster`
+   - Name: `demo-cluster`
 
-Esegui la tua image di progetto su ECS.
+2. **Crea il Security Group del task**
+   - EC2 -> `Security Groups` -> `Create security group`
+   - Name: `demo-task-sg`
+   - Inbound rule: `Custom TCP`, porta `9090`, source `0.0.0.0/0`
 
-Deliverable:
+3. **Crea la task definition `hello-api`**
+   - ECS -> `Task definitions` -> `Create new task definition`
+   - Family: `hello-api`
+   - Launch type: `AWS Fargate`
+   - Task execution role: `LabRole`
+   - CPU: `0.25 vCPU` | Memory: `0.5 GB`
+   - Container name: `hello-api`
+   - Image URI: usa `Browse ECR images` e seleziona `demo-hello-api:1.0`
+   - Container port: `9090`
+   - Logging: `Use log collection` -> `Amazon CloudWatch`
 
-- la task definition punta alla tua image "demo-hello-api" in ECR
-- `awslogs` è abilitato e sai leggere i log in CloudWatch
-- esegui 1 task (o un service con 1 task) e lo mantieni stabile in RUNNING
+4. **Crea il service**
+   - ECS -> `Clusters` -> `demo-cluster` -> `Services` -> `Create`
+   - `Application type`: `Service`
+   - `Task definition family`: `hello-api`
+   - `Revision`: `LATEST`
+   - `Service name`: `hello-api-service`
+   - `Service type`: `Replica`
+   - `Desired tasks`: `1`
+   - Networking: VPC default, subnet preselezionate, `Use an existing security group` -> `demo-task-sg`, `Public IP` -> `Turned on`
+   - Clicca `Create`
 
----
+5. **Verifica il deploy**
+   - Controlla `Running count = 1`.
+   - Apri la tab `Tasks`, copia il `Public IP` e prova:
+     ```text
+     http://<public-ip>:9090/health
+     ```
 
-## Step (numerati)
-
-1. **Scegli la Region del corso**
-
-2. **Crea (o usa) un cluster ECS**
-   - ECS ──► Clusters ──► Create cluster
-
-3. **Crea una task definition (Fargate)** 🎯 _Sfida_
-   - ECS ──► Task definitions ──► Create
-   - Launch type: Fargate
-   - **Task execution role: seleziona `LabRole`** (NON creare `ecsTaskExecutionRole`)
-   - CPU/Mem: valori minimi compatibili
-   - Container:
-     - Image: clicca **Browse ECR images** → seleziona il repository `demo-hello-api` → seleziona il tag `1.0`
-     - Port mapping: `9090` (la porta su cui l'app hello-api ascolta)
-   - Logging:
-     - Abilita CloudWatch Logs (awslogs)
-     - Consigliato: abilita "Auto-configure CloudWatch Logs" (imposta `awslogs-create-group: true`) così ECS crea il log group automaticamente.
-   - _Sfida_: prima di salvare, annota quale combinazione CPU/Mem hai scelto e perché.
-
-4. **Crea un Security Group per il task**
-   - EC2 ──► Security Groups ──► Create security group
-   - Security group name: `demo-task-sg`
-   - Description: `Allow inbound 9090 for ECS task`
-   - VPC: **default VPC**
-   - Inbound rules ──► Add rule:
-     - Type: **Custom TCP**
-     - Port range: `9090`
-     - Source: `0.0.0.0/0` (solo per test — in produzione limita al SG dell'ALB)
-   - Outbound rules: lascia default (All traffic → `0.0.0.0/0`)
-   - Clicca **Create security group**
-
-5. **Esegui un task (più veloce) oppure crea un service minimale**
-   - Opzione A (rapida): Run task ──► 1 task
-     - Networking: default VPC, 2 subnet, seleziona **`demo-task-sg`**, Public IP = ON
-   - Opzione B: Service ──► desired count 1
-
-6. **Verifica RUNNING**
-   - ECS ──► Service/Tasks
-
-7. **Leggi eventi e log** 🎯 _Sfida_
-   - ECS ──► Service ──► Events
-   - CloudWatch Logs ──► log group del task
-   - _Sfida_: trova nel log una riga che conferma che la tua app è in ascolto (es. "listening on port 9090").
-
----
+6. **Events e log** 🎯 _Sfida_
+   - Apri `Deployments and events`.
+   - Apri il log group CloudWatch del task.
+   - Scrivi la riga che conferma l'avvio dell'app.
 
 ## Output atteso
 
 - Cluster e task definition creati.
-- 1 task in stato **RUNNING**.
+- Service `hello-api-service` in esecuzione.
 - Log disponibili in CloudWatch.
 
 ## Checkpoint
 
-- Sai spiegare differenza tra **task definition**, **task**, **service**.
-- Sai trovare “Stopped reason” se un task fallisce.
+- Sai distinguere `task definition`, `task` e `service`.
+- Sai dove trovare `Stopped reason` e `Events`.
+- Sai verificare che l'immagine venga presa da ECR.
 
----
+## Troubleshooting
 
-## Troubleshooting rapido
+- **`CannotPullContainerError`**: controlla immagine ECR e `LabRole`.
+- **Connessione rifiutata**: verifica porta `9090`, `Public IP` e `demo-task-sg`.
+- **Nessun log**: controlla la configurazione CloudWatch nella task definition.
 
-- **Task STOPPED subito**: controlla immagine, port mapping, CPU/mem.
-- **CannotPullContainerError**: controlla execution role e permessi ECR.
-- **Nessun log**: verifica awslogs e log group.
+## Cleanup
 
----
-
-## Cleanup obbligatorio
-
-1. Stop task / Delete service creato per il lab.
-2. (Opzionale) Elimina il log group creato in CloudWatch Logs.
-
----
-
-## Parole chiave Google (screenshot/guide)
-
-- Amazon ECS create cluster console screenshot
-- Amazon ECS task definition Fargate console screenshot
-- ECS CannotPullContainerError troubleshooting
-- CloudWatch Logs awslogs driver ECS Fargate
-
----
-
-## Tutorial consigliati
-
-- [Amazon ECS Developer Guide - Task Definitions](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/task_definitions.html)
-- [ECS Task Definition Parameters](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/task_definition_parameters.html)
-- [Using awslogs Log Driver](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/using_awslogs.html)
-
----
-
-## Soluzioni
-
-<details>
-<summary>🎯 Sfida Step 3: combinazioni CPU/Mem Fargate</summary>
-
-Fargate ha combinazioni **fisse** di CPU e memoria:
-
-| CPU (vCPU) | Memoria ammessa              |
-| ---------- | ---------------------------- |
-| 0.25       | 0.5, 1, 2 GB                 |
-| 0.5        | 1, 2, 3, 4 GB                |
-| 1          | 2, 3, 4, 5, 6, 7, 8 GB       |
-| 2          | 4–16 GB (incrementi di 1 GB) |
-| 4          | 8–30 GB                      |
-
-**Scelta consigliata per "hello-api"**: `0.25 vCPU + 0.5 GB` (minimo, basta per test).
-
-**Perché**: è la combinazione più economica e sufficiente per un'app Node/Python semplice.
-
-</details>
-
-<details>
-<summary>🎯 Sfida Step 6: trovare "listening on port" nei log</summary>
-
-**Passo per passo**:
-
-1. Vai in **CloudWatch ──► Logs ──► Log groups**
-2. Cerca il log group (es. `/ecs/hello-api` o simile)
-3. Clicca sul **log stream** più recente (nome = task ID)
-4. Cerca la riga con "listening", "started", "ready" o simili
-
-**Esempio output atteso**:
-
-```
-Server listening on port 8080
-```
-
-**Se non trovi nulla**: l'app potrebbe non stampare messaggi all'avvio - aggiungi un `console.log("Started")` nel codice.
-
-</details>
+- Se passi al lab 07, lascia `hello-api-service` attivo.
+- Altrimenti elimina il service e ferma i task.

@@ -1,241 +1,91 @@
-# Lab 03 - AWS setup: Region, identity, console tour (per container services)
+# Lab 03 - AWS: Region, identita e console
 
 ## Obiettivo
 
-- Impostare correttamente **Region** e contesto di lavoro del corso.
-- Capire dove trovare (e leggere) le pagine principali: **ECS, EKS, ECR, CloudWatch, IAM, VPC**.
-- Preparare una base minima di “igiene cloud”: naming/tagging e controlli costi (per operare e scegliere i servizi corretti).
+- Configurare le credenziali CLI del Learner Lab.
+- Impostare la Region del corso.
+- Trovare in console ECS, ECR, CloudWatch e IAM.
 
-## Durata (timebox)
+## Durata
 
 30 minuti.
 
 ## Prerequisiti
 
-- Account AWS (Free Tier o didattico) con accesso in Console.
-- Docker installato sulla propria macchina.
-- AWS CLI v2 installata (vedi Step 0 sotto).
+- Account AWS del corso.
+- AWS CLI v2 installata.
+- Terminale.
 
-## Scenario
+## Guida del lab
 
-Prima di creare risorse container, uniformiamo setup e convenzioni e sappiamo “dove guardare” quando qualcosa va storto.
+1. **Copia le credenziali del lab**
+   - Learner Lab -> **AWS Details** -> **Show** -> **AWS CLI**.
+   - Copia il blocco che parte da `[default]`.
+   - Linux / macOS:
+     ```bash
+     mkdir -p ~/.aws
+     nano ~/.aws/credentials
+     ```
+   - PowerShell:
+     ```powershell
+     New-Item -ItemType Directory -Force -Path "$env:USERPROFILE\.aws" | Out-Null
+     notepad "$env:USERPROFILE\.aws\credentials"
+     ```
+   - In Windows il file deve essere salvato esattamente come `credentials`, non come `credentials.txt`.
+   - Se usi **File -> Save As** in Notepad, imposta:
+     - `Save as type`: `All Files (*.*)`
+     - `File name`: `credentials`
+     - `Encoding`: `UTF-8`
+   - Il percorso finale deve restare `%USERPROFILE%\.aws\credentials`.
+   - `UTF-8` va bene. Anche `ANSI` funziona perche il contenuto e solo testo semplice.
+   - Evita `Unicode` / `UTF-16` e qualunque formato non di testo semplice.
+   - Il contenuto deve rimanere in formato AWS shared credentials, per esempio:
+     ```ini
+     [default]
+     aws_access_key_id = ASIA...
+     aws_secret_access_key = ...
+     aws_session_token = ...
+     ```
+   - Se Notepad salva il file come `.txt` o cambia il formato, AWS CLI non riconosce correttamente le credenziali.
 
----
+2. **Imposta la Region e verifica l'identita**
 
-## Mini-project (ongoing)
+   ```bash
+   aws configure set region us-east-1
+   aws sts get-caller-identity
+   ```
 
-Imposta il contesto operativo del progetto su AWS.
+   Questo e il controllo piu importante: se fallisce qui, i lab successivi falliranno per lo stesso motivo.
 
-Deliverable:
+3. **Fai il tour minimo della console**
+   - **ECS**: individua `Clusters`, `Task definitions`, `Services`, `Tasks`.
+   - **ECR**: individua `Repositories`, `Images`, `Image digest`.
+   - **CloudWatch**: individua `Log groups`.
+   - **IAM**: apri `Roles` e trova `LabRole`.
 
-- scegli e annota la singola AWS Region del progetto
-- definisci naming/tagging per tutte le risorse del progetto
-- sai dove trovare: ECS Events, task stopped reason, CloudWatch Logs, ECR Images
-
----
-
-## Step (numerati)
-
-### 0. Installa AWS CLI v2 (una sola volta)
-
-La CLI serve per interagire con AWS da terminale. Installala sulla tua macchina locale.
-
-#### Ubuntu / Debian
-
-```bash
-curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o /tmp/awscliv2.zip
-unzip -q /tmp/awscliv2.zip -d /tmp
-sudo /tmp/aws/install
-aws --version
-```
-
-#### macOS
-
-```bash
-curl "https://awscli.amazonaws.com/AWSCLIV2.pkg" -o /tmp/AWSCLIV2.pkg
-sudo installer -pkg /tmp/AWSCLIV2.pkg -target /
-aws --version
-```
-
-#### Windows
-
-1. Scarica l'installer: <https://awscli.amazonaws.com/AWSCLIV2.msi>
-2. Esegui il `.msi` e segui il wizard (Next → Next → Install)
-3. Apri un nuovo terminale (cmd o PowerShell) e verifica:
-
-```powershell
-aws --version
-```
-
-> **Verifica**: il comando `aws --version` deve restituire `aws-cli/2.x.x ...`.
-> Se il comando non viene trovato, chiudi e riapri il terminale.
-
----
-
-### 0b. Configura le credenziali Learner Lab
-
-Ogni volta che avvii (o riavvii) il Learner Lab, devi copiare le credenziali temporanee.
-
-1. Apri il **Learner Lab** nel browser
-2. Clicca **AWS Details** (in alto a destra nella pagina del lab)
-3. Clicca **Show** accanto a **AWS CLI**
-4. Vedrai tre righe:
-
-```
-[default]
-aws_access_key_id = ASIA...
-aws_secret_access_key = ...
-aws_session_token = ...
-```
-
-5. **Copia** le tre righe (tutto il blocco da `[default]` fino alla fine del token).
-
-6. **Incolla nel file credentials:**
-
-#### Linux / macOS
-
-```bash
-mkdir -p ~/.aws
-nano ~/.aws/credentials
-```
-
-Incolla le tre righe, poi **salva**: `Ctrl+O`, `Invio`, `Ctrl+X`.
-
-#### Windows (PowerShell)
-
-```powershell
-# Crea la cartella .aws (ignora errore se esiste gia)
-New-Item -ItemType Directory -Force -Path "$env:USERPROFILE\.aws" | Out-Null
-
-# Apri il file credentials in Notepad (lo crea se non esiste)
-notepad "$env:USERPROFILE\.aws\credentials"
-```
-
-Incolla le tre righe in Notepad, poi **File → Salva** e chiudi Notepad.
-
-7. Imposta la Region di default:
-
-```bash
-aws configure set region us-east-1
-```
-
-8. Verifica che la connessione funzioni:
-
-```bash
-aws sts get-caller-identity
-```
-
-> **Output atteso**: Account ID, UserId, Arn del tuo ruolo Learner Lab.
->
-> **⚠️ Le credenziali scadono ogni poche ore.** Se ricevi `ExpiredToken`, ripeti dal passo 2.
-
----
-
-1. **Seleziona la Region del corso**
-   - Console AWS ──► selettore Region (in alto a destra)
-   - Nota: useremo una sola Region per tutto il corso.
-
-2. **Verifica l’identità attiva**
-   - In alto a destra ──► “Security credentials” / “Account”
-   - Output atteso: sai dire _chi_ sei (utente/ruolo) e in che account sei.
-
-3. **Definisci convenzioni minime**
-   - Tag consigliati:
-     - `Project=ContainersAWS`
-     - `Owner=<nome_gruppo>`
-   - Naming: prefisso `containers-<gruppo>-...`
-
-4. **Console tour: ECS** 🎯 _Sfida_
-   - Apri ECS ──► guarda "Clusters", "Task definitions", "Services".
-   - Obiettivo: trovare Events e "stopped reason".
-   - _Sfida_: trova dove puoi vedere il motivo per cui un task è stato fermato.
-
-5. **Console tour: ECR**
-   - Apri ECR ──► "Repositories".
-   - Obiettivo: capire dove vedi tag/digest e scan.
-
-6. **Console tour: CloudWatch**
-   - Apri CloudWatch ──► "Logs", "Log groups", "Alarms".
-   - Obiettivo: capire dove leggerai i log ECS.
-
-7. **Console tour: IAM (solo lettura)** 🎯 _Sfida_
-   - Apri IAM ──► "Roles".
-   - Obiettivo: differenza concettuale tra execution role e task role.
-   - _Sfida_: cerca un ruolo che contiene "ecsTaskExecution" nel nome e leggi le policy attached.
-
-8. **(Opzionale, se consentito) Controlli costi**
-   - Billing ──► Cost Explorer / Budgets.
-   - Se non hai permessi: annota la limitazione.
-
----
+4. **Definisci convenzioni base** 🎯 _Sfida_
+   - Prefisso risorse: `demo-<gruppo>-...`
+   - Tag minimi: `Project=ContainersAWS`, `Owner=<gruppo>`
+   - Scrivi la tua Region e il prefisso che userai nei lab.
 
 ## Output atteso
 
-- Region selezionata e annotata.
-- Convenzioni di tag/naming definite.
-- Familiarità con pagine principali per troubleshooting.
+- Credenziali CLI configurate.
+- Region del corso impostata.
+- Sai dove trovare `Stopped reason`, immagini ECR e log CloudWatch.
 
 ## Checkpoint
 
-- Sai indicare in Console dove guardare:
-  - eventi del service ECS
-  - log in CloudWatch
-  - immagini in ECR
+- Sai verificare l'account attivo con `aws sts get-caller-identity`.
+- Sai indicare dove leggere Events ECS e Log groups.
+- Sai quale ruolo userai nei lab ECS: `LabRole`.
 
----
+## Troubleshooting
 
-## Troubleshooting rapido
+- **`ExpiredToken`**: riapri `AWS Details` e ricopia le credenziali.
+- **`AccessDenied`**: controlla di essere nel Learner Lab corretto.
+- **Servizi mancanti**: verifica la Region in alto a destra nella console.
 
-- **Non vedo Billing**: permessi limitati (normale in account didattici).
-- **Servizi non visibili**: verifica Region corretta.
+## Cleanup
 
----
-
-## Cleanup obbligatorio
-
-- Nessuna risorsa creata (lab principalmente di consultazione).
-
----
-
-## Parole chiave Google (screenshot/guide)
-
-- AWS console region selector screenshot
-- Amazon ECS clusters task definitions services screenshot
-- Amazon ECR repositories images tags digest screenshot
-- CloudWatch log groups ECS awslogs screenshot
-- IAM role vs user console screenshot
-
----
-
-## Tutorial consigliati
-
-- [AWS Console Getting Started](https://docs.aws.amazon.com/awsconsolehelpdocs/latest/gsg/learn-whats-new.html)
-- [Amazon ECS Concepts](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/Welcome.html)
-- [CloudWatch Logs Concepts](https://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/WhatIsCloudWatchLogs.html)
-
----
-
-## Soluzioni
-
-<details>
-<summary>🎯 Sfida Step 4: dove vedere "stopped reason"</summary>
-
-1. Vai in **ECS ──► Clusters ──► [tuo cluster] ──► Tasks**
-2. Clicca su un task con stato **STOPPED**
-3. In alto vedrai **"Stopped reason"** con la spiegazione (es. "Essential container exited", "CannotPullContainerError", ecc.)
-4. Nella tab **Events** del service (se presente) trovi la cronologia degli eventi
-
-</details>
-
-<details>
-<summary>🎯 Sfida Step 7: trovare LabRole (execution role)</summary>
-
-1. Vai in **IAM ──► Roles**
-2. Cerca `LabRole` nella barra di ricerca
-3. Clicca su **LabRole**
-4. Vedrai le policy attached (es. `AmazonEC2ContainerRegistryReadOnly` + managed policies del lab)
-5. Differenza chiave:
-   - **Execution role**: permessi per ECS agent (pull image, push logs)
-   - **Task role**: permessi per il tuo codice applicativo (es. accesso S3, DynamoDB)
-
-</details>
+Nessuna risorsa da eliminare.

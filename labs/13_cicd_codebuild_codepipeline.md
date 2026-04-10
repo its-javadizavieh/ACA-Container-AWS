@@ -1,180 +1,79 @@
-# Lab 13 - CI/CD: CodeBuild ──► ECR ──► deploy ECS
+# Lab 13 - CI/CD: build, push e deploy
 
 ## Obiettivo
 
-- Automatizzare build e push di una Docker image su ECR con **CodeBuild**.
-- (Opzionale) creare una pipeline con **CodePipeline**.
-- Aggiornare ECS service con una nuova versione.
+- Preparare il flusso minimo `build -> push -> deploy`.
+- Taggare l'immagine con un riferimento tracciabile.
+- Aggiornare ECS con una nuova versione.
 
-## Durata (timebox)
+## Durata
 
 30 minuti.
 
 ## Prerequisiti
 
-- Repository sorgente (GitHub o CodeCommit) con Dockerfile.
-- ECR repository esistente (Lab 05).
-- ECS service esistente (Lab 06/09).
-- Permessi su CodeBuild/CodePipeline/IAM/ECR/ECS.
+- Repository sorgente con `Dockerfile`.
+- Repository ECR `demo-hello-api` disponibile.
+- Service ECS attivo.
 
-> **⚠️ AWS Academy Learner Lab**
->
-> - **`codebuild:CreateProject`** non è incluso nella lab policy.
-> - `codebuild:CreateProject` è **bloccato** — non è possibile creare né usare progetti CodeBuild in questo lab.
-> - Lo step CodeBuild è un **walkthrough concettuale**: mostra la schermata di creazione, spiega i campi, ma non cliccare Create.
-> - In alternativa: build e push manuale da Cloud9/terminale (stessi comandi del buildspec.yml).
+## Guida del lab
 
----
+1. **Prepara `buildspec.yml`**
+   - Crea un file con tre fasi: `pre_build`, `build`, `post_build`.
+   - Deve fare:
+     - login su ECR
+     - build dell'immagine
+     - tag con `latest` e con `commit-sha`
+     - push dei tag su ECR
 
-## Mini-project (ongoing)
+2. **Walkthrough CodeBuild**
+   - CodeBuild -> `Create build project`
+   - Controlla questi campi:
+     - `Source`
+     - `Environment`
+     - `Privileged mode = ON`
+     - `Service role`
+   - Nel Learner Lab `codebuild:CreateProject` puo essere bloccato: se succede, non creare il progetto.
 
-Automatizza build e deploy del progetto “hello-api”.
+3. **Build e push manuale**
+   - Riusa `REGION`, `ACCT` e `ECR_REPO` del lab 05.
 
-Deliverable:
+   ```bash
+   COMMIT=$(git rev-parse --short HEAD)
+   docker build -t hello-api:$COMMIT .
+   docker tag hello-api:$COMMIT $ECR_REPO:$COMMIT
+   docker tag hello-api:$COMMIT $ECR_REPO:latest
+   docker push $ECR_REPO:$COMMIT
+   docker push $ECR_REPO:latest
+   ```
 
-- scrivi un `buildspec.yml` funzionante (anche se non puoi eseguirlo in CodeBuild)
-- build manuale da terminale: `docker build` + `docker tag sha-<commit>` + `docker push` su ECR
-- fai redeploy del service ECS usando la nuova immagine (task definition revision)
-- sai rispondere: "quale commit sta girando?" guardando tag/revision
-- ⚠️ `codebuild:CreateProject` bloccato - walkthrough concettuale della schermata CodeBuild
+4. **Verifica in ECR**
+   - ECR -> `demo-hello-api` -> `Images`
+   - Controlla la presenza del tag `latest` e del tag `commit-sha`.
 
----
-
-## Step (numerati)
-
-1. **Prepara repository sorgente**
-   - Deve contenere `Dockerfile` e codice app
-
-2. **Crea `buildspec.yml` (minimo)** 🎯 _Sfida_
-   - Login su ECR
-   - Build immagine
-   - Tag con `latest` + `commit-sha` (o timestamp)
-   - Push su ECR
-   - _Sfida_: scrivi un buildspec.yml funzionante che tagga con `$CODEBUILD_RESOLVED_SOURCE_VERSION`.
-
-3. **Usa il progetto CodeBuild pre-creato**
-   - ⚠️ **Lab AWS Academy**: `codebuild:CreateProject` è bloccato. Questo step è un **walkthrough concettuale**: apri CodeBuild ──► Create build project, mostra i campi, ma non cliccare Create. In alternativa: esegui build e push manualmente da terminale.
-   - Verifica che _privileged mode_ sia abilitato (necessario per Docker build)
-   - Esamina la configurazione: source, environment, service role
-
-4. **Esegui build** 🎯 _Sfida_
-   - Start build
-   - Verifica log e fase di push
-   - _Sfida_: se la build fallisce, trova l'errore esatto nei log (quale fase? quale comando?).
-
-5. **Verifica immagine su ECR**
-   - Deve comparire un nuovo tag/digest
-
-6. **Deploy su ECS (manuale nel lab)**
-   - Aggiorna task definition con nuovo tag
-   - ECS ──► Service ──► Update ──► force new deployment
-
----
+5. **Aggiorna ECS**
+   - Crea una nuova task definition revision con l'immagine taggata dal commit.
+   - Aggiorna il service con `Force new deployment`.
 
 ## Output atteso
 
-- Build automatizzata e push su ECR completato.
-- ECS aggiornato e nuovo deployment riuscito.
+- Nuova immagine pubblicata in ECR.
+- Tag tracciabile basato sul commit disponibile.
+- Service ECS aggiornato.
 
 ## Checkpoint
 
-- Sai spiegare perché taggare anche con **commit SHA** aumenta tracciabilità.
-- Sai trovare il motivo di un build failure nei log CodeBuild.
+- Sai perche un tag `commit-sha` e piu utile di `latest` da solo.
+- Sai cosa serve in CodeBuild per eseguire una Docker build.
+- Sai tracciare quale versione sta girando nel service.
 
----
+## Troubleshooting
 
-## Troubleshooting rapido
+- **Build Docker fallita**: controlla il `Dockerfile` e il contesto di build.
+- **Push negato**: ripeti il login ECR e verifica `ECR_REPO`.
+- **Service non si aggiorna**: crea una nuova revision e forza il deploy.
 
-- **Build Docker fallisce**: controlla `privileged mode`.
-- **AccessDenied su ECR**: controlla role CodeBuild e policy.
-- **Deploy non aggiorna**: task definition punta al tag corretto? forza deployment.
+## Cleanup
 
----
-
-## Cleanup obbligatorio
-
-- ⚠️ **Lab AWS Academy**: non eliminare il progetto CodeBuild pre-creato - potrebbe servire ad altri studenti.
-- In ECR elimina immagini di test non necessarie.
-- Se hai creato pipeline CodePipeline: disabilita o elimina.
-
----
-
-## Parole chiave Google (screenshot/guide)
-
-- AWS CodeBuild docker privileged mode screenshot
-- CodeBuild buildspec.yml docker build push ECR example
-- IAM policy for CodeBuild push to ECR
-- CodePipeline ECS deploy action screenshot
-
----
-
-## Tutorial consigliati
-
-- [AWS CodeBuild Getting Started](https://docs.aws.amazon.com/codebuild/latest/userguide/getting-started.html)
-- [Build Spec Reference](https://docs.aws.amazon.com/codebuild/latest/userguide/build-spec-ref.html)
-- [CodePipeline with ECS](https://docs.aws.amazon.com/codepipeline/latest/userguide/ecs-cd-pipeline.html)
-
----
-
-## Soluzioni
-
-<details>
-<summary>🎯 Sfida Step 2: buildspec.yml completo</summary>
-
-**buildspec.yml funzionante**:
-
-```yaml
-version: 0.2
-
-env:
-  variables:
-    AWS_DEFAULT_REGION: "us-east-1"
-    IMAGE_REPO_NAME: "hello-api"
-    AWS_ACCOUNT_ID: "123456789012" # Sostituisci
-
-phases:
-  pre_build:
-    commands:
-      - echo Logging in to Amazon ECR...
-      - aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login --username AWS --password-stdin $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com
-      - COMMIT_HASH=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c 1-7)
-      - IMAGE_TAG=${COMMIT_HASH:=latest}
-  build:
-    commands:
-      - echo Build started on `date`
-      - docker build -t $IMAGE_REPO_NAME:$IMAGE_TAG .
-      - docker tag $IMAGE_REPO_NAME:$IMAGE_TAG $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE_REPO_NAME:$IMAGE_TAG
-      - docker tag $IMAGE_REPO_NAME:$IMAGE_TAG $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE_REPO_NAME:latest
-  post_build:
-    commands:
-      - echo Build completed on `date`
-      - docker push $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE_REPO_NAME:$IMAGE_TAG
-      - docker push $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE_REPO_NAME:latest
-```
-
-**Variabile chiave**: `$CODEBUILD_RESOLVED_SOURCE_VERSION` contiene il commit SHA completo.
-
-</details>
-
-<details>
-<summary>🎯 Sfida Step 4: diagnosticare build failure</summary>
-
-**Dove trovare l'errore**:
-
-1. CodeBuild ──► Build history ──► [build fallita]
-2. Apri "Build logs" (o "Tail logs")
-3. Cerca la **fase** che ha fallito (PRE_BUILD, BUILD, POST_BUILD)
-4. Leggi l'output del comando fallito
-
-**Errori comuni**:
-
-| Fase       | Errore                                         | Causa                         | Soluzione                       |
-| ---------- | ---------------------------------------------- | ----------------------------- | ------------------------------- |
-| PRE_BUILD  | `denied: Your authorization token has expired` | Token ECR scaduto             | Riesegui login                  |
-| BUILD      | `Cannot connect to Docker daemon`              | Privileged mode non abilitato | Abilita in project settings     |
-| BUILD      | `COPY failed: file not found`                  | Path errato nel Dockerfile    | Verifica struttura cartelle     |
-| POST_BUILD | `AccessDeniedException`                        | IAM policy mancante           | Aggiungi ecr:PutImage alla role |
-
-**Tip**: la fase fallita è indicata con `[Container] Phase FAILED`.
-
-</details>
+- Mantieni i tag utili se passi al lab 14.
+- Elimina immagini di test inutili solo se non ti servono piu.

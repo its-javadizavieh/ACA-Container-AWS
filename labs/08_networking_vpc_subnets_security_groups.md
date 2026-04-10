@@ -1,139 +1,66 @@
-# Lab 08 - Networking design: VPC, subnet, Security Groups (ECS/Fargate)
+# Lab 08 - Networking: VPC, subnet e Security Groups
 
 ## Obiettivo
 
-- Progettare una rete minima per ECS Fargate.
-- Definire regole SG corrette: **ALB ──► Task**.
-- Capire quando servono **NAT** o **VPC endpoints**.
+- Riconoscere subnet pubbliche e private.
+- Preparare i Security Groups per il flusso `Internet -> ALB -> task`.
+- Capire quando servono NAT Gateway o VPC endpoints.
 
-## Durata (timebox)
+## Durata
 
 30 minuti.
 
 ## Prerequisiti
 
-- Accesso alla Console AWS.
-- Conoscenze base: VPC, subnet, route table.
+- Accesso alla console AWS.
+- VPC default o VPC del corso disponibile.
 
----
+## Guida del lab
 
-## Mini-project (ongoing)
+1. **Identifica VPC e subnet**
+   - VPC -> `Your VPCs` -> apri la VPC del lab.
+   - VPC -> `Subnets` -> apri almeno `2` subnet.
+   - VPC -> `Route tables` -> verifica quale subnet ha route `0.0.0.0/0 -> igw`.
 
-Progetta il networking del progetto “hello-api” (ALB + ECS tasks) in modo sicuro e operabile.
+2. **Crea il Security Group dell'ALB**
+   - EC2 -> `Security Groups` -> `Create security group`
+   - Name: `demo-alb-sg`
+   - Inbound rule: `HTTP`, porta `80`, source `0.0.0.0/0`
 
-Deliverable:
+3. **Aggiorna il Security Group del task**
+   - Apri `demo-task-sg` creato nel lab 06.
+   - Modifica `Inbound rules`.
+   - Aggiungi o sostituisci la regola con:
+     - Type: `Custom TCP`
+     - Port range: `9090`
+     - Source: `demo-alb-sg`
 
-- scegli (e motiva) subnet pubbliche per ALB e subnet private per i task
-- definisci SG-ALB e SG-TASK con regole minime (ALB ──► task sulla porta app)
-- spiega come i task in subnet private raggiungono ECR/CloudWatch (NAT oppure VPC endpoints)
+4. **Disegna il flusso minimo** 🎯 _Sfida_
+   - Scrivi su una riga: `Internet -> ALB -> Target Group -> ECS task`.
+   - Rispondi: perche come source usi un Security Group e non `0.0.0.0/0`?
 
-## Scenario
-
-Esercizio guidato: scegliamo una VPC esistente e progettiamo come metterci ALB + tasks.
-
----
-
-## Step (numerati)
-
-1. **Identifica la VPC**
-   - VPC ──► Your VPCs
-   - Nota: CIDR, numero AZ.
-
-2. **Identifica subnet pubbliche e private**
-   - VPC ──► Subnets
-   - Per ogni subnet annota: AZ, route table, presenza route verso IGW.
-
-3. **Disegna lo schema (anche su foglio)**
-   - ALB in subnet pubbliche (2 AZ)
-   - Tasks ECS in subnet private (2 AZ)
-
-4. **Security Group: crea SG-ALB** 🎯 _Sfida_
-   - Console → **EC2** → menu a sinistra **Security Groups** → **Create security group**
-
-   **Basic details:**
-   - Security group name: `SG-ALB`
-   - Description: `Allow HTTP from internet`
-   - VPC: seleziona la default VPC
-
-   **Inbound rules** → **Add rule**:
-
-   | Type | Protocol | Port range | Source | Description |
-   |------|----------|-----------|--------|-------------|
-   | HTTP | TCP | 80 | Custom → `0.0.0.0/0` | HTTP from internet |
-
-   **Outbound rules**: lascia il default (All traffic → 0.0.0.0/0).
-
-   → **Create security group**. Annota l'ID `sg-xxx`.
-
-5. **Security Group: crea SG-TASK** 🎯 _Sfida_
-   - Ancora in **Security Groups** → **Create security group**
-
-   **Basic details:**
-   - Security group name: `SG-TASK`
-   - Description: `Allow SG Task`
-   - VPC: stessa default VPC
-
-   **Inbound rules** → **Add rule**:
-
-   | Type | Protocol | Port range | Source | Description |
-   |------|----------|-----------|--------|-------------|
-   | Custom TCP | TCP | 9090 | Custom → scrivi `SG-ALB` e selezionalo dal dropdown | Only ALB can reach task |
-
-   **Outbound rules**: lascia il default (All traffic → 0.0.0.0/0).
-
-   → **Create security group**.
-
-   - _Sfida_: perché la Source è un security group e non un CIDR come `0.0.0.0/0`? Scrivi la risposta.
-
-6. **Discussione rapida: accesso a ECR/CloudWatch da subnet private** 🎯 _Sfida_
-   - Opzione A: NAT Gateway
-   - Opzione B: VPC endpoints (ECR/Logs)
-   - Nota: pro/contro costi.
-   - _Sfida_: calcola il costo mensile approssimativo di un NAT Gateway (hint: cerca il prezzo per ora + GB).
-
----
+5. **Ragiona sull'uscita verso AWS services**
+   - Se i task vanno in subnet private, come raggiungono ECR e CloudWatch?
+   - Opzioni: `NAT Gateway` oppure `VPC endpoints`.
 
 ## Output atteso
 
-- Schema di rete minimo definito.
-- `SG-ALB` creato con inbound HTTP 80 da 0.0.0.0/0.
-- `SG-TASK` creato con inbound Custom TCP 9090 da **SG-ALB**.
+- `demo-alb-sg` creato.
+- `demo-task-sg` pronto per ricevere traffico solo dall'ALB.
+- Differenza tra subnet pubblica e privata chiara.
 
 ## Checkpoint
 
-- Sai dire quando una subnet è pubblica (route `0.0.0.0/0` ──► IGW).
-- Sai spiegare perché la Source di SG-TASK è un security group e non un CIDR.
-- Sai l'ordine di cancellazione: prima SG-TASK (che referenzia SG-ALB), poi SG-ALB.
+- Sai riconoscere una subnet pubblica dalla route table.
+- Sai spiegare il path del traffico fino al container.
+- Sai perche il task SG non dovrebbe esporre `9090` a Internet quando usi un ALB.
 
----
+## Troubleshooting
 
-## Troubleshooting rapido
+- **Traffico non passa**: verifica source del `demo-task-sg`.
+- **Subnet confusa**: ricontrolla route table e Internet Gateway.
 
-- **Non capisco se subnet è pubblica**: controlla route table ──► route `0.0.0.0/0` verso IGW.
-- **Traffico ALB──►task non passa**: spesso è SG-TASK inbound o target group port.
+## Cleanup
 
----
-
-## Cleanup obbligatorio
-
-- EC2 → **Security Groups** → seleziona `SG-TASK` → **Actions** → **Delete security groups** (prima SG-TASK, poi SG-ALB).
-
----
-
-## Parole chiave Google (screenshot/guide)
-
-- AWS VPC public vs private subnet route table IGW
-- security group source another security group example
-- ECS Fargate awsvpc ENI security group
-- VPC endpoints ECR CloudWatch Logs private subnet
-- NAT gateway cost per hour warning
-
----
-
-## Tutorial consigliati
-
-- [AWS VPC User Guide - How It Works](https://docs.aws.amazon.com/vpc/latest/userguide/how-it-works.html)
-- [Security Groups for Your VPC](https://docs.aws.amazon.com/vpc/latest/userguide/vpc-security-groups.html)
-- [VPC Endpoints for AWS Services](https://docs.aws.amazon.com/vpc/latest/privatelink/vpc-endpoints.html)
-
-
+- Se passi al lab 09, mantieni `demo-alb-sg` e `demo-task-sg`.
+- Altrimenti elimina prima `demo-task-sg`, poi `demo-alb-sg`.

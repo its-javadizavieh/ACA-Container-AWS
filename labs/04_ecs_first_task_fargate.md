@@ -1,161 +1,83 @@
-# Lab 04 - ECS: eseguire il primo task su Fargate (console)
+# Lab 04 - ECS: primo task su Fargate
 
 ## Obiettivo
 
-- Avviare un **task ECS su Fargate** partendo da una definizione semplice.
-- Capire dove leggere e in che ordine: **events**, **stopped reason**, **log**.
-- Fare cleanup completo.
+- Avviare un task ECS su Fargate dalla console.
+- Verificare stato task, `Stopped reason` e log.
+- Testare il task via `Public IP`.
 
-## Durata (timebox)
+## Durata
 
 30 minuti.
 
 ## Prerequisiti
 
 - Account AWS con permessi ECS e CloudWatch.
-- VPC esistente con almeno 2 subnet (anche default va bene).
-- (Consigliato) Un security group pronto o permessi per crearne uno.
+- Default VPC disponibile.
+- `LabRole` disponibile come `Task execution role`.
 
-> **⚠️ AWS Academy Learner Lab**
->
-> `iam:CreateRole` non è disponibile. Quando crei una Task Definition, imposta **Task execution role → `LabRole`**.
->
-> `LabRole` è pre-creato dal template CloudFormation del lab.
+## Guida del lab
 
-## Scenario
+1. **Crea o riusa il cluster**
+   - ECS -> `Clusters` -> `Create cluster`
+   - Name: `demo-cluster`
 
-Lanciamo un task “hello” (immagine pubblica) su Fargate per imparare il flusso base.
+2. **Crea la task definition**
+   - ECS -> `Task definitions` -> `Create new task definition`
+   - Family: `demo-nginx`
+   - Launch type: `AWS Fargate`
+   - Task execution role: `LabRole`
+   - CPU: `0.25 vCPU` | Memory: `0.5 GB`
+   - Container name: `web`
+   - Image URI: `public.ecr.aws/docker/library/nginx:alpine`
+   - Container port: `80`
+   - Logging: `Use log collection` -> `Amazon CloudWatch` -> auto-configure
 
----
+3. **Crea il Security Group per il test**
+   - EC2 -> `Security Groups` -> `Create security group`
+   - Name: `demo-nginx-sg`
+   - Inbound rule: `HTTP`, porta `80`, source `0.0.0.0/0`
 
-## Mini-project (ongoing)
+4. **Esegui il task**
+   - ECS -> `Clusters` -> `demo-cluster` -> `Tasks` -> `Run new task`
+   - Launch type: `Fargate`
+   - Task definition family: `demo-nginx`
+   - Desired tasks: `1`
+   - VPC: default
+   - Subnets: seleziona almeno `2`
+   - Security group: `demo-nginx-sg`
+   - Public IP: `Turned on`
 
-Questo lab serve per imparare il workflow ECS “run + debug” che riuserai nel progetto.
+5. **Verifica**
+   - Attendi stato `RUNNING`.
+   - Apri il task e copia il `Public IP`.
+   - Browser: `http://<public-ip>`
 
-Deliverable:
-
-- sai mostrare il debug flow su ECS: events ──► stopped reason ──► logs
-- sai dire cosa cambierà quando eseguirai la tua image “hello-api”
-
----
-
-## Step (numerati)
-
-1. **Crea (o usa) un cluster ECS**
-   - ECS ──► Clusters ──► Create cluster
-   - Nome: `containers-<gruppo>-cluster`
-
-2. **Crea una task definition (Fargate)**
-   - ECS ──► Task definitions ──► Create
-   - Compatibilità: Fargate
-   - **Task execution role: seleziona `LabRole`** (NON usare "Create new role" o `ecsTaskExecutionRole`)
-   - Container:
-     - Image: `public.ecr.aws/docker/library/nginx:alpine`
-     - Port mapping: 80
-   - Logging: abilita `awslogs` nel wizard
-
-3. **Run task** 🎯 _Sfida_
-   - Cluster ──► Tasks ──► Run new task
-   - Launch type: Fargate
-   - Networking:
-     - Subnet: scegli 2 subnet (se possibile)
-     - Public IP: abilita (solo per test rapido)
-     - SG: apri 80 solo dal tuo IP (se fattibile) oppure temporaneo
-   - _Sfida_: prima di cliccare "Run", annota quante subnet hai scelto e perché.
-
-4. **Verifica stato task**
-   - Output atteso: task in `RUNNING`.
-
-5. **Controlla events e stopped reason (se succede)** 🎯 _Sfida_
-   - ECS ──► Task ──► "Stopped reason"
-   - ECS ──► Cluster/Service ──► "Events" (se applicabile)
-   - _Sfida_: se il task si ferma, trova il motivo esatto prima di chiedere aiuto.
-
-6. **(Opzionale) Controlla log**
-   - CloudWatch ──► Logs ──► Log groups
-   - Cerca log group del task.
-
-7. **(Opzionale) Test via browser**
-   - Se hai public IP: `http://<public-ip>`.
-
----
+6. **Debug rapido** 🎯 _Sfida_
+   - Se il task va in `STOPPED`, leggi `Stopped reason`.
+   - Apri il log group CloudWatch creato automaticamente.
+   - Scrivi il primo indizio utile che trovi.
 
 ## Output atteso
 
-- Task ECS avviato e visibile in `RUNNING`.
-- Sai trovare events e stopped reason.
+- Task in stato `RUNNING`.
+- Pagina nginx raggiungibile via browser.
+- Sai trovare `Stopped reason` e log.
 
 ## Checkpoint
 
-- Sai dire dove cambiare CPU/memoria della task.
-- Sai trovare log group/stream (se `awslogs` configurato).
+- Sai la differenza tra task definition e task.
+- Sai quali campi di rete servono per avviare un task Fargate.
+- Sai dove leggere i log del task.
 
----
+## Troubleshooting
 
-## Troubleshooting rapido
+- **Task `STOPPED` subito**: controlla `Stopped reason`.
+- **Nessuna pagina via browser**: verifica `Public IP` e regola inbound `80`.
+- **Nessun log**: controlla che la raccolta CloudWatch sia abilitata.
 
-- **Task STOPPED subito**: controlla “Stopped reason” e config porta/command.
-- **No logs**: awslogs non configurato o permessi mancanti.
-- **Non raggiungo l’IP**: SG/route/public IP errati.
+## Cleanup
 
----
-
-## Cleanup obbligatorio
-
-1. ECS ──► Cluster ──► Tasks ──► Stop task
-2. ECS ──► Task definitions ──► deregister (opzionale) le revisioni create
-3. Se hai creato SG: elimina SG (se non serve)
-4. Verifica che non restino risorse “in running”
-
----
-
-## Parole chiave Google (screenshot/guide)
-
-- ECS run task Fargate console screenshot
-- ECS task stopped reason screenshot
-- ECS create task definition Fargate nginx alpine
-- ECS awslogs logConfiguration screenshot
-- public IP ECS Fargate reachability troubleshooting
-
----
-
-## Tutorial consigliati
-
-- [Getting Started with Amazon ECS using Fargate](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/getting-started-fargate.html)
-- [ECS Task Definition Parameters](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/task_definition_parameters.html)
-- [ECS Troubleshooting](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/troubleshooting.html)
-
----
-
-## Soluzioni
-
-<details>
-<summary>🎯 Sfida Step 3: perché più subnet?</summary>
-
-**Risposta**: scegliere 2+ subnet in Availability Zone diverse garantisce **alta disponibilità**.
-
-Se una AZ ha problemi (es. data center down), Fargate può avviare task nell'altra AZ.
-
-Per un task singolo non è critico, ma per un **Service** con più task è best practice.
-
-</details>
-
-<details>
-<summary>🎯 Sfida Step 5: interpretare stopped reason</summary>
-
-Motivi comuni e soluzioni:
-
-| Stopped Reason                | Causa                            | Soluzione                                               |
-| ----------------------------- | -------------------------------- | ------------------------------------------------------- |
-| `CannotPullContainerError`    | Image non trovata o permessi ECR | Verifica nome image, controlla execution role           |
-| `Essential container exited`  | Container crashato               | Controlla i log in CloudWatch                           |
-| `ResourceInitializationError` | Problema rete/ENI                | Verifica subnet ha IP disponibili, route table corretta |
-| `OutOfMemoryError`            | Container usa più RAM del limite | Aumenta `memory` nella task definition                  |
-
-**Passo debug**:
-
-1. Leggi "Stopped reason" nel task
-2. Vai in CloudWatch Logs per dettagli
-3. Se è errore di rete: controlla SG e subnet
-
-</details>
+- Ferma il task.
+- Elimina `demo-nginx-sg` se non ti serve.
+- Mantieni `demo-cluster` se passi subito al lab 06.

@@ -1,159 +1,71 @@
-# Lab 11 - CloudWatch per container: log, metriche e allarmi
+# Lab 11 - CloudWatch: log, metriche e allarmi
 
 ## Obiettivo
 
-- Leggere e filtrare log di container su **CloudWatch Logs**.
-- Creare una metrica (es. CPU service) e un **allarme**.
-- (Opzionale) costruire una dashboard minimale.
+- Leggere i log di `hello-api` in CloudWatch.
+- Correlare log ed eventi ECS.
+- Impostare o descrivere un allarme semplice su CPU o memoria.
 
-## Durata (timebox)
+## Durata
 
 30 minuti.
 
 ## Prerequisiti
 
-- Un service ECS attivo (da Lab 06/09).
-- Permessi su CloudWatch e Logs.
+- `hello-api-service` attivo.
+- Log CloudWatch gia presenti dalla task definition ECS.
 
----
+## Guida del lab
 
-## Mini-project (ongoing)
+1. **Apri il log group dell'app**
+   - CloudWatch -> `Logs` -> `Log groups`
+   - Apri il log group usato da `hello-api`
+   - Apri lo stream piu recente
 
-Rendi "hello-api" osservabile.
+2. **Filtra i log**
+   - Cerca manualmente una riga di startup e una richiesta `/health`.
+   - Se vuoi usare `Logs Insights`, prova:
+     ```text
+     fields @timestamp, @message
+     | filter @message like /health|error/i
+     | sort @timestamp desc
+     | limit 20
+     ```
 
-Deliverable:
+3. **Correla con ECS**
+   - ECS -> `Services` -> `hello-api-service` -> `Deployments and events`
+   - Associa almeno un evento ECS a una riga di log.
 
-- trovi e filtri i log dell'app in CloudWatch Logs (funziona)
-- walkthrough concettuale: mostra la schermata Create alarm, spiega campi e soglie (⚠️ `cloudwatch:PutMetricAlarm` bloccato - non cliccare Create)
-- walkthrough concettuale: mostra la schermata Edit retention, spiega perché è importante (⚠️ `logs:PutRetentionPolicy` bloccato)
+4. **Walkthrough allarme**
+   - CloudWatch -> `Alarms` -> `Create alarm`
+   - `Select metric` -> `ECS` -> `ClusterName, ServiceName`
+   - Scegli `CPUUtilization` oppure `MemoryUtilization`
+   - Esempio soglia: `> 70` per `5 minutes`
+   - Se `cloudwatch:PutMetricAlarm` e bloccato nel lab, fermati prima di `Create alarm` e annota i campi.
 
----
-
-## Step (numerati)
-
-1. **Apri log group del service** 🎯 _Sfida_
-   - CloudWatch ──► Logs ──► Log groups
-   - Apri stream e identifica:
-     - startup logs
-     - richieste
-     - errori
-   - _Sfida_: usa il filtro per trovare solo le righe che contengono "error" o "ERROR".
-
-2. **Correla con ECS events**
-   - ECS ──► Service ──► Events
-   - Obiettivo: evento ↔ log.
-
-3. **Crea un allarme su CPU o Memory** 🎯 _Sfida_
-   - CloudWatch ──► Alarms ──► Create
-   - Seleziona metrica ECS (ClusterName + ServiceName)
-   - Soglia esempio: CPU > 70% per 5 minuti
-   - ⚠️ **Lab AWS Academy**: se ricevi `AccessDenied` su `cloudwatch:PutMetricAlarm`, verifica di essere nello Learner Lab (dove è consentito).
-   - _Sfida_: configura un'azione SNS (anche solo un topic vuoto) per ricevere notifiche.
-
-4. **(Opzionale) Crea una dashboard minimale**
-   - Aggiungi widget CPU/memory e stato allarme.
-
----
+5. **Walkthrough retention** 🎯 _Sfida_
+   - CloudWatch -> `Log groups` -> `Actions` -> `Edit retention setting`
+   - Valore consigliato per dev/test: `7` o `14` giorni
+   - Se `logs:PutRetentionPolicy` e bloccato, annota solo il valore scelto.
 
 ## Output atteso
 
-- Log consultabili e filtrabili.
-- Allarme creato e visibile.
+- Log di startup e richieste identificati.
+- Almeno una correlazione tra evento ECS e log.
+- Soglia allarme definita o annotata.
 
 ## Checkpoint
 
-- Sai dire la differenza tra **logs** e **metrics**.
-- Sai trovare rapidamente la causa di un task “crash loop”.
+- Sai la differenza tra log e metrica.
+- Sai dove cercare se un task si riavvia o fallisce.
+- Sai quale retention useresti in ambiente dev/test.
 
----
+## Troubleshooting
 
-## Troubleshooting rapido
+- **Nessun log**: verifica la configurazione CloudWatch nella task definition.
+- **Metrica assente**: controlla di essere nella Region corretta e sul service giusto.
+- **Permessi bloccati**: trasforma il punto in walkthrough concettuale e annota i campi.
 
-- **Non vedo log**: controlla `awslogs` nel task definition e permessi dell’execution role.
-- **Metrica non disponibile**: verifica namespace ECS e che il service stia inviando metriche.
-- **Allarme non scatta**: controlla periodo/statistica e soglia.
+## Cleanup
 
----
-
-## Cleanup obbligatorio
-
-- Elimina allarmi e dashboard creati per il lab.
-
----
-
-## Parole chiave Google (screenshot/guide)
-
-- CloudWatch Logs view log streams screenshot
-- Amazon ECS CloudWatch metrics ClusterName ServiceName
-- CloudWatch alarm create from metric screenshot
-- CloudWatch dashboard create widget screenshot
-
----
-
-## Tutorial consigliati
-
-- [CloudWatch Logs - Getting Started](https://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/WhatIsCloudWatchLogs.html)
-- [Using Container Insights](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/ContainerInsights.html)
-- [Creating CloudWatch Alarms](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/AlarmThatSendsEmail.html)
-
----
-
-## Soluzioni
-
-<details>
-<summary>🎯 Sfida Step 1: filtrare log per "error"</summary>
-
-**Metodo 1 - Filter pattern nel log group**:
-
-1. CloudWatch ──► Logs ──► Log groups ──► [tuo log group]
-2. Nella barra "Filter events", scrivi: `?error ?ERROR ?Error`
-3. Premi Enter
-
-**Metodo 2 - Logs Insights (più potente)**:
-
-1. CloudWatch ──► Logs ──► Logs Insights
-2. Seleziona il log group
-3. Query:
-
-```
-fields @timestamp, @message
-| filter @message like /(?i)error/
-| sort @timestamp desc
-| limit 50
-```
-
-**Tip**: `(?i)` rende la ricerca case-insensitive.
-
-**Varianti utili**:
-
-- `?error ?exception ?failed` - cerca più pattern
-- `ERROR -"health check"` - escludi health check noise
-
-</details>
-
-<details>
-<summary>🎯 Sfida Step 3: configurare azione SNS per allarme</summary>
-
-**Passo per passo**:
-
-1. **Crea topic SNS** (se non esiste):
-   - Amazon SNS ──► Topics ──► Create topic
-   - Type: Standard
-   - Name: `ecs-alerts`
-
-2. **Crea subscription** (opzionale, per ricevere email):
-   - SNS ──► Topics ──► ecs-alerts ──► Create subscription
-   - Protocol: Email
-   - Endpoint: tua email
-   - Conferma l'email ricevuta
-
-3. **Collega all'allarme**:
-   - CloudWatch ──► Alarms ──► Create alarm
-   - Dopo aver scelto metrica e soglia:
-   - "Notification" ──► In alarm ──► Select SNS topic ──► `ecs-alerts`
-
-**Risultato**: quando CPU > 70% per 5 min, ricevi email.
-
-**Costo**: SNS è quasi gratuito per volumi bassi (prime 1M richieste gratis).
-
-</details>
+- Elimina l'allarme solo se lo hai creato davvero.
