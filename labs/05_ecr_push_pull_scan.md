@@ -17,6 +17,12 @@
 - Image locale `hello-api:1.0` disponibile.
 - AWS CLI configurata.
 
+## Specifiche del laboratorio
+
+- Devi usare la stessa image locale del corso e pubblicarla nel repository ECR del lab.
+- Il risultato minimo e una image con tag leggibile e digest visibile in console.
+- Se lo scan non e disponibile, devi comunque annotare la limitazione e spiegare a cosa servirebbe `Scan on push`.
+
 ## Guida del lab
 
 1. **Imposta le variabili**

@@ -15,6 +15,12 @@
 - Service ECS attivo.
 - Repository ECR con almeno due versioni disponibili.
 
+## Specifiche del laboratorio
+
+- Questo lab riguarda il versionamento del deploy, non la build dell'immagine.
+- Devi confrontare almeno un tag e un digest come riferimenti validi della stessa applicazione.
+- Devi annotare quale revisione torna stabile dopo il rollback e perche la consideri affidabile.
+
 ## Guida del lab
 
 1. **Guarda tag e digest in ECR**

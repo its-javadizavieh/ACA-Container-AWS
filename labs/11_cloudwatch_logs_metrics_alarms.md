@@ -15,6 +15,12 @@
 - `hello-api-service` attivo.
 - Log CloudWatch gia presenti dalla task definition ECS.
 
+## Specifiche del laboratorio
+
+- Questo lab serve a trasformare un service che gira in un service osservabile.
+- Devi trovare almeno un log applicativo reale, collegarlo a un evento ECS e definire una soglia utile di allarme.
+- Se il lab blocca la creazione di allarmi o retention, devi comunque annotare i campi e spiegare la scelta.
+
 ## Guida del lab
 
 1. **Apri il log group dell'app**

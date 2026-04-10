@@ -16,6 +16,12 @@
 - Editor di testo o VS Code.
 - Puoi usare la cartella `hello-api/` gia presente oppure ricrearla durante il lab.
 
+## Specifiche del laboratorio
+
+- Devi avere a disposizione il codice completo di `hello-api`, non inventarlo durante il lab.
+- L'obiettivo e ottenere un container realmente funzionante con gli endpoint `/`, `/health` e `/version`.
+- Le verifiche obbligatorie sono tre: risposta HTTP, log visibili e variabile ambiente letta dal container.
+
 ## Guida del lab
 
 1. **Crea o verifica i file del progetto**
@@ -140,6 +146,11 @@
    - Riavvialo con `APP_VERSION=2.0`:
      ```bash
      docker run -d --name hello-api -p 9090:9090 -e APP_VERSION=2.0 hello-api:1.0
+     ```
+     Oppure, usando un file `.env`:
+     ```bash
+     echo "APP_VERSION=2.0" > .env
+     docker run -d --name hello-api -p 9090:9090 --env-file .env hello-api:1.0
      ```
    - Verifica che `/version` risponda con il nuovo valore.
 

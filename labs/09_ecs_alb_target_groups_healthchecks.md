@@ -15,6 +15,12 @@
 - `hello-api-service` attivo.
 - `demo-alb-sg` e `demo-task-sg` pronti dal lab 08.
 
+## Specifiche del laboratorio
+
+- Qui colleghi il service ECS a un ALB reale e verifichi il comportamento del Target Group.
+- Devi controllare coerenza tra listener, target group, porta container e path `/health`.
+- Se un target diventa `unhealthy`, il lavoro non e fermarsi: devi leggere il dettaglio del motivo.
+
 ## Guida del lab
 
 1. **Crea il Target Group**

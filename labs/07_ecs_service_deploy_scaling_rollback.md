@@ -15,6 +15,12 @@
 - `hello-api-service` attivo dal lab 06.
 - Task definition `hello-api` gia registrata.
 
+## Specifiche del laboratorio
+
+- Questo lab serve a osservare il comportamento del service quando cambi revision, numero di task e versione applicativa.
+- Devi annotare almeno una sequenza reale di `Events` durante update o rollback.
+- Il focus e capire il deploy progressivo, non solo premere `Update`.
+
 ## Guida del lab
 
 1. **Controlla lo stato iniziale**

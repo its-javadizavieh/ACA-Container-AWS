@@ -16,6 +16,12 @@
 - AWS CLI v2 installata.
 - Terminale.
 
+## Specifiche del laboratorio
+
+- Questo lab serve a preparare l'ambiente AWS locale e la console prima di creare risorse.
+- La verifica minima e `aws sts get-caller-identity`: se non funziona, i lab successivi non sono pronti.
+- Devi annotare Region del corso, ruolo `LabRole` e i punti della console dove leggerai eventi, immagini e log.
+
 ## Guida del lab
 
 1. **Copia le credenziali del lab**

@@ -16,6 +16,12 @@
 - Default VPC disponibile.
 - `LabRole` disponibile come `Task execution role`.
 
+## Specifiche del laboratorio
+
+- In questo lab lavori solo dalla console AWS: non serve scrivere codice.
+- Usi una image pubblica (`nginx`) per concentrarti sul flusso ECS: task definition, rete, stato del task e log.
+- Devi arrivare almeno a uno di questi due risultati: task `RUNNING` con pagina raggiungibile, oppure task fallito ma con `Stopped reason` e log identificati.
+
 ## Guida del lab
 
 1. **Crea o riusa il cluster**

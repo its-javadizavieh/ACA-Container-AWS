@@ -15,6 +15,12 @@
 - Cluster ECS disponibile.
 - `LabRole` disponibile.
 
+## Specifiche del laboratorio
+
+- Questo lab mostra un workload non web: una task che parte, fa lavoro e termina.
+- Devi verificare `Exit code`, `Stopped reason` e output del job.
+- L'obiettivo concettuale e saper dire quando un `Run task` e piu adatto di un `Service` sempre attivo.
+
 ## Guida del lab
 
 1. **Crea la task definition del job**

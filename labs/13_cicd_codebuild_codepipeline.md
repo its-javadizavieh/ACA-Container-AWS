@@ -16,6 +16,12 @@
 - Repository ECR `demo-hello-api` disponibile.
 - Service ECS attivo.
 
+## Specifiche del laboratorio
+
+- In questo lab devi capire il flusso CI/CD anche se il Learner Lab non permette tutta l'automazione.
+- Devi produrre almeno due cose tracciabili: un tag basato sul commit e una nuova revision ECS che lo usa.
+- La parte concettuale su CodeBuild serve a spiegare i campi essenziali, ma la verifica pratica passa dal push manuale su ECR.
+
 ## Guida del lab
 
 1. **Prepara `buildspec.yml`**

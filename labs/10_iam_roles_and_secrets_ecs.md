@@ -16,6 +16,12 @@
 - Accesso a IAM, ECS e Systems Manager.
 - `LabRole` disponibile come `execution role`.
 
+## Specifiche del laboratorio
+
+- In questo lab il punto principale e la separazione delle responsabilita tra piattaforma ECS e applicazione.
+- Devi creare o usare un secret vero in SSM e referenziarlo senza esporlo in chiaro nella task definition.
+- La parte importante non e solo far partire il task, ma spiegare perche `execution role` e `task role` non sono la stessa cosa.
+
 ## Guida del lab
 
 1. **Crea un parametro SecureString**

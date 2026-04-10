@@ -16,6 +16,12 @@
 - `LabRole` disponibile come `Task execution role`.
 - Default VPC disponibile.
 
+## Specifiche del laboratorio
+
+- In questo lab porti `hello-api` da ECR a ECS/Fargate con una configurazione minima ma corretta.
+- Devi configurare quattro elementi coerenti tra loro: image URI, porta `9090`, Security Group e CloudWatch Logs.
+- Il risultato atteso non e solo la creazione delle risorse, ma un service con `1` task funzionante e log leggibili.
+
 ## Guida del lab
 
 1. **Crea o riusa il cluster**

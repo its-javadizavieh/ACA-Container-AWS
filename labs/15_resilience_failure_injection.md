@@ -15,6 +15,12 @@
 - `hello-api-service` dietro ALB.
 - Target Group e log CloudWatch disponibili.
 
+## Specifiche del laboratorio
+
+- In questo lab rompi volontariamente una parte controllata del sistema per vedere come reagisce.
+- Devi seguire una catena precisa di osservazione: stato target, eventi ECS, log CloudWatch.
+- Il lab e completato solo quando hai anche ripristinato lo stato `healthy` e `stable`.
+
 ## Guida del lab
 
 1. **Controlla lo stato iniziale**

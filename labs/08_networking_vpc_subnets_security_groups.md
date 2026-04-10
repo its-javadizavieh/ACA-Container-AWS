@@ -15,6 +15,12 @@
 - Accesso alla console AWS.
 - VPC default o VPC del corso disponibile.
 
+## Specifiche del laboratorio
+
+- In questo lab non costruisci ancora il deploy completo: definisci la logica di rete che lo rendera sicuro.
+- Devi distinguere subnet pubbliche e private usando le route table, non solo i nomi delle subnet.
+- Devi motivare perche il task SG deve ricevere traffico dall'ALB e non direttamente da Internet.
+
 ## Guida del lab
 
 1. **Identifica VPC e subnet**

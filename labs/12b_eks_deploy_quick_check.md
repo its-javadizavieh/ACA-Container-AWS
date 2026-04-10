@@ -15,6 +15,12 @@
 - AWS CLI e `kubectl` installati.
 - Nel Learner Lab `eks:*` e spesso bloccato: il lab e concettuale salvo cluster fornito dal docente.
 
+## Specifiche del laboratorio
+
+- Questo lab e un confronto guidato con EKS, non un percorso completo di provisioning Kubernetes.
+- Devi associare i comandi ai relativi oggetti (`Deployment`, `Pod`, `Service`).
+- Il risultato richiesto e una spiegazione chiara di quando useresti ECS o EKS per lo stesso progetto.
+
 ## Guida del lab
 
 1. **Verifica i tool locali**

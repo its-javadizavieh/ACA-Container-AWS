@@ -16,6 +16,12 @@
 - Terminale e accesso Internet.
 - Docker avviato correttamente.
 
+## Specifiche del laboratorio
+
+- In questo lab non devi scrivere codice: devi osservare e descrivere i concetti base.
+- Ogni comando va usato per distinguere chiaramente `image`, `container`, `tag` e `digest`.
+- Alla fine devi saper spiegare con un esempio perche `latest` e meno affidabile di un digest.
+
 ## Guida del lab
 
 1. **Verifica Docker**

@@ -15,6 +15,12 @@
 - Almeno un log group CloudWatch e un repository ECR esistenti.
 - Accesso alla console AWS.
 
+## Specifiche del laboratorio
+
+- Questo lab non crea nuove funzionalita applicative: serve a ridurre sprechi e disordine operativo.
+- Devi scegliere o impostare valori concreti per retention, lifecycle policy e tagging.
+- Alla fine devi saper indicare quali risorse controlleresti per prime durante il cleanup del corso.
+
 ## Guida del lab
 
 1. **Retention dei log**
