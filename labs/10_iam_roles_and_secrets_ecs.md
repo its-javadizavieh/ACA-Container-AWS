@@ -32,7 +32,9 @@
 
 2. **Controlla `LabRole`**
    - IAM -> `Roles` -> `LabRole`
-   - Verifica che serva alla piattaforma ECS per pull da ECR e push dei log.
+   - Tab **Trust relationships**: apri il JSON e verifica che `ecs-tasks.amazonaws.com` sia nella lista dei servizi. La lista e lunga perche `LabRole` e condiviso nel Learner Lab.
+   - Tab **Permissions**: tra le 7 policy collegate, cerca **AmazonSSMManagedInstanceCore**. Questa policy include `ssm:GetParameters`, necessario per l'injection dei secret.
+   - Domanda: in produzione, perche non useresti un ruolo cosi ampio?
 
 3. **Prepara il task role**
    - Usa il task role pre-creato del corso, se disponibile.
@@ -41,10 +43,12 @@
 
 4. **Crea una nuova task definition revision**
    - ECS -> `Task definitions` -> `hello-api` -> `Create new revision`
-   - Container -> `Secrets`
-   - Add secret:
-     - Name: `APP_SECRET`
-     - Value from: ARN del parametro SSM
+   - Container -> `Environment variables` -> `Add environment variable`
+   - Compila:
+     - Key: `APP_SECRET`
+     - Value type: cambia da `Value` a **`ValueFrom`**
+     - Value: ARN del parametro SSM
+   - Per trovare l'ARN: vai su Systems Manager -> `Parameter Store` -> clicca sul parametro `/containersaws/lab/app_secret` -> copia il valore del campo **ARN** in alto (formato: `arn:aws:ssm:<region>:<account-id>:parameter/containersaws/lab/app_secret`)
    - `Task execution role`: `LabRole`
    - `Task role`: seleziona il ruolo applicativo del corso
 

@@ -45,8 +45,8 @@
    - ECS -> `Clusters` -> `demo-cluster` -> `Services` -> `hello-api-service` -> `Update`
    - In `Load balancing`, aggiungi l'ALB creato
    - Listener: `HTTP:80`
-   - Target group: `demo-tg`
    - Container: `hello-api`, porta `9090`
+   - Target group: `demo-tg`
    - Clicca `Update`
 
 4. **Verifica health e DNS**

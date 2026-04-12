@@ -44,9 +44,10 @@
 
 4. **Walkthrough allarme**
    - CloudWatch -> `Alarms` -> `Create alarm`
-   - `Select metric` -> `ECS` -> `ClusterName, ServiceName`
-   - Scegli `CPUUtilization` oppure `MemoryUtilization`
-   - Esempio soglia: `> 70` per `5 minutes`
+   - **Step 1**: `Select metric` -> `ECS` -> `ClusterName, ServiceName` -> scegli `CPUUtilization` oppure `MemoryUtilization`. Soglia: `> 70` per `5 minutes`. Clicca `Next`.
+   - **Step 2**: Configure actions — per il lab puoi saltare tutte le azioni (SNS, Lambda, Auto Scaling). Clicca `Next`.
+   - **Step 3**: Add alarm details — nome: `demo-cpu-alarm`. Clicca `Next`.
+   - **Step 4**: Preview and create — verifica e clicca `Create alarm`.
    - Se `cloudwatch:PutMetricAlarm` e bloccato nel lab, fermati prima di `Create alarm` e annota i campi.
 
 5. **Walkthrough retention** 🎯 _Sfida_
