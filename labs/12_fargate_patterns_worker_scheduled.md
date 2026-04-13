@@ -17,6 +17,7 @@
 
 ## Specifiche del laboratorio
 
+- Questo e il lab principale della Lesson 12 sul lato ECS/Fargate.
 - Questo lab mostra un workload non web: una task che parte, fa lavoro e termina.
 - Devi verificare `Exit code`, `Stopped reason` e output del job.
 - L'obiettivo concettuale e saper dire quando un `Run task` e piu adatto di un `Service` sempre attivo.
@@ -30,20 +31,38 @@
    - `Task execution role`: `LabRole`
    - CPU: `0.25 vCPU` | Memory: `0.5 GB`
    - Container image: `public.ecr.aws/docker/library/alpine:3.19`
-   - Command:
-     ```text
-     sh -c "echo START; date; echo DONE"
-     ```
-   - Logging: `Use log collection` -> `Amazon CloudWatch`
+   - Command (formato ECS = token separati da virgola):
+
+      ```text
+      sh,-c,echo START; date; echo DONE
+      ```
+
+   - Logging: attiva `Use log collection` -> `Amazon CloudWatch`
+   - Inserisci questi valori nella tabella di logging:
+
+      | Key                     | Value           |
+      | ----------------------- | --------------- |
+      | `awslogs-group`         | `/ecs/demo-job` |
+      | `awslogs-region`        | `us-east-1`     |
+      | `awslogs-stream-prefix` | `ecs`           |
+      | `awslogs-create-group`  | `true`          |
+
+   - Lascia `Value type = Value` per tutte le righe.
 
 2. **Esegui la task**
    - ECS -> `Clusters` -> `demo-cluster` -> `Run new task`
    - Family: `demo-job`
    - Desired tasks: `1`
+  - Networking: default VPC, 2 subnet, security group di default, **Public IP = ON**
+
+  > Il task ha bisogno di accesso in uscita verso CloudWatch Logs. Senza Public IP (e senza NAT Gateway o VPC endpoint), il task fallisce subito con `ResourceInitializationError`.
 
 3. **Verifica il ciclo di vita**
    - Attendi `RUNNING`, poi `STOPPED`
-   - Controlla `Exit code = 0`
+   - Apri il task: il banner in alto nella pagina mostra lo **Stopped reason**
+     - **Banner giallo** = uscita normale (es. `Essential container in task exited`)
+     - **Banner rosso** = errore (es. `ResourceInitializationError`)
+   - Per un job riuscito: banner giallo con `Exit code = 0` nella riga del container
 
 4. **Leggi log e risultato**
    - CloudWatch -> log group del job
@@ -66,10 +85,13 @@
 
 ## Troubleshooting
 
+- **Task si ferma subito con `ResourceInitializationError: failed to validate logger args… connection issue`**: il task non riesce a raggiungere CloudWatch Logs. Imposta **Public IP = ON** quando lanci il task, oppure verifica che la subnet abbia un NAT Gateway.
+- **`executable file not found in $PATH`**: il comando e stato scritto come stringa shell. Usa il formato ECS a token separati da virgola: `sh,-c,echo START; date; echo DONE` (senza virgolette).
 - **Task non parte**: controlla rete, `LabRole` e `Stopped reason`.
-- **Nessun log**: ricontrolla la raccolta CloudWatch.
+- **Nessun log**: ricontrolla la raccolta CloudWatch e verifica che Public IP sia attivo.
 
 ## Cleanup
 
 - Se il job e ancora `RUNNING`, fermalo.
 - Elimina la revision della task definition solo se non ti serve piu.
+- Se il docente ha previsto anche il confronto Kubernetes, continua con il Lab 12b.
