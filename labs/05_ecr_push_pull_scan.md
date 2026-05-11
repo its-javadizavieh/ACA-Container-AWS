@@ -57,8 +57,8 @@
 4. **Tag e push dell'immagine**
 
    ```bash
-   docker tag hello-api:1.0 $ECR_REPO:1.0
-   docker push $ECR_REPO:1.0
+   docker tag hello-api:1.0 ${ECR_REPO}:1.0
+   docker push ${ECR_REPO}:1.0
    ```
 
 5. **Verifica in console**
