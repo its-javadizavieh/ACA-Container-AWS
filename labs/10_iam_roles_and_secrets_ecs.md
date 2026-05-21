@@ -53,7 +53,7 @@
    - `Task role`: seleziona il ruolo applicativo del corso
 
 5. **Redeploy del service**
-   - ECS -> `Services` -> `hello-api-service` -> `Update`
+   - ECS -> `Services` -> `hello-api-svc` -> `Update`
    - Seleziona la nuova revision e abilita `Force new deployment`
 
 6. **Verifica** 🎯 _Sfida_

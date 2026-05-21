@@ -49,7 +49,7 @@
    - `Application type`: `Service`
    - `Task definition family`: `hello-api`
    - `Revision`: `LATEST`
-   - `Service name`: `hello-api-service`
+   - `Service name`: `hello-api-svc`
    - `Service type`: `Replica`
    - `Desired tasks`: `1`
    - Networking: VPC default, subnet preselezionate, `Use an existing security group` -> `demo-task-sg`, `Public IP` -> `Turned on`
@@ -70,7 +70,7 @@
 ## Output atteso
 
 - Cluster e task definition creati.
-- Service `hello-api-service` in esecuzione.
+- Service `hello-api-svc` in esecuzione.
 - Log disponibili in CloudWatch.
 
 ## Checkpoint
@@ -87,5 +87,5 @@
 
 ## Cleanup
 
-- Se passi al lab 07, lascia `hello-api-service` attivo.
+- Se passi al lab 07, lascia `hello-api-svc` attivo.
 - Altrimenti elimina il service e ferma i task.

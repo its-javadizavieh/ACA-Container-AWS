@@ -12,7 +12,7 @@
 
 ## Prerequisiti
 
-- `hello-api-service` attivo.
+- `hello-api-svc` attivo.
 - `demo-alb-sg` e `demo-task-sg` pronti dal lab 08.
 
 ## Specifiche del laboratorio
@@ -42,7 +42,7 @@
    - Listener `HTTP:80` -> forward a `demo-tg`
 
 3. **Collega l'ALB al service ECS**
-   - ECS -> `Clusters` -> `demo-cluster` -> `Services` -> `hello-api-service` -> `Update`
+   - ECS -> `Clusters` -> `demo-cluster` -> `Services` -> `hello-api-svc` -> `Update`
    - In `Load balancing`, aggiungi l'ALB creato
    - Listener: `HTTP:80`
    - Container: `hello-api`, porta `9090`

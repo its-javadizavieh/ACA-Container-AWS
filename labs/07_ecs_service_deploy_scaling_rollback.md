@@ -12,7 +12,7 @@
 
 ## Prerequisiti
 
-- `hello-api-service` attivo dal lab 06.
+- `hello-api-svc` attivo dal lab 06.
 - Task definition `hello-api` gia registrata.
 
 ## Specifiche del laboratorio
@@ -24,7 +24,7 @@
 ## Guida del lab
 
 1. **Controlla lo stato iniziale**
-   - ECS -> `Clusters` -> `demo-cluster` -> `Services` -> `hello-api-service`
+   - ECS -> `Clusters` -> `demo-cluster` -> `Services` -> `hello-api-svc`
    - Apri `Deployments and events` e `Tasks`.
    - Annota: revision attuale, `Desired count`, `Running count`.
 
@@ -34,7 +34,7 @@
    - Clicca `Create`
 
 3. **Aggiorna il service**
-   - ECS -> `Services` -> `hello-api-service` -> `Update`
+   - ECS -> `Services` -> `hello-api-svc` -> `Update`
    - `Revision`: seleziona la nuova revision
    - Abilita `Force new deployment`
    - Clicca `Update`

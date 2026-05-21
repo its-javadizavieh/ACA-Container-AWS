@@ -12,7 +12,7 @@
 
 ## Prerequisiti
 
-- `hello-api-service` dietro ALB.
+- `hello-api-svc` dietro ALB.
 - Target Group e log CloudWatch disponibili.
 
 ## Specifiche del laboratorio
@@ -26,7 +26,7 @@
 1. **Controlla lo stato iniziale**
    - EC2 -> `Target Groups` -> `demo-tg` -> `Targets`
    - Tutti i target devono essere `healthy`.
-   - ECS -> `hello-api-service` -> verifica stato `stable`.
+   - ECS -> `hello-api-svc` -> verifica stato `stable`.
 
 2. **Rompi il health check**
    - EC2 -> `Target Groups` -> `demo-tg` -> `Health checks` -> `Edit`

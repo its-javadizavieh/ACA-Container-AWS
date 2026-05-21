@@ -12,7 +12,7 @@
 
 ## Prerequisiti
 
-- `hello-api-service` attivo.
+- `hello-api-svc` attivo.
 - Log CloudWatch gia presenti dalla task definition ECS.
 
 ## Specifiche del laboratorio
@@ -39,7 +39,7 @@
      ```
 
 3. **Correla con ECS**
-   - ECS -> `Services` -> `hello-api-service` -> `Deployments and events`
+   - ECS -> `Services` -> `hello-api-svc` -> `Deployments and events`
    - Associa almeno un evento ECS a una riga di log.
 
 4. **Walkthrough allarme**
