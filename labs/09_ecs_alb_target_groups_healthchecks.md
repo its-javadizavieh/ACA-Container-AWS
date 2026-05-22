@@ -32,6 +32,11 @@
    - Health check path: `/health`
    - Clicca `Create`
 
+   Poi riduci il tempo di draining (utile per i lab successivi):
+   - EC2 -> `Target Groups` -> `demo-tg` -> tab `Attributes` -> `Edit`
+   - **Deregistration delay**: da `300` a `30` secondi -> `Save`
+   - Durante i deploy ECS i target vecchi spariscono piu in fretta. In produzione spesso si lascia un valore piu alto per chiudere le connessioni in modo graduale.
+
 2. **Crea l'Application Load Balancer**
    - EC2 -> `Load Balancers` -> `Create Load Balancer`
    - Type: `Application Load Balancer`
@@ -73,6 +78,7 @@
 ## Troubleshooting
 
 - **Target `unhealthy`**: controlla path `/health`, porta `9090` e source del `demo-task-sg`.
+- **Target bloccato in `draining`**: e normale durante un deploy ECS. Il default e 300 secondi; se l'hai impostato a 30 in lab 09, attendi al massimo ~30s. `draining` non e lo stesso stato di `unhealthy`.
 - **Browser in timeout**: verifica listener, subnet pubbliche e DNS dell'ALB.
 
 ## Cleanup

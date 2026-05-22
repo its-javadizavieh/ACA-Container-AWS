@@ -19,7 +19,7 @@
 ## Specifiche del laboratorio
 
 - Devi avere a disposizione il codice completo di `hello-api`, non inventarlo durante il lab.
-- L'obiettivo e ottenere un container realmente funzionante con gli endpoint `/`, `/health` e `/version`.
+- L'obiettivo e ottenere un container realmente funzionante con gli endpoint `/`, `/health` e `/version`. I path sconosciuti devono rispondere con HTTP `404`.
 - Le verifiche obbligatorie sono tre: risposta HTTP, log visibili e variabile ambiente letta dal container.
 
 ## Guida del lab
@@ -51,23 +51,23 @@
            if self.path == "/health":
                body = json.dumps({"status": "ok"})
                logger.info(f"GET /health from {self.client_address[0]}")
+               status, content_type = 200, "application/json"
            elif self.path == "/version":
                version = os.environ.get("APP_VERSION", "1.0")
                body = json.dumps({"version": version})
                logger.info(f"GET /version - {version}")
-           else:
+               status, content_type = 200, "application/json"
+           elif self.path == "/":
                body = "Hello from container!"
-               logger.info(f"GET {self.path} from {self.client_address[0]}")
+               logger.info(f"GET / from {self.client_address[0]}")
+               status, content_type = 200, "text/plain"
+           else:
+               body = json.dumps({"error": "not found"})
+               logger.info(f"GET {self.path} from {self.client_address[0]} -> 404")
+               status, content_type = 404, "application/json"
 
-           self.send_response(200)
-           self.send_header(
-               "Content-Type",
-               (
-                   "application/json"
-                   if self.path.startswith("/") and self.path != "/"
-                   else "text/plain"
-               ),
-           )
+           self.send_response(status)
+           self.send_header("Content-Type", content_type)
            self.end_headers()
            self.wfile.write(body.encode())
 
@@ -121,9 +121,10 @@
    curl http://localhost:9090/
    curl http://localhost:9090/health
    curl http://localhost:9090/version
+   curl -i http://localhost:9090/does-not-exist
    ```
 
-   Non limitarti a vedere che risponde: confronta i tre endpoint e annota quale informazione restituisce ciascuno.
+   Non limitarti a vedere che risponde: confronta i tre endpoint e annota quale informazione restituisce ciascuno. L'ultimo comando deve restituire HTTP `404` con `{"error": "not found"}`.
 
 5. **Controlla stato e log**
 

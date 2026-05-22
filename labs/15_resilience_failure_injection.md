@@ -14,6 +14,7 @@
 
 - `hello-api-svc` dietro ALB.
 - Target Group e log CloudWatch disponibili.
+- Immagine `hello-api` aggiornata: i path sconosciuti devono rispondere con HTTP `404` (necessario per far fallire l'health check ALB).
 
 ## Specifiche del laboratorio
 
@@ -23,6 +24,11 @@
 
 ## Guida del lab
 
+0. **Prepara il target group (consigliato)**
+   - EC2 -> `Target Groups` -> `demo-tg` -> tab `Attributes` -> `Edit`
+   - **Deregistration delay**: da `300` a `30` secondi -> `Save`
+   - Durante i deploy ECS i target vecchi spariscono piu in fretta. Utile in aula; in produzione spesso si preferisce un valore piu alto.
+
 1. **Controlla lo stato iniziale**
    - EC2 -> `Target Groups` -> `demo-tg` -> `Targets`
    - Tutti i target devono essere `healthy`.
@@ -30,12 +36,12 @@
 
 2. **Rompi il health check**
    - EC2 -> `Target Groups` -> `demo-tg` -> `Health checks` -> `Edit`
-   - Cambia path da `/health` a `/health-broken`
+   - Cambia path da `/health` a `/does-not-exist`
    - Salva le modifiche
 
 3. **Osserva cosa succede**
-   - Attendi che il target diventi `unhealthy`.
-   - Apri `Health status details`.
+   - Attendi che il target diventi `unhealthy` (circa `interval` × `unhealthy threshold`, es. 10s × 2 = ~20s).
+   - Apri `Health status details` e verifica la reason: `Health checks failed with these codes: [404]`.
    - Controlla anche `Deployments and events` nel service.
 
 4. **Leggi i log** 🎯 _Sfida_
@@ -59,7 +65,8 @@
 
 ## Troubleshooting
 
-- **Nessun cambiamento nello stato target**: ricontrolla `interval` e `threshold` del health check.
+- **Nessun cambiamento nello stato target**: ricontrolla `interval` e `threshold` del health check. Se il target resta `healthy`, verifica che ECS stia usando l'immagine aggiornata di `hello-api` (path sconosciuti devono restituire `404`, non `200`).
+- **Target in `draining` per molti minuti**: non e lo stesso di `unhealthy`. Succede quando ECS sostituisce un task; con deregistration delay a `30` s compare per poco tempo, con il default `300` puo durare fino a 5 minuti.
 - **Non hai un ALB**: fai la versione alternativa rompendo il comando del container e osserva `Stopped reason`.
 
 ## Cleanup
