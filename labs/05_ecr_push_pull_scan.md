@@ -69,8 +69,8 @@
 
    ```bash
    docker rmi hello-api:1.0
-   docker pull $ECR_REPO:1.0
-   docker run --rm -p 9090:9090 $ECR_REPO:1.0
+   docker pull ${ECR_REPO}:1.0
+   docker run --rm -p 9090:9090 ${ECR_REPO}:1.0
    ```
 
    In un secondo terminale verifica:
